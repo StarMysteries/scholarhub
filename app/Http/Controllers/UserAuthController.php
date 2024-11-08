@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+
+
+// Models
+use App\Models\User;
 use App\Models\Provider;
+use App\Models\Student;
 
 class UserAuthController extends Controller
 {
@@ -29,6 +33,12 @@ class UserAuthController extends Controller
                 $provider = Provider::where('user_id', $user->user_id)->first();
                 if ($provider) {
                     $responseData['provider_name'] = $provider->provider_name;
+                }
+            }else if($user->user_role === 'Student') {
+                $student = Student::where('user_id', $user->user_id)->first();
+                if ($student) {
+                    $responseData['student_fname'] = $student->student_fname;
+                    $responseData['student_lname'] = $student->student_lname;
                 }
             }
 

@@ -7,9 +7,6 @@ export function useAuth(requiredRole = null) {
     useEffect(() => {
         const userRole = localStorage.getItem('user_role');
 
-        console.log('userRole:', userRole);
-        console.log('requiredRole:', requiredRole);
-
         // Redirect to login if no user role is found
         if (!userRole) {
             navigate('/login');

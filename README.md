@@ -1,3 +1,19 @@
+<font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
+
+**Commit 2 Changes**
+1. Added search functionality for courses in *Sidebar*
+2. Added "Welcome, _username" in both *Navbar* and *NavbarDonor*
+3. Made login and logout in *Navbar* to conditionally appear if user is logged in or not
+4. Separated *Login, Navbar, NavbarDonor,* and *Sidebar*: javascript functionality from each other
+
+<br/><br/>
+
+**Commit 1 Changes**
+1. Everything
+
+<br/><br/><br/><br/><br/>
+
+
 <font color="#0e88f1"><h1 align="center">ScholarHub Local Hosting Configuration Guide</h1></font>
 
 
@@ -29,12 +45,7 @@ npm run dev
 *Note: Run ``npm run buid`` if necessary.*
 
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+<br/><br/><br/><br/><br/>
 
 
 
@@ -116,12 +127,7 @@ DB_PASSWORD=
 ```
 
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+<br/><br/><br/><br/><br/>
 
 
 <font color="#d22d44"><h1 align="center">Test Cases Credentials</h1></font>
