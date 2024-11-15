@@ -1,49 +1,58 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '../css/app.css';
 
-//Layouts
+import LoadingSpinner from './Pages/General/LoadingSpinner';
+
+// Layouts
 import DefaultLayout from './Layouts/DefaultLayout';
 import HomeStudentLayout from './Layouts/HomeStudentLayout';
 import HomeDonorLayout from './Layouts/HomeDonorLayout';
 
-//Pages
-import HomeStudent from './Pages/HomeStudent';
-import About from './Pages/About';
-import HomeDonor from './Pages/HomeDonor';
-import Login from './Pages/Login';
-import Unauthorized from './Pages/Unauthorized';
+// Lazy-loading
+const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
+const About = lazy(() => import('./Pages/General/About'));
+const HomeDonor = lazy(() => import('./Pages/Provider/HomeDonor'));
+const Login = lazy(() => import('./Pages/General/Login'));
+const Unauthorized = lazy(() => import('./Pages/General/Unauthorized'));
+const ApplicantStatus = lazy(() => import('./Pages/Provider/ApplicantStatus'));
+const ViewMore = lazy(() => import('./Pages/Provider/ViewMore'));
+const AcceptedStatus = lazy(() => import('./Pages/Provider/AcceptedStatus'));
+const DeclinedStatus = lazy(() => import('./Pages/Provider/DeclinedStatus'));
 
 function App() {
   return (
-    <>
-      <Router>
+    <Router>
+      <Suspense fallback={ <LoadingSpinner /> }>
         <Routes>
-          {/* Routes using HomeLayout */}
+          {/* Routes using HomeStudentLayout */}
           <Route element={<HomeStudentLayout />}>
             <Route path="/" element={<HomeStudent />} />
           </Route>
           
-          {/* Layout without sidebar */}
+          {/* Routes using DefaultLayout */}
           <Route element={<DefaultLayout />}>
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
           </Route>
 
-          {/* Routes using HomeDonor layout */}
+          {/* Routes using HomeDonorLayout */}
           <Route element={<HomeDonorLayout />}>
             <Route path="/donor" element={<HomeDonor />} />
+            <Route path="/applicant_status" element={<ApplicantStatus />} />
+            <Route path="/view_more" element={<ViewMore />} />
+            <Route path="/accepted_status" element={<AcceptedStatus />} />
+            <Route path="/declined_status" element={<DeclinedStatus />} />
           </Route>
 
-          <Route>
-            <Route path="/unauthorized" element={ <Unauthorized /> } />
-          </Route>
+          {/* Unauthorized route */}
+          <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
-      </Router>
-    </>
+      </Suspense>
+    </Router>
   );
-};
+}
 
 export default App;
 

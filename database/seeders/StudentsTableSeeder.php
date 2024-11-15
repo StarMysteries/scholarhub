@@ -21,6 +21,7 @@ class StudentsTableSeeder extends Seeder
                 'student_lname' => 'Bacon',
                 'student_address' => '123 Main St',
                 'student_contact' => '1234-567-8911',
+                'student_picPath' => 'Somewhere',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

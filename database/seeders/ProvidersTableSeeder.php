@@ -18,6 +18,7 @@ class ProvidersTableSeeder extends Seeder
                 'user_id' => 3, // Assuming this is the ID of the 'Provider' user
                 'provider_name' => 'University of San Carlos',
                 'provider_contact' => '1234-567-8911',
+                'provider_picPath' => 'Somewhere',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

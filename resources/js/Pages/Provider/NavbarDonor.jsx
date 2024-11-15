@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 // Import Hooks
-import useNavbarFunctions from "../hooks/useNavbarFunctions";
+import useNavbarFunctions from "../../hooks/useNavbarFunctions";
 
 // Import Icons
-import Logo from '../../img/logo.png';
+import Logo from '../../../img/logo.png';
 
 function NavbarDonor() {
     const { userRole, userName, handleLogout } = useNavbarFunctions();
@@ -19,6 +19,9 @@ function NavbarDonor() {
                     </Link>
                 </div>
                 <div className="hidden md:flex items-center space-x-4">
+                    <Link to="/donor" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Scholarships</Link>
+                    <Link to="/applicant_status" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Applicants</Link>
+
                     <div className="border-l border-green-700 h-6 mx-2"></div>
                     {userName && (
                         <span className="text-lg font-semibold text-white">

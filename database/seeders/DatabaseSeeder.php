@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
             StudentsTableSeeder::class,
             ProvidersTableSeeder::class,
             AdminsTableSeeder::class,
+            ScholarshipsTableSeeder::class,
+            ScholarshipCoursesTableSeeder::class,
         ]);
     }
 }

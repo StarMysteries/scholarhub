@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 // Import Hooks
-import useNavbarFunctions from "../hooks/useNavbarFunctions";
+import useNavbarFunctions from "../../hooks/useNavbarFunctions";
 
 // Import Icons
-import Logo from '../../img/logo.png';
+import Logo from '../../../img/logo.png';
 
 function Navbar() {
     const { userRole, userName, handleLogout } = useNavbarFunctions();

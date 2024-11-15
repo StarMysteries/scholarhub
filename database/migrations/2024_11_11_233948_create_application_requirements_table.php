@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('application_requirements', function (Blueprint $table) {
-            $table->bigIncrements('ar_id');
+            $table->bigIncrements('asr_id');
             $table->foreignId('application_id')->constrained('applications', 'application_id')->onDelete('cascade');
             $table->string('ar_filename');
             $table->string('ar_filepath');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('application_requirements');
+        Schema::dropIfExists('application_scholarship_requirements');
     }
 };
