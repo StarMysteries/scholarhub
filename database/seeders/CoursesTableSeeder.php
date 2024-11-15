@@ -35,6 +35,13 @@ class CoursesTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'course_id' => 'BSCpE',
+                'course_name' => 'BS Computer Engineering',
+                'course_description' => '',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
             // Add more course records as needed
         ]);
     }

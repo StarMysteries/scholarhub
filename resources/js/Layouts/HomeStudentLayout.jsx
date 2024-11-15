@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../Pages/Sidebar';
-import Navbar from '../Pages/Navbar';
+import Sidebar from '../Pages/Student/Sidebar';
+import Navbar from '../Pages/General/Navbar';
 
 function HomeStudentLayout() {
   return (

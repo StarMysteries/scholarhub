@@ -7,7 +7,12 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // colors here
+        // Sample: 'custom-green': '#031716',
+      },
+    },
   },
   plugins: [],
 }

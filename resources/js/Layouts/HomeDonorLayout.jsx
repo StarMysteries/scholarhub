@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import NavbarDonor from '../Pages/NavbarDonor';
+import NavbarDonor from '../Pages/Provider/NavbarDonor';
 
 function HomeStudentLayout() {
   return (

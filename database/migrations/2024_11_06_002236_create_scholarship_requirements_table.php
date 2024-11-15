@@ -15,7 +15,6 @@ return new class extends Migration
             $table->bigIncrements('sr_id');  //auto-incrementing primary key
             $table->foreignId('scholarship_id')->constrained('scholarships', 'scholarship_id')->onDelete('cascade');
             $table->string('sr_name');
-            $table->string('sr_filepath');
             $table->string('sr_filetype');
             $table->timestamps();
         });
