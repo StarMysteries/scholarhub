@@ -10,7 +10,7 @@ class ScholarshipController extends Controller
 {
     public function index()
     {
-        $scholarships = Scholarship::with('courses')->get();
+        $scholarships = Scholarship::where('scholarship_status', 'Active')->with('courses')->get();
         return response()->json($scholarships->toArray());
     }
 }

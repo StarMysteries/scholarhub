@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 // Hooks import
 import useFetchCourses from '../../hooks/useFetchCourses';
 import useSearchFilter from '../../hooks/useSearchFilter';
-import { handleCheckboxChange, handleFilterSubmit } from '../../hooks/sidebarHandler';
+import { handleCheckboxChange, handleFilterSubmit } from '../../hooks/useSidebarHandler';
 
 function Sidebar({ filterScholarships }) {
     // Fetch courses

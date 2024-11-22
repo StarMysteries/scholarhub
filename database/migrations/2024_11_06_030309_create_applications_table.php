@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('application_id');
             $table->foreignId('scholarship_id')->constrained('scholarships', 'scholarship_id')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students', 'student_id')->onDelete('cascade');
-            $table->string('application_status');
+            $table->enum('application_status', ['Accepted', 'Pending', 'Declined'])->default('Pending');
             $table->dateTime('application_date');
             $table->timestamps();
         });

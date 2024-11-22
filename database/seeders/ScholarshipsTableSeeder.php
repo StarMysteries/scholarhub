@@ -22,6 +22,14 @@ class ScholarshipsTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'provider_id' => 1,
+                'scholarship_name' => 'Engineering Scholarship',
+                'scholarship_status' => 'Inactive',
+                'scholarship_deadline' => '2024-11-28 17:00:00',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
             // Add more student records as needed
         ]);
     }

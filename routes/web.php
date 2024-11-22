@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DonorScholarshipController;
 use App\Http\Controllers\ScholarshipController;
 use App\Http\Controllers\UserAuthController;
 
@@ -34,6 +35,8 @@ Route::get('/accepted_status', function () {
 Route::get('/view_more', function () {
     return view('App');
 });
+// Provider/Donor API
+Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
 
 // Login Page
 Route::get('/login', function () {
