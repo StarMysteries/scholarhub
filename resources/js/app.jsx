@@ -13,10 +13,9 @@ import HomeDonorLayout from './Layouts/HomeDonorLayout';
 // Lazy-loading
 const About = lazy(() => import('./Pages/General/About'));
 
-const Admin = lazy(() => import('./Pages/Admin/Admin'));
-
 const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
 const MoreInfo = lazy(() => import('./Pages/Student/MoreInfo'));
+const ScholarshipForm = lazy(() => import('./Pages/Student/ScholarshipForm'));
 
 const Login = lazy(() => import('./Pages/General/Login'));
 const Unauthorized = lazy(() => import('./Pages/General/Unauthorized'));
@@ -31,6 +30,8 @@ const ViewMore = lazy(() => import('./Pages/Provider/ViewMore'));
 const AcceptedStatus = lazy(() => import('./Pages/Provider/AcceptedStatus'));
 const DeclinedStatus = lazy(() => import('./Pages/Provider/DeclinedStatus'));
 
+const Admin = lazy(() => import('./Pages/Admin/Admin'));
+
 function App() {
   return (
     <Router>
@@ -40,6 +41,7 @@ function App() {
           <Route element={<HomeStudentLayout />}>
             <Route path="/" element={<HomeStudent />} />
             <Route path="/more_info" element={<MoreInfo />} />
+            <Route path="/scholarship_form" element={<ScholarshipForm />} />
           </Route>
 
           {/* Routes using DefaultLayout */}
