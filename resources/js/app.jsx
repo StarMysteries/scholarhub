@@ -12,6 +12,7 @@ import HomeDonorLayout from './Layouts/HomeDonorLayout';
 
 // Lazy-loading
 const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
+const ScholarshipForm = lazy(() => import('./Pages/Student/ScholarshipForm'));
 const About = lazy(() => import('./Pages/General/About'));
 const HomeDonor = lazy(() => import('./Pages/Provider/HomeDonor'));
 const Login = lazy(() => import('./Pages/General/Login'));
@@ -29,6 +30,7 @@ function App() {
           {/* Routes using HomeStudentLayout */}
           <Route element={<HomeStudentLayout />}>
             <Route path="/" element={<HomeStudent />} />
+            <Route path="/scholarship_form" element={<ScholarshipForm />} />
           </Route>
           
           {/* Routes using DefaultLayout */}

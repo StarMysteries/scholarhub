@@ -22,6 +22,9 @@ Route::get('/about', function () {
 Route::get('/donor', function () {
     return view('App');
 });
+Route::get('/scholarship_form', function () {
+    return view('App');
+});
 Route::get('/applicant_status', function () {
     return view('App');
 });
