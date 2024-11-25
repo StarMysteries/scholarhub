@@ -14,6 +14,10 @@ Route::get('/about', function () {
     return view('App');
 });
 
+Route::get('/admin', function () {
+    return view('App');
+});
+
 Route::get('/donor', function () {
     return view('App');
 });

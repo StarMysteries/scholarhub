@@ -14,6 +14,7 @@ import About from './Pages/About';
 import HomeDonor from './Pages/HomeDonor';
 import Login from './Pages/Login';
 import Unauthorized from './Pages/Unauthorized';
+import Admin from './Pages/Admin';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route element={<DefaultLayout />}>
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<Admin />} />
           </Route>
 
           {/* Routes using HomeDonor layout */}
