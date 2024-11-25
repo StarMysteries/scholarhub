@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
 import { HiArrowLeft } from 'react-icons/hi'; // Import left arrow icon from react-icons
 import { useAuth } from '../../hooks/useAuth';
+import { Link } from 'react-router-dom'; // Import Link for internal routing
 
 const DeclinedStatus = () => {
   useAuth('Provider');
@@ -27,12 +28,12 @@ const DeclinedStatus = () => {
             <span className="text-sm">Back</span>
           </button>
 
-          {/* Title */}
-          <a href="/applicant_status">
+          {/* Title with Link */}
+          <Link to="/applicant_status">
             <div>
               <h1 className="text-3xl font-semibold text-red-800 mb-4">Declined Applicants</h1>
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* Applicant Cards Section */}
@@ -41,7 +42,7 @@ const DeclinedStatus = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105">
             <div className="flex items-center space-x-6 mb-4">
               <img
-                src="/PICTURES/images.jpg"
+                src=""
                 alt="Profile Picture"
                 className="w-20 h-20 rounded-full object-cover border-2 border-red-500"
               />
@@ -59,7 +60,7 @@ const DeclinedStatus = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105">
             <div className="flex items-center space-x-6 mb-4">
               <img
-                src="/PICTURES/images.jpg"
+                src=""
                 alt="Profile Picture"
                 className="w-20 h-20 rounded-full object-cover border-2 border-red-500"
               />

@@ -11,11 +11,21 @@ import HomeStudentLayout from './Layouts/HomeStudentLayout';
 import HomeDonorLayout from './Layouts/HomeDonorLayout';
 
 // Lazy-loading
-const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
 const About = lazy(() => import('./Pages/General/About'));
-const HomeDonor = lazy(() => import('./Pages/Provider/HomeDonor'));
+
+const Admin = lazy(() => import('./Pages/Admin/Admin'));
+
+const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
+const MoreInfo = lazy(() => import('./Pages/Student/MoreInfo'));
+
 const Login = lazy(() => import('./Pages/General/Login'));
 const Unauthorized = lazy(() => import('./Pages/General/Unauthorized'));
+const ForgotPassword = lazy(() => import('./Pages/General/ForgotPassword'));
+const SignUp = lazy(() => import('./Pages/General/SignUp'));
+const SignUpProvider = lazy(() => import('./Pages/General/SignUpProvider'));
+const SignUpStudent = lazy(() => import('./Pages/General/SignUpStudent'));
+
+const HomeDonor = lazy(() => import('./Pages/Provider/HomeDonor'));
 const ApplicantStatus = lazy(() => import('./Pages/Provider/ApplicantStatus'));
 const ViewMore = lazy(() => import('./Pages/Provider/ViewMore'));
 const AcceptedStatus = lazy(() => import('./Pages/Provider/AcceptedStatus'));
@@ -24,17 +34,24 @@ const DeclinedStatus = lazy(() => import('./Pages/Provider/DeclinedStatus'));
 function App() {
   return (
     <Router>
-      <Suspense fallback={ <LoadingSpinner /> }>
+      <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           {/* Routes using HomeStudentLayout */}
           <Route element={<HomeStudentLayout />}>
             <Route path="/" element={<HomeStudent />} />
+            <Route path="/more_info" element={<MoreInfo />} />
           </Route>
-          
+
           {/* Routes using DefaultLayout */}
           <Route element={<DefaultLayout />}>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup_student" element={<SignUpStudent />} />
+            <Route path="/signup_provider" element={<SignUpProvider />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot_password" element={<ForgotPassword />} />
+
+            <Route path="/admin" element={<Admin />} />
           </Route>
 
           {/* Routes using HomeDonorLayout */}

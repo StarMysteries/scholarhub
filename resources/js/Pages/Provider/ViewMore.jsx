@@ -41,13 +41,13 @@ const ViewMore = () => {
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="container mx-auto mt-4 text-center">
         <div className="flex justify-between mb-12">
-          <a href="/AcceptedStatus" className="w-full mx-2">
+          {/* Replace <a> with <Link> */}
+          <Link to="/accepted_status" className="w-full mx-2">
             <button className="bg-green-600 text-white py-2 rounded-lg w-full">ACCEPTED</button>
-          </a>
-          <a href="/DeclinedStatus" className="w-full mx-2">
+          </Link>
+          <Link to="/declined_status" className="w-full mx-2">
             <button className="bg-red-600 text-white py-2 rounded-lg w-full">DECLINED</button>
-          </a>
-        
+          </Link>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ const ViewMore = () => {
           <div className="bg-white rounded-lg shadow mb-4 p-6 relative" key={applicant.id}>
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center">
-                <img src="/PICTURES/images.jpg" alt="Profile" className="rounded-full mr-4 w-24 h-24" />
+                <img src="" alt="Profile" className="rounded-full mr-4 w-24 h-24" />
                 <div>
                   <h4 className="text-xl font-semibold">APPLICANT NUMBER {applicant.id}</h4>
                   <p className="text-gray-700"><strong>NAME:</strong> {applicant.name}</p>

@@ -6,7 +6,7 @@ import useFetchCourses from '../../hooks/useFetchCourses';
 import useSearchFilter from '../../hooks/useSearchFilter';
 import { handleCheckboxChange, handleFilterSubmit } from '../../hooks/useSidebarHandler';
 
-function Sidebar({ filterScholarships }) {
+function Sidebar({ isSidebarOpen, filterScholarships }) {
     // Fetch courses
     const { courses } = useFetchCourses();
 
@@ -17,7 +17,11 @@ function Sidebar({ filterScholarships }) {
     const [selectedCourses, setSelectedCourses] = useState([]);
 
     return (
-        <div className="w-72 h-[calc(100vh-4rem)] bg-green-600 dark:bg-green-800 text-white fixed top-16 left-0 overflow-y-auto">
+        <div 
+            className={`w-72 h-[calc(100vh-4rem)] bg-green-600 dark:bg-green-800 text-white fixed top-16 left-0 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+                isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+        >
             <div className="p-4">
                 <h1 className="text-xl font-bold px-2 mt-2">Filter Courses</h1>
                 
@@ -53,7 +57,9 @@ function Sidebar({ filterScholarships }) {
                                 <input
                                     type="checkbox"
                                     className="mr-2 appearance-none border-2 border-white rounded-sm w-5 h-5 bg-white checked:bg-red-500 checked:border-red-500 focus:outline-none transition duration-200 ease-in-out"
-                                    onChange={() => handleCheckboxChange(course.course_id, selectedCourses, setSelectedCourses)}
+                                    onChange={() =>
+                                        handleCheckboxChange(course.course_id, selectedCourses, setSelectedCourses)
+                                    }
                                 />
                                 {course.course_name}
                             </label>
