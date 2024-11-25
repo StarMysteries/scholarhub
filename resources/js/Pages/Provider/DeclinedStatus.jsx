@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
 import { HiArrowLeft } from 'react-icons/hi'; // Import left arrow icon from react-icons
+import { useAuth } from '../../hooks/useAuth';
 
 const DeclinedStatus = () => {
+  useAuth('Provider');
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   // Function to handle the back button click

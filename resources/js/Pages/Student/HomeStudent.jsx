@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import useFetchScholarships from '../../hooks/useFetchScholarships';
 import Sidebar from './Sidebar';
-import { filterScholarships as applyFilter } from '../../hooks/filterScholarships';
+import useFetchScholarships from '../../hooks/useFetchScholarships';
+import { filterScholarships as applyFilter } from '../../hooks/useFilterScholarships';
 
 function HomeStudent() {
     // Fetch scholarships

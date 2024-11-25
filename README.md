@@ -1,5 +1,18 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 4 Changes**
+1. Updated HomeDonor page to dynamically display scholarships based on provider.
+2. Modified create_applications_table column Status to add "Pending".
+3. Updated ScholarshipsTableSeeder.
+4. Separated Login javascript functionalities from the jsx file; creating the following hooks: useCheckLogin, useLogin.
+5. Separated HomeDonor javascript functionalities from the jsx file; creating the followng hooks: useDonorScholarships, useFilterScholarships.
+6. Added DonorScholarshipController to fetch scholarships based on provider.
+7. Separated Sidebar javascript functionalities from the jsx file; creating the following hooks: useSidebarHandler.
+8. Updated ScholarshipController to only fetch scholarships that are "Active".
+9. Updated Login and Logout functionalities; taking advantage of Laravel's Auth system. Therefore, updating Login, useLogin, useCheckLogin, UserAuthController.
+
+<br/>
+
 **Commit 3 Changes**
 1. Added scholarships filter functionality (filter based on courses)
 2. Incorporated lazy loading for not used pages
@@ -58,7 +71,7 @@ into
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=itoinv_db
+DB_DATABASE=scholarhub_db
 DB_USERNAME=root
 DB_PASSWORD=
 ```

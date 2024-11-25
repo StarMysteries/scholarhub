@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ViewMore = () => {
   const [applicants, setApplicants] = useState([
@@ -99,12 +100,12 @@ const ViewMore = () => {
 
       {/* Back to Requests Button - Positioned below all applicant cards */}
       <div className="container mx-auto text-center mt-8">
-        <a
-          href="/applicant_status"
+        <Link
+          to="/applicant_status"
           className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300"
         >
           Back to Requests
-        </a>
+        </Link>
       </div>
 
       {/* Modal for Declining Applicants */}

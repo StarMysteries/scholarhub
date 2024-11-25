@@ -1,52 +1,12 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+// Hooks
+import useLogin from '../../hooks/useLogin';
+import { useCheckLogin } from '../../hooks/useCheckLogin';
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(''); // Reset error message before submission
-
-        try {
-            const response = await axios.post('/login', {
-                user_email: email,
-                user_password: password,
-            });
-
-            if (response.status === 200) {
-                const {user_role, provider_name, student_fname, student_lname} = response.data;
-
-                // Store user data in local storage
-                localStorage.setItem('user_role', user_role);
-                if (user_role === 'Provider' && provider_name) {
-                    localStorage.setItem('provider_name', provider_name);
-                }else if(user_role === 'Student' && student_fname && student_lname){
-                    localStorage.setItem('student_fname', student_fname);
-                    localStorage.setItem('student_lname', student_lname);
-                }
-
-                // Navigate user to page depending on role
-                if(user_role === 'Admin'){
-                    navigate('/');
-                }else if(user_role === 'Provider'){
-                    navigate('/donor');
-                }else if(user_role === 'Student'){
-                    navigate('/');
-                }
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                setError('Invalid email or password');
-            } else {
-                setError('An error occurred. Please try again.');
-            }
-        }
-    };
+    useCheckLogin();
+    const { email, setEmail, password, setPassword, error, handleSubmit } = useLogin();
 
     return (
         <div className="min-h-screen flex items-center justify-center">
