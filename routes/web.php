@@ -11,15 +11,18 @@ Route::get('/about', function () {
     return view('App');
 });
 
-
-
 //Admin
 Route::get('/admin', function () {
     return view('App');
 });
 
+
 // Student's Homepage
 Route::get('/', function () {
+    return view('App');
+});
+
+Route::get('/scholarship_form', function () {
     return view('App');
 });
 
