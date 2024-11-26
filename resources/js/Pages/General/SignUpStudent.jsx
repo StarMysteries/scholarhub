@@ -8,6 +8,7 @@ const SignUpStudent = () => {
         lname: '',
         address: '',
         contact: '',
+        email: '',  // Added email to formData
         picture: null,
         password: ''
     });
@@ -86,6 +87,19 @@ const SignUpStudent = () => {
                             value={formData.contact}
                             onChange={handleChange}
                             maxLength="11"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                            required
+                        />
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                        <input
+                            type="email"  // Using type="email" for validation
+                            placeholder="Email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                             required
                         />
