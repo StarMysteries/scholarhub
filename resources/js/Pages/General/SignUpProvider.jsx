@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';  // Import Link for navigation
+import { FaEye, FaEyeSlash } from 'react-icons/fa';  // Import eye icons for password visibility
 
 const SignUpProvider = () => {
     const [formData, setFormData] = useState({
@@ -8,7 +9,10 @@ const SignUpProvider = () => {
         profilePicture: null,
         certificateOfIncorporation: null,
         tin: null,
+        password: ''  // Added password to formData
     });
+
+    const [showPassword, setShowPassword] = useState(false);  // State to control password visibility
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,10 +24,13 @@ const SignUpProvider = () => {
         setFormData({ ...formData, [name]: e.target.files[0] });
     };
 
+    const handlePasswordToggle = () => {
+        setShowPassword(!showPassword);  // Toggle password visibility
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
-        // Here, you can add your submission logic (e.g., API call)
+        console.log(formData);  // Here, you can add your submission logic (e.g., API call)
     };
 
     return (
@@ -59,9 +66,9 @@ const SignUpProvider = () => {
                         />
                     </div>
 
-                    {/* Profile Picture Upload */}
+                    {/* Profile Picture Upload (Optional) */}
                     <div>
-                        <label className="block text-sm text-gray-700 font-medium mb-1" htmlFor="profilePicture">Upload Profile Picture</label>
+                        <label className="block text-sm text-gray-700 font-medium mb-1" htmlFor="profilePicture">Upload Profile Picture (Optional)</label>
                         <input
                             type="file"
                             name="profilePicture"
@@ -81,15 +88,25 @@ const SignUpProvider = () => {
                         />
                     </div>
 
-                    {/* TIN (Taxpayer Identification Number) Upload */}
+                    {/* Password */}
                     <div>
-                        <label className="block text-sm text-gray-700 font-medium mb-1" htmlFor="tin">Upload TIN Document</label>
-                        <input
-                            type="file"
-                            name="tin"
-                            onChange={handleFileChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}  // Default to "password" type (hidden)
+                                placeholder="Password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                                required
+                            />
+                            <span
+                                onClick={handlePasswordToggle}
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Submit Button */}
