@@ -6,6 +6,7 @@ const SignUpProvider = () => {
     const [formData, setFormData] = useState({
         name: '',
         contact: '',
+        email: '',  // Added email to formData
         profilePicture: null,
         certificateOfIncorporation: null,
         tin: null,
@@ -66,6 +67,38 @@ const SignUpProvider = () => {
                         />
                     </div>
 
+                    {/* Email */}
+                    <div>
+                        <input
+                            type="email"  // Using type="email" for validation
+                            placeholder="Email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                            required
+                        />
+                    </div>
+                    {/* Password */}
+                    <div>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}  // Default to "password" type (hidden)
+                                placeholder="Password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                                required
+                            />
+                            <span
+                                onClick={handlePasswordToggle}
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </span>
+                        </div>
+                    </div>
                     {/* Profile Picture Upload (Optional) */}
                     <div>
                         <label className="block text-sm text-gray-700 font-medium mb-1" htmlFor="profilePicture">Upload Profile Picture (Optional)</label>
@@ -88,26 +121,7 @@ const SignUpProvider = () => {
                         />
                     </div>
 
-                    {/* Password */}
-                    <div>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? "text" : "password"}  // Default to "password" type (hidden)
-                                placeholder="Password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
-                                required
-                            />
-                            <span
-                                onClick={handlePasswordToggle}
-                                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
-                            >
-                                {showPassword ? <FaEye /> : <FaEyeSlash />}
-                            </span>
-                        </div>
-                    </div>
+
 
                     {/* Submit Button */}
                     <button
