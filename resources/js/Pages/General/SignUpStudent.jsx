@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';  // Import Link for navigation
+import { FaEye, FaEyeSlash } from 'react-icons/fa';  // Import icons for eye visibility
 
 const SignUpStudent = () => {
     const [formData, setFormData] = useState({
@@ -7,8 +8,11 @@ const SignUpStudent = () => {
         lname: '',
         address: '',
         contact: '',
-        picture: null
+        picture: null,
+        password: ''
     });
+
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,6 +21,10 @@ const SignUpStudent = () => {
 
     const handleFileChange = (e) => {
         setFormData({ ...formData, picture: e.target.files[0] });
+    };
+
+    const handlePasswordToggle = () => {
+        setShowPassword(!showPassword); // Toggle password visibility
     };
 
     const handleSubmit = (e) => {
@@ -81,6 +89,27 @@ const SignUpStudent = () => {
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                             required
                         />
+                    </div>
+
+                    {/* Password */}
+                    <div>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                                required
+                            />
+                            <span 
+                                onClick={handlePasswordToggle} 
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Upload Picture */}
