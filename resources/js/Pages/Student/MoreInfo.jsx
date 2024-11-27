@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const MoreInfo = () => {
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
+    <div className="min-h-screen overflow-hidden p-8">
       {/* Scholarship Details Section */}
       <div className="container mx-auto max-w-6xl bg-white rounded-lg shadow-lg p-8 space-y-8">
         {/* Header Section */}
@@ -22,7 +22,7 @@ const MoreInfo = () => {
             </div>
           </div>
           <Link
-            to="/" // Use Link's 'to' prop to specify the route
+            to="/scholarship_form" // Use Link's 'to' prop to specify the route
             className="bg-blue-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300"
           >
             Apply for Scholarship
@@ -41,7 +41,6 @@ const MoreInfo = () => {
               <div>
                 <span className="font-semibold">Contact Email: </span>
                 <span className="text-gray-700">johndoe@example.com</span>
-              
               </div>
             </div>
           </div>
