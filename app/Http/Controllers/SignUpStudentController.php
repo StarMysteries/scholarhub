@@ -6,19 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class SignUpStudentController extends Controller
 {
     public function registerStudent(Request $request)
     {
+
+          
         $validator = Validator::make($request->all(), [
             'user_email' => 'required|email|unique:users',
             'user_password' => 'required|min:8',
+
             'student_fname' => 'required|string|max:255',
             'student_lname' => 'required|string|max:255',
             'student_address' => 'required|string|max:255',
             'student_contact' => 'required|string|max:11',
-            'course_id' => 'required|exists:courses,course_id|string',
+            'course_id' => 'required|exists:scholarship_courses,course_id|string',
             'student_picPath' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -30,10 +34,13 @@ class SignUpStudentController extends Controller
         }
 
         try {
+            $hashedPassword = Hash::make($request->user_password);
+
+
             // Create User
             $user = User::create([
                 'user_email' => $request->user_email,
-                'user_password' => $request->user_password,
+                'user_password' => $hashedPassword,
                 'user_role' => 'Student', // Assign the Student role
             ]);
 
