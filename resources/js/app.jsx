@@ -21,6 +21,8 @@ const Form = lazy(() => import('./Pages/Provider/ScholarshipForm'));
 const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
 const MoreInfo = lazy(() => import('./Pages/Student/MoreInfo'));
 const ScholarshipForm = lazy(() => import('./Pages/Student/ScholarshipForm'));
+const AppliedScholarshipPage = lazy(() => import('./Pages/Student/AppliedScholarshipPage'));
+
 
 const Login = lazy(() => import('./Pages/General/Login'));
 const Unauthorized = lazy(() => import('./Pages/General/Unauthorized'));
@@ -45,6 +47,7 @@ function App() {
             <Route path="/" element={<HomeStudent />} />
             <Route path="/more_info" element={<MoreInfo />} />
             <Route path="/scholarship_form" element={<ScholarshipForm />} />
+                <Route path="/applied_scholarships" element={<AppliedScholarshipPage />} />
           </Route>
 
           {/* Routes using DefaultLayout */}
