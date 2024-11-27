@@ -1,31 +1,85 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-// Hooks
 import useDonorScholarships from '../../hooks/useDonorScholarships';
+import AddScholarshipModal from './AddScholarshipModal';
 
 const HomeDonor = () => {
     const { scholarships, error } = useDonorScholarships();
 
+    // State for search query
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // State to toggle Add Scholarship modal
+    const [showModal, setShowModal] = useState(false);
+
+    // State for new scholarship form
+    const [newScholarship, setNewScholarship] = useState({
+        name: '',
+        description: '',
+        status: 'Active',
+        deadline: '',
+        requirements: '',
+        courses: '',
+    });
+
+    // Handle input change in the form
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewScholarship((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // Handle form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Add scholarship logic here (e.g., API call)
+        console.log('New Scholarship:', newScholarship);
+        setShowModal(false); // Close modal after submission
+        // Reset form state
+        setNewScholarship({
+            name: '',
+            description: '',
+            status: 'Active',
+            deadline: '',
+            requirements: '',
+            courses: '',
+        });
+    };
+
     return (
         <div className="bg-white min-h-screen pt-1">
             <div className="container mx-auto mt-8 px-4 pb-8">
+                {/* Header Section */}
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-semibold">Scholarships Offered</h1>
                     <button
+                        onClick={() => setShowModal(true)} // Open the modal
                         className="bg-green-700 text-white py-2 px-4 rounded-md hover:bg-green-600"
                     >
                         Add Scholarship
                     </button>
                 </div>
 
+                {/* Static Search Bar */}
+                <div className="mb-6">
+                    <input
+                        type="text"
+                        placeholder="Search Scholarships..."
+                        value={searchQuery} // Controlled input
+                        onChange={(e) => setSearchQuery(e.target.value)} // Update state on input
+                        className="w-full py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
+                    />
+                </div>
+
+
+
+                {/* Scholarships List */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {error ? (
                         <div className="col-span-full bg-red-100 text-red-600 p-6 rounded-lg shadow-lg text-center">
                             <h2 className="text-lg font-semibold">Error</h2>
                             <p>{error}</p>
                         </div>
-                    ) : (
+                    ) : scholarships.length > 0 ? (
                         scholarships.map((scholarship) => (
                             <Link
                                 key={scholarship.scholarship_id}
@@ -57,9 +111,22 @@ const HomeDonor = () => {
                                 </div>
                             </Link>
                         ))
+                    ) : (
+                        <div className="col-span-full text-gray-600 text-center">
+                            No scholarships available.
+                        </div>
                     )}
                 </div>
             </div>
+
+            {/* Add Scholarship Modal */}
+            <AddScholarshipModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                onSubmit={handleSubmit}
+                scholarshipData={newScholarship}
+                onChange={handleInputChange}
+            />
         </div>
     );
 };
