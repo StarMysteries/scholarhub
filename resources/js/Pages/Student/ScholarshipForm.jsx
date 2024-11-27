@@ -1,27 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
-// Back Button Component
+// Back Button Component (Updated to be underlined)
 const BackButton = () => (
   <Link
     to="/more_info"
-    className="flex items-center text-lg text-blue-600 font-semibold hover:text-blue-800 focus:text-blue-800 transition duration-300"
+    className="text-lg text-blue-600 font-semibold hover:text-blue-800 focus:text-blue-800 transition duration-300 border-b-2 border-transparent hover:border-blue-600"
   >
-    {/* Left Arrow Icon */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5 mr-2"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M19 12H5m7-7l-7 7 7 7"
-      />
-    </svg>
     Back
   </Link>
 );
@@ -62,33 +47,36 @@ const ScholarshipForm = () => {
           </div>
         </div>
 
-        {/* File Upload Section */}
-        <div className="bg-gray-50 rounded-lg p-6 shadow-sm flex flex-col items-center mb-6">
-          <label htmlFor="file-upload" className="text-gray-700 font-medium mb-2 text-sm text-center">
-            Attach Files Here
-          </label>
-          <input
-            type="file"
-            id="file-upload"
-            multiple
-            onChange={handleFileChange}
-            className="file:bg-blue-400 file:border-0 file:text-white file:font-semibold file:px-4 file:py-2 file:rounded-lg cursor-pointer w-full max-w-lg text-sm"
-          />
-          {files.length > 0 ? (
-            <div className="mt-4 text-gray-700 text-center">
-              <div className="text-sm font-medium">Selected Files:</div>
-              <ul className="list-disc pl-6 text-gray-700 text-sm">
-                {files.map((file, index) => (
-                  <li key={index}>{file.name}</li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <div className="mt-4 text-gray-500 text-center">
-       
-            </div>
-          )}
-        </div>
+      {/* File Upload Section */}
+<div className="rounded-lg p-6 shadow-sm flex flex-col items-center mb-6 border border-gray-300">
+  <label
+    htmlFor="file-upload"
+    className="text-gray-700 font-medium mb-2 text-sm text-center"
+  >
+    Attach Files Here
+  </label>
+  <input
+    type="file"
+    id="file-upload"
+    multiple
+    onChange={handleFileChange}
+    className="file:bg-blue-400 file:border-0 file:text-white file:font-semibold file:px-4 file:py-2 file:rounded-lg cursor-pointer w-full max-w-md text-sm"
+  />
+  {files.length > 0 ? (
+    <div className="mt-4 text-gray-700 text-center">
+      <div className="text-sm font-medium">Selected Files:</div>
+      <ul className="list-disc pl-6 text-gray-700 text-sm">
+        {files.map((file, index) => (
+          <li key={index}>{file.name}</li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <div className="mt-4 text-gray-500 text-center">
+      No files selected.
+    </div>
+  )}
+</div>
 
         {/* Submit and Back Button Section */}
         <div className="flex justify-between items-center mt-6">
