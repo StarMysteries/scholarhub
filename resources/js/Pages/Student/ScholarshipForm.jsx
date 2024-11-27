@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { HiArrowLeft } from "react-icons/hi"; // Import the arrow-left icon from react-icons
 
-// Back Button Component (Updated to be underlined)
+// Back Button Component (Updated to use transparent background)
 const BackButton = () => (
   <Link
-    to="/more_info"
-    className="text-lg text-blue-600 font-semibold hover:text-blue-800 focus:text-blue-800 transition duration-300 border-b-2 border-transparent hover:border-blue-600"
+    to="/more_info" // Navigate to the /more_link route
+    className="flex items-center space-x-2 py-2 px-4 text-gray-500 font-semibold "
   >
-    Back
+    <HiArrowLeft className="w-5 h-5" /> {/* Left arrow icon */}
+    <span className="text-sm">Back</span>
   </Link>
 );
 
@@ -60,12 +62,12 @@ const ScholarshipForm = () => {
     id="file-upload"
     multiple
     onChange={handleFileChange}
-    className="file:bg-blue-400 file:border-0 file:text-white file:font-semibold file:px-4 file:py-2 file:rounded-lg cursor-pointer w-full max-w-md text-sm"
+    className="file:bg-green-800 file:border-0 file:text-white file:font-semibold file:px-4 file:py-2 file:rounded-lg cursor-pointer w-full max-w-md text-sm"
   />
   {files.length > 0 ? (
     <div className="mt-4 text-gray-700 text-center">
       <div className="text-sm font-medium">Selected Files:</div>
-      <ul className="list-disc pl-6 text-gray-700 text-sm">
+      <ul className="list-disc pl-6 text-gray-00 text-sm">
         {files.map((file, index) => (
           <li key={index}>{file.name}</li>
         ))}
@@ -80,8 +82,8 @@ const ScholarshipForm = () => {
 
         {/* Submit and Back Button Section */}
         <div className="flex justify-between items-center mt-6">
-          <BackButton />
-          <button className="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300">
+          <BackButton /> {/* Use the Back Button here */}
+          <button className="bg-green-600 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-green-700 transition-all duration-300">
             Submit
           </button>
         </div>
