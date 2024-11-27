@@ -10,10 +10,14 @@ const useSignUpStudent = () => {
             setIsLoading(true);
             setError(null);
 
+           
+
             const form = new FormData();
             for (const key in formData) {
                 form.append(key, formData[key]);
             }
+
+            
 
             const response = await axios.post(
                 "/register_student",
