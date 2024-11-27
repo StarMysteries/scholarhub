@@ -37,6 +37,7 @@ const SignUpStudent = () => {
         const formattedData = {
             user_email: formData.email, // Map to Laravel's expected field name
             user_password: formData.password, // Map to Laravel's expected field name
+
             student_fname: formData.fname,
             student_lname: formData.lname,
             student_address: formData.address,
@@ -44,15 +45,21 @@ const SignUpStudent = () => {
             course_id: formData.course_id, // Map course_id
             student_picPath: formData.picture, // Map picture to student_picPath
         };
+
+      
+
+        
         const response = await signUp(formattedData);
         if (response) {
             console.log('Sign up successful', response);
         }
+
+        
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full">
+            <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full mt-12">
                 <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Sign Up - Student</h2>
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     {/* First Name */}
