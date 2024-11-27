@@ -11,7 +11,7 @@ import ProviderProfileModal from "./ProviderProfileModal";
 import Logo from "../../../img/logo.png";
 
 function NavbarDonor() {
-    const { userRole, userName, handleLogout } = useNavbarFunctions();
+    const { userName, handleLogout } = useNavbarFunctions();
 
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +36,7 @@ function NavbarDonor() {
             <nav className="bg-green-900 text-white p-4 fixed top-0 left-0 w-full z-10">
                 <div className="container mx-auto flex justify-between items-center">
                     <div className="text-2xl font-bold transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                        <Link to="/">
+                        <Link to="/donor">
                             <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
                         </Link>
                     </div>
@@ -46,12 +46,6 @@ function NavbarDonor() {
                             className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out"
                         >
                             Scholarships
-                        </Link>
-                        <Link
-                            to="/applicant_status"
-                            className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out"
-                        >
-                            Applicants
                         </Link>
 
                         <div className="border-l border-green-700 h-6 mx-2"></div>

@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+// Hooks Import
 import useDonorScholarships from '../../hooks/useDonorScholarships';
 import AddScholarshipModal from './AddScholarshipModal';
 
 const HomeDonor = () => {
     const { scholarships, error } = useDonorScholarships();
-
-    // State for search query
     const [searchQuery, setSearchQuery] = useState('');
-
-    // State to toggle Add Scholarship modal
     const [showModal, setShowModal] = useState(false);
 
-    // State for new scholarship form
+    // Default state for AddScholarshipModal
     const [newScholarship, setNewScholarship] = useState({
         name: '',
         description: '',
@@ -28,13 +26,10 @@ const HomeDonor = () => {
         setNewScholarship((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Handle form submission
+    // Handle form submission for AddScholarshipModal
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add scholarship logic here (e.g., API call)
-        console.log('New Scholarship:', newScholarship);
-        setShowModal(false); // Close modal after submission
-        // Reset form state
+        setShowModal(false);
         setNewScholarship({
             name: '',
             description: '',
@@ -45,8 +40,19 @@ const HomeDonor = () => {
         });
     };
 
+    // Filter scholarships based on search query
+    const filteredScholarships = scholarships.filter((scholarship) => {
+        const query = searchQuery.toLowerCase();
+        return (
+            scholarship.scholarship_name.toLowerCase().includes(query) ||
+            scholarship.courses.some((course) =>
+                course.course_id.toLowerCase().includes(query)
+            )
+        );
+    });
+
     return (
-        <div className="bg-white min-h-screen pt-1">
+        <div className="bg-white min-h-full pt-1">
             <div className="container mx-auto mt-8 px-4 pb-8">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-6">
@@ -59,18 +65,16 @@ const HomeDonor = () => {
                     </button>
                 </div>
 
-                {/* Static Search Bar */}
+                {/* Search Bar */}
                 <div className="mb-6">
                     <input
                         type="text"
                         placeholder="Search Scholarships..."
-                        value={searchQuery} // Controlled input
-                        onChange={(e) => setSearchQuery(e.target.value)} // Update state on input
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
                     />
                 </div>
-
-
 
                 {/* Scholarships List */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -79,11 +83,11 @@ const HomeDonor = () => {
                             <h2 className="text-lg font-semibold">Error</h2>
                             <p>{error}</p>
                         </div>
-                    ) : scholarships.length > 0 ? (
-                        scholarships.map((scholarship) => (
+                    ) : filteredScholarships.length > 0 ? (
+                        filteredScholarships.map((scholarship) => (
                             <Link
                                 key={scholarship.scholarship_id}
-                                to="/applicant_status"
+                                to={`/application_status/${scholarship.scholarship_id}`}
                                 className="block bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"
                             >
                                 <div

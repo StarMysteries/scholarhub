@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             AdminsTableSeeder::class,
             ScholarshipsTableSeeder::class,
             ScholarshipCoursesTableSeeder::class,
+            ApplicationsTableSeeder::class,
         ]);
     }
 }

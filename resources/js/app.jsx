@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
+import { useParams } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '../css/app.css';
 
@@ -59,7 +60,8 @@ function App() {
           {/* Routes using HomeDonorLayout */}
           <Route element={<HomeDonorLayout />}>
             <Route path="/donor" element={<HomeDonor />} />
-            <Route path="/applicant_status" element={<ApplicantStatus />} />
+            <Route path="/application_status/:scholarshipId" element={<ApplicantStatus />} />
+            {/* <Route path="/applicant_status/:scholarshipId" element={<ApplicantStatus scholarshipId={useParams().scholarshipId} />} /> */}
             <Route path="/view_more" element={<ViewMore />} />
             <Route path="/accepted_status" element={<AcceptedStatus />} />
             <Route path="/declined_status" element={<DeclinedStatus />} />

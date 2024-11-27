@@ -1,5 +1,17 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 7 Changes**
+1. Made ApplicantStatus functional
+2. Added ProviderProfileModal
+3. Added StudentProfileModal
+4. Added seeders
+5. Made Signup functional
+6. Added AppliedScholarshipPage
+7. Added back button functionality to ApplicantStatus page
+8. Kyn pulled Lucy Heartfilia
+
+<br/>
+
 **Commit 6 Changes**
 1. Modified multiple pages
 2. Edited scholarship application table rejection_details field.
@@ -105,6 +117,10 @@ php artisan migrate
 or
 ```
 php artisan migrate:fresh       //to recreate the tables
+```
+or
+```
+php artisan migrate:fresh --seed       //to recreate the tables + seed
 ```
 14. Execute the seeders using the following command:
 ```

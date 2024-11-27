@@ -32,7 +32,12 @@ class ScholarshipCoursesTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Add more student records as needed
+            [
+                'course_id' => 'BSCpE',
+                'scholarship_id' => 2,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

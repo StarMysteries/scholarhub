@@ -6,6 +6,7 @@ use App\Http\Controllers\DonorScholarshipController;
 use App\Http\Controllers\ScholarshipController;
 use App\Http\Controllers\SignUpStudentController;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\ApplicantController;
 
 // About Page
 Route::get('/about', function () {
@@ -47,9 +48,6 @@ Route::get('/scholarships', [ScholarshipController::class, 'index']);
 Route::get('/donor', function () {
     return view('App');
 });
-Route::get('/applicant_status', function () {
-    return view('App');
-});
 Route::get('/declined_status', function () {
     return view('App');
 });
@@ -62,8 +60,12 @@ Route::get('/view_more', function () {
 Route::get('/form', function () {
     return view('App');
 });
+Route::get('/application_status/{scholarshipId}', function () {
+    return view('App');
+});
 // Provider/Donor API
 Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
+Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'getApplicantsByScholarship']);
 
 
 

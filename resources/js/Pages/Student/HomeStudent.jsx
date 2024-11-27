@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import useFetchScholarships from '../../hooks/useFetchScholarships';
+import { useNavigate } from 'react-router-dom';
+
 import Sidebar from './Sidebar';
+
+import useFetchScholarships from '../../hooks/useFetchScholarships';
 import { filterScholarships as applyFilter } from '../../hooks/usefilterScholarships';
 
 function HomeStudent() {
@@ -22,7 +24,7 @@ function HomeStudent() {
     const handleFilter = (selectedCourses) => {
         const filtered = applyFilter(scholarships, selectedCourses);
         setFilteredScholarships(filtered);
-        setCurrentPage(1); // Reset to first page after filtering
+        setCurrentPage(1);
     };
 
     // Pagination logic

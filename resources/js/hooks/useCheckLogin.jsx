@@ -17,6 +17,5 @@ export function useCheckLogin() {
                 navigate('/admin');
             }
         }
-        
     });
 }

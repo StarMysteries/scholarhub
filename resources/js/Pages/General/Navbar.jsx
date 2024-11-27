@@ -4,6 +4,7 @@ import { FaBars } from 'react-icons/fa'; // Import the hamburger icon
 
 // Import Hooks
 import useNavbarFunctions from "../../hooks/useNavbarFunctions";
+
 // Import Icons
 import Logo from '../../../img/logo.png';
 
@@ -21,7 +22,7 @@ function Navbar({ onToggleSidebar }) {
             <div className="container mx-auto flex justify-between items-center">
                 
                 {/* Hamburger Icon Section */}
-                <div className="flex items-center space-x-6 sm:space-x-4"> {/* Increased space on larger screens */}
+                <div className="flex items-center space-x-6 sm:space-x-4">
                     {!isLoginPage && !isAboutPage && !isAdminPage &&(
                         <div className="cursor-pointer" onClick={onToggleSidebar} aria-label="Toggle Sidebar">
                             <FaBars className="text-white text-2xl" />
@@ -30,19 +31,29 @@ function Navbar({ onToggleSidebar }) {
 
                     {/* Logo Section */}
                     <div className="text-2xl font-bold transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                        <Link to="/">
-                            <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
-                        </Link>
+                        {userRole == 'Admin' ? (
+                            <Link to="/admin">
+                                <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
+                            </Link>
+                        ):(
+                            <Link to="/">
+                                <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
+                            </Link>
+                        )}
                     </div>
                 </div>
 
                 {/* Navigation Links and User Info */}
-                <div className="hidden md:flex items-center space-x-6 lg:space-x-8"> {/* More space on larger screens */}
-                    <Link to="/" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Home</Link>
-                    <Link to="/about" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">About</Link>
+                <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    {userRole != "Admin" &&(
+                        <>
+                            <Link to="/" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Home</Link>
+                            <Link to="/about" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">About</Link>
+                        </>
+                    )}
                     
                     {/* Vertical Divider */}
-                    <div className="border-l border-green-700 h-6 mx-4"></div> {/* Adjusted spacing for consistency */}
+                    <div className="border-l border-green-700 h-6 mx-4"></div>
 
                     {/* User Info */}
                     {userName && (
