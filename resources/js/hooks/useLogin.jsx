@@ -19,7 +19,7 @@ function useLogin(){
             });
 
             if (response.status === 200) {
-                const {user_role, provider_name, student_fname, student_lname} = response.data;
+                const {user_role, provider_name, student_fname, student_lname, admin_name} = response.data;
 
                 // Store user data in local storage
                 localStorage.setItem('user_role', user_role);
@@ -28,11 +28,13 @@ function useLogin(){
                 }else if(user_role === 'Student' && student_fname && student_lname){
                     localStorage.setItem('student_fname', student_fname);
                     localStorage.setItem('student_lname', student_lname);
+                }else if(user_role === 'Admin' && admin_name){
+                    localStorage.setItem('admin_name', admin_name);
                 }
 
                 // Navigate user to page depending on role
                 if(user_role === 'Admin'){
-                    navigate('/');
+                    navigate('/admin');
                 }else if(user_role === 'Provider'){
                     navigate('/donor');
                 }else if(user_role === 'Student'){

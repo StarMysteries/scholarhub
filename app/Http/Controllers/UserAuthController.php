@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Provider;
 use App\Models\Student;
+use App\Models\Admin;
 
 class UserAuthController extends Controller
 {
@@ -45,6 +46,11 @@ class UserAuthController extends Controller
                 if ($student) {
                     $responseData['student_fname'] = $student->student_fname;
                     $responseData['student_lname'] = $student->student_lname;
+                }
+            } elseif ($user->user_role === 'Admin') {
+                $admin = Admin::where('user_id', $user->user_id)->first();
+                if ($admin) {
+                    $responseData['admin_name'] = $admin->admin_name;
                 }
             }
 

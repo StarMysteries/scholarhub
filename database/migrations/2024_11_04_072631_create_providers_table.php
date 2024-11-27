@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('provider_name');
             $table->string('provider_contact');
             $table->enum('provider_status', ['Approved', 'Dissapproved']);
-            $table->string('provider_picPath');
+            $table->string('provider_picPath')->nullable();
             $table->timestamps();
         });
     }

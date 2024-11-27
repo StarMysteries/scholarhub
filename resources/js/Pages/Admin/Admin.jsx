@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-import { FaGraduationCap } from 'react-icons/fa';
 import { useAuth } from "../../hooks/useAuth";
 
 function Admin(){

@@ -4,12 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DonorScholarshipController;
 use App\Http\Controllers\ScholarshipController;
+use App\Http\Controllers\SignUpStudentController;
 use App\Http\Controllers\UserAuthController;
 
 // About Page
 Route::get('/about', function () {
     return view('App');
 });
+
+
 
 
 
@@ -33,6 +36,8 @@ Route::get('/scholarships', [ScholarshipController::class, 'index']);
 
 
 
+
+
 // Scholarship Provider Pages
 Route::get('/donor', function () {
     return view('App');
@@ -49,10 +54,16 @@ Route::get('/accepted_status', function () {
 Route::get('/view_more', function () {
     return view('App');
 });
-
-
+Route::get('/form', function () {
+    return view('App');
+});
 // Provider/Donor API
 Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
+
+
+
+
+
 
 // Login Page
 Route::get('/login', function () {
@@ -66,6 +77,7 @@ Route::get('/signup', function () {
 Route::get('/signup_student', function () {
     return view('App');
 });
+Route::post('/register_student', [SignUpStudentController::class, 'registerStudent']);
 
 Route::get('/signup_provider', function () {
     return view('App');

@@ -9,11 +9,13 @@ import LoadingSpinner from './Pages/General/LoadingSpinner';
 import DefaultLayout from './Layouts/DefaultLayout';
 import HomeStudentLayout from './Layouts/HomeStudentLayout';
 import HomeDonorLayout from './Layouts/HomeDonorLayout';
+import AdminLayout from './Layouts/AdminLayout';
 
 // Lazy-loading
 const About = lazy(() => import('./Pages/General/About'));
 
 const Admin = lazy(() => import('./Pages/Admin/Admin'));
+const Form = lazy(() => import('./Pages/Provider/ScholarshipForm'));
 
 const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
 const MoreInfo = lazy(() => import('./Pages/Student/MoreInfo'));
@@ -50,8 +52,6 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot_password" element={<ForgotPassword />} />
-
-            <Route path="/admin" element={<Admin />} />
           </Route>
 
           {/* Routes using HomeDonorLayout */}
@@ -62,6 +62,13 @@ function App() {
             <Route path="/accepted_status" element={<AcceptedStatus />} />
             <Route path="/declined_status" element={<DeclinedStatus />} />
           </Route>
+
+          {/* Routes using AdminLayout */}
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
+
+          <Route path="/form" element={<Form />} />
 
           {/* Unauthorized route */}
           <Route path="/unauthorized" element={<Unauthorized />} />

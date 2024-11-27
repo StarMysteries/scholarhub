@@ -17,6 +17,7 @@ class ScholarshipsTableSeeder extends Seeder
             [
                 'provider_id' => 1,
                 'scholarship_name' => 'DCISM Scholarship',
+                'scholarship_desc' => '',
                 'scholarship_status' => 'Active',
                 'scholarship_deadline' => '2024-11-28 17:00:00',
                 'created_at' => now(),
@@ -25,6 +26,7 @@ class ScholarshipsTableSeeder extends Seeder
             [
                 'provider_id' => 1,
                 'scholarship_name' => 'Engineering Scholarship',
+                'scholarship_desc' => '',
                 'scholarship_status' => 'Inactive',
                 'scholarship_deadline' => '2024-11-28 17:00:00',
                 'created_at' => now(),

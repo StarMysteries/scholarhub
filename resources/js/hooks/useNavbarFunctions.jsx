@@ -18,6 +18,9 @@ function useNavbarFunctions() {
         } else if (role === 'Provider') {
             const providerName = localStorage.getItem('provider_name');
             setUserName(providerName);
+        } else if (role === 'Admin') {
+            const adminName = localStorage.getItem('admin_name');
+            setUserName(adminName);
         }
     }, []);
 
