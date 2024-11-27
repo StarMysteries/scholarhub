@@ -1,5 +1,24 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 6 Changes**
+1. Modified multiple pages
+2. Edited scholarship application table rejection_details field.
+3. Fixed pagination for HomeStudent
+4. Pulled artificial legendary Iron-Moth
+
+<br/>
+
+**Commit 5 Changes**
+1. Updated Homestudentlayout.jsx(Cards simplified)
+2. Updated sidebar and navbar
+3. Added MoreInfo.jsx
+4. Added forget password.jsx
+5. Updated login and accepted,viewmore,declined in provider to use<Link/>Pagination
+6. Added admin page 
+7. Added scholarship form page
+
+<br/>
+
 **Commit 4 Changes**
 1. Updated HomeDonor page to dynamically display scholarships based on provider.
 2. Modified create_applications_table column Status to add "Pending".

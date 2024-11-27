@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('student_lname');
             $table->string('student_address');
             $table->string('student_contact');
-            $table->string('student_picPath');
+            $table->string('student_picPath')->nullable();
             $table->timestamps();
         });
     }

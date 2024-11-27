@@ -14,7 +14,7 @@ export function useCheckLogin() {
             } else if (userRole === 'Student') {
                 navigate('/');
             } else if (userRole === 'Admin') {
-                navigate('/');
+                navigate('/admin');
             }
         }
         
