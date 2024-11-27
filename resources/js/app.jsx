@@ -34,8 +34,6 @@ const ViewMore = lazy(() => import('./Pages/Provider/ViewMore'));
 const AcceptedStatus = lazy(() => import('./Pages/Provider/AcceptedStatus'));
 const DeclinedStatus = lazy(() => import('./Pages/Provider/DeclinedStatus'));
 
-const Admin = lazy(() => import('./Pages/Admin/Admin'));
-
 function App() {
   return (
     <Router>

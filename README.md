@@ -1,5 +1,13 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 6 Changes**
+1. Modified multiple pages
+2. Edited scholarship application table rejection_details field.
+3. Fixed pagination for HomeStudent
+4. Pulled artificial legendary Iron-Moth
+
+<br/>
+
 **Commit 5 Changes**
 1. Updated Homestudentlayout.jsx(Cards simplified)
 2. Updated sidebar and navbar
