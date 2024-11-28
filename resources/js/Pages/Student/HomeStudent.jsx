@@ -5,17 +5,15 @@ import Sidebar from './Sidebar';
 
 import useFetchScholarships from '../../hooks/useFetchScholarships';
 import { filterScholarships as applyFilter } from '../../hooks/filterScholarships';
-import { useCheckLogin } from '../../hooks/useCheckLogin';
 
 function HomeStudent() {
-    useCheckLogin();
     // Fetch scholarships
     const { scholarships } = useFetchScholarships();
-
-    // State for filtered scholarships and pagination
     const [filteredScholarships, setFilteredScholarships] = useState([]);
+    
     const [currentPage, setCurrentPage] = useState(1);
     const scholarshipsPerPage = 6; // Number of scholarships to display per page
+    const [currentGroup, setCurrentGroup] = useState(1); // Current page group
 
     // Default: Show all scholarships
     useEffect(() => {
@@ -27,11 +25,22 @@ function HomeStudent() {
         const filtered = applyFilter(scholarships, selectedCourses);
         setFilteredScholarships(filtered);
         setCurrentPage(1);
+        setCurrentGroup(1); // Reset to the first group when applying a filter
     };
 
     // Pagination logic
     const totalScholarships = filteredScholarships.length;
     const totalPages = Math.ceil(totalScholarships / scholarshipsPerPage);
+
+    // Calculate the page numbers to display (e.g., 1-5, 6-10, etc.)
+    const pagesPerGroup = 5;
+    const startPage = (currentGroup - 1) * pagesPerGroup + 1;
+    const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
+
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+    }
 
     // Get the scholarships for the current page
     const indexOfLastScholarship = currentPage * scholarshipsPerPage;
@@ -51,13 +60,13 @@ function HomeStudent() {
         setCurrentPage(pageNumber);
     };
 
-    // Handle previous/next page
-    const handlePreviousPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    // Handle previous/next group
+    const handlePreviousGroup = () => {
+        if (currentGroup > 1) setCurrentGroup(currentGroup - 1);
     };
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    const handleNextGroup = () => {
+        if (currentGroup * pagesPerGroup < totalPages) setCurrentGroup(currentGroup + 1);
     };
 
     return (
@@ -115,41 +124,40 @@ function HomeStudent() {
                 </div>
 
                 {/* Pagination controls - More space below */}
-                    <div className="bottom-20 w-full flex justify-center py-4 space-x-4 mb-8">
-                        {/* Prev button */}
-                        <button
-                            onClick={handlePreviousPage}
-                            disabled={currentPage === 1}
-                            aria-label="Previous page"
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-all duration-200 focus:outline-none"
-                        >
-                            Prev
-                        </button>
+                <div className="bottom-20 w-full flex justify-center py-4 space-x-4 mb-8">
+                    {/* Prev button */}
+                    <button
+                        onClick={handlePreviousGroup}
+                        disabled={currentGroup === 1}
+                        aria-label="Previous group"
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-all duration-200 focus:outline-none"
+                    >
+                        Prev
+                    </button>
 
-                        {/* Page numbers - Dynamically generated */}
-                        {[...Array(totalPages).keys()].map((pageNumber) => (
-                            <button
-                                key={pageNumber + 1}
-                                onClick={() => handlePageChange(pageNumber + 1)}
-                                aria-label={`Go to page ${pageNumber + 1}`}
-                                className={`px-4 py-2 ${currentPage === pageNumber + 1 ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} border border-blue-600 rounded-lg hover:bg-blue-100 transition-all duration-200 focus:outline-none`}
-                            >
-                                {pageNumber + 1}
-                            </button>
-                        ))}
-
-                        {/* Next button */}
+                    {/* Page numbers - Dynamically generated */}
+                    {pageNumbers.map((pageNumber) => (
                         <button
-                            onClick={handleNextPage}
-                            disabled={currentPage === totalPages}
-                            aria-label="Next page"
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-all duration-200 focus:outline-none"
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            aria-label={`Go to page ${pageNumber}`}
+                            className={`px-4 py-2 ${currentPage === pageNumber ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} border border-blue-600 rounded-lg hover:bg-blue-100 transition-all duration-200 focus:outline-none`}
                         >
-                            Next
+                            {pageNumber}
                         </button>
-                    </div>
+                    ))}
+
+                    {/* Next button */}
+                    <button
+                        onClick={handleNextGroup}
+                        disabled={currentGroup * pagesPerGroup >= totalPages}
+                        aria-label="Next group"
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-all duration-200 focus:outline-none"
+                    >
+                        Next
+                    </button>
                 </div>
-            <div/>
+            </div>
         </>
     );
 }
