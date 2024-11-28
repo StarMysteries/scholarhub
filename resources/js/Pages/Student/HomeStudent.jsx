@@ -5,8 +5,10 @@ import Sidebar from './Sidebar';
 
 import useFetchScholarships from '../../hooks/useFetchScholarships';
 import { filterScholarships as applyFilter } from '../../hooks/filterScholarships';
+import { useCheckLogin } from '../../hooks/useCheckLogin';
 
 function HomeStudent() {
+    useCheckLogin();
     // Fetch scholarships
     const { scholarships } = useFetchScholarships();
 

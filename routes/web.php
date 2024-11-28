@@ -7,6 +7,7 @@ use App\Http\Controllers\ScholarshipController;
 use App\Http\Controllers\SignUpStudentController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\ProviderController;
 
 // About Page
 Route::get('/about', function () {
@@ -70,6 +71,7 @@ Route::get('/application_status/{scholarshipId}', function () {
 // Provider/Donor API
 Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
 Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'getApplicantsByScholarship']);
+Route::get('/provider/{user_id}', [ProviderController::class, 'getProviderByUserId']);
 
 
 
@@ -80,25 +82,19 @@ Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'ge
 Route::get('/login', function () {
     return view('App');
 });
-
 Route::get('/signup', function () {
     return view('App');
 });
-
 Route::get('/signup_student', function () {
     return view('App');
 });
 Route::post('/register_student', [SignUpStudentController::class, 'registerStudent']);
-
 Route::get('/signup_provider', function () {
     return view('App');
 });
-
-
 Route::get('/forgot_password', function () {
     return view('App');
 });
-
 // Login & Logout API
 Route::post('/login', [UserAuthController::class, 'login']);
 Route::post('/logout', [UserAuthController::class, 'logout']);

@@ -7,15 +7,15 @@ export function useCheckLogin() {
     useEffect(() => {
         const userRole = localStorage.getItem('user_role');
 
-        if(userRole){
-            // Redirect if the user is already logged in
+        if (userRole) {
+            // Redirect based on user role
             if (userRole === 'Provider') {
-                navigate('/donor');
+                navigate('/donor', { replace: true });
             } else if (userRole === 'Student') {
-                navigate('/');
+                navigate('/', { replace: true });
             } else if (userRole === 'Admin') {
-                navigate('/admin');
+                navigate('/admin', { replace: true });
             }
         }
-    });
+    }, [navigate]);
 }

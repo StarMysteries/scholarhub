@@ -32,16 +32,12 @@ class UserAuthController extends Controller
             // Prepare response data
             $responseData = [
                 'message' => 'Login successful',
+                'user_id' => $user->user_id,
                 'user_role' => $user->user_role,
             ];
 
             // Add role-specific information
-            if ($user->user_role === 'Provider') {
-                $provider = Provider::where('user_id', $user->user_id)->first();
-                if ($provider) {
-                    $responseData['provider_name'] = $provider->provider_name;
-                }
-            } elseif ($user->user_role === 'Student') {
+            if ($user->user_role === 'Student') {
                 $student = Student::where('user_id', $user->user_id)->first();
                 if ($student) {
                     $responseData['student_fname'] = $student->student_fname;

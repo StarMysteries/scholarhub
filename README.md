@@ -1,5 +1,16 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 9 Changes**
+1. Updated NavbarDonor username to function better dynamically(not using localStorage).
+2. Updated useNavbarFunctions hook to fetch providerData(frontend side).
+3. Made ProviderProfileModal display dynamic data based from fetched providerData.
+4. Improved useCheckLogin hook.
+5. Added useCheckLogin hook to HomeStudent to prevent other roles from accessing the page.
+6. Updated Provider.php to handle relationship with Users.
+7. Added ProviderController to handle provider data fetching(backend side).
+
+<br/>
+
 **Commit 8 Changes**
 1. Made applicant count in HomeDonor functional
 2. Added go back button in Unauthorized page

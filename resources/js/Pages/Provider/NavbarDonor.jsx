@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-// Import Hooks
 import useNavbarFunctions from "../../hooks/useNavbarFunctions";
-
-// Import Modal
 import ProviderProfileModal from "./ProviderProfileModal";
-
-// Import Icons
 import Logo from "../../../img/logo.png";
 
 function NavbarDonor() {
-    const { userName, handleLogout } = useNavbarFunctions();
+    const { userName, providerData, handleLogout } = useNavbarFunctions();
 
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [donor, setDonor] = useState({
         picture: "https://via.placeholder.com/150",
-        name: "John Doe",
-        contact: "(123) 456-7890",
-        email: "johndoe@example.com",
+        name: "Loading...",
+        contact: "Loading...",
+        email: "Loading...",
     });
+
+    // Update donor state when providerData changes
+    useEffect(() => {
+        if (providerData) {
+            setDonor({
+                picture: providerData.provider_picPath || "https://via.placeholder.com/150",
+                name: providerData.provider_name || "Loading...",
+                contact: providerData.provider_contact || "Loading...",
+                email: providerData.user_email || "Loading...",
+            });
+        }
+    }, [providerData]);
 
     const handleSaveProfile = () => {
         setIsEditing(false);
@@ -32,7 +38,6 @@ function NavbarDonor() {
 
     return (
         <>
-            {/* Navbar */}
             <nav className="bg-green-900 text-white p-4 fixed top-0 left-0 w-full z-10">
                 <div className="container mx-auto flex justify-between items-center">
                     <div className="text-2xl font-bold transform hover:scale-105 transition-transform duration-300 ease-in-out">
@@ -47,7 +52,6 @@ function NavbarDonor() {
                         >
                             Scholarships
                         </Link>
-
                         <div className="border-l border-green-700 h-6 mx-2"></div>
                         {userName && (
                             <span
@@ -67,8 +71,7 @@ function NavbarDonor() {
                 </div>
             </nav>
 
-            {/* Profile Modal */}
-            {showProfileModal && (
+            {showProfileModal && providerData && (
                 <ProviderProfileModal
                     donor={donor}
                     setDonor={setDonor}
