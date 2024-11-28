@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 import useFetchScholarships from '../../hooks/useFetchScholarships';
-import { filterScholarships as applyFilter } from '../../hooks/usefilterScholarships';
+import { filterScholarships as applyFilter } from '../../hooks/filterScholarships';
 
 function HomeStudent() {
     // Fetch scholarships
@@ -62,6 +62,7 @@ function HomeStudent() {
         <>
             {/* Sidebar filter functionality */}
             <Sidebar filterScholarships={handleFilter} />
+
             <div className='flex flex-col min-h-full'>
                 <div className='flex-grow'>
                     <div className="mt-5 px-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
@@ -146,7 +147,7 @@ function HomeStudent() {
                         </button>
                     </div>
                 </div>
-
+            <div/>
         </>
     );
 }

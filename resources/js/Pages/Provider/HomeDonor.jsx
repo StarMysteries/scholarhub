@@ -58,7 +58,7 @@ const HomeDonor = () => {
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-semibold">Scholarships Offered</h1>
                     <button
-                        onClick={() => setShowModal(true)} // Open the modal
+                        onClick={() => setShowModal(true)}
                         className="bg-green-700 text-white py-2 px-4 rounded-md hover:bg-green-600"
                     >
                         Add Scholarship
@@ -96,7 +96,7 @@ const HomeDonor = () => {
                                 >
                                     <span>{scholarship.scholarship_status}</span>
                                     <span className="text-sm text-white-100">
-                                        {scholarship.applicantCount || 0} Applicants
+                                        {scholarship.applications_count} Applicants
                                     </span>
                                 </div>
                                 <div className="mt-4">

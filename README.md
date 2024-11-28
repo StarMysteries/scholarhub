@@ -1,5 +1,16 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 8 Changes**
+1. Made applicant count in HomeDonor functional
+2. Added go back button in Unauthorized page
+3. Added Applied Scholarships navigation in Navbar
+4. Updated Seeders with more scholarships data to display
+5. Filter for scholarships broke
+6. Made HomeDonor scholarships dynamic + applicant count
+7. Made ApplicantStatus dynamic
+
+<br/>
+
 **Commit 7 Changes**
 1. Made ApplicantStatus functional
 2. Added ProviderProfileModal

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const useSignUpStudent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const signUp = async (formData) => {
         try {
@@ -30,6 +33,7 @@ const useSignUpStudent = () => {
             );
 
             setIsLoading(false);
+            navigate("/login");
             return response.data;
         } catch (err) {
             setIsLoading(false);

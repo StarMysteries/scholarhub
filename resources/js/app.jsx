@@ -47,7 +47,6 @@ function App() {
             <Route path="/" element={<HomeStudent />} />
             <Route path="/more_info" element={<MoreInfo />} />
             <Route path="/scholarship_form" element={<ScholarshipForm />} />
-                <Route path="/applied_scholarships" element={<AppliedScholarshipPage />} />
           </Route>
 
           {/* Routes using DefaultLayout */}
@@ -58,6 +57,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot_password" element={<ForgotPassword />} />
+            <Route path="/applied_scholarships" element={<AppliedScholarshipPage />} />
           </Route>
 
           {/* Routes using HomeDonorLayout */}

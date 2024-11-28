@@ -40,7 +40,6 @@ Route::get('/applied_scholarships', function () {
     return view('App');
 });
 
-
 // Course and Scholarships API
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/scholarships', [ScholarshipController::class, 'index']);

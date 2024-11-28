@@ -20,9 +20,10 @@ class DonorScholarshipController extends Controller
             return response()->json(['message' => 'No provider found for this user'], 404);
         }
 
-        // Fetch scholarships associated with the provider
+        // Fetch scholarships associated with the provider and count applicants
         $scholarships = Scholarship::where('provider_id', $provider->provider_id)
-            ->with('courses')
+            ->with('courses') // Load associated courses
+            ->withCount('applications') // Count the related applications
             ->get();
 
         return response()->json($scholarships);
