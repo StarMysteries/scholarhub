@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { HiArrowLeft } from "react-icons/hi"; // Assuming you're using react-icons
 import { useNavigate, Link } from "react-router-dom"; // Import Link from react-router-dom
+import { useAuth } from "../../hooks/useAuth";
 
 const scholarships = [
   {
@@ -24,6 +25,7 @@ const scholarships = [
 ];
 
 const AppliedScholarshipPage = () => {
+  useAuth("Student");
   const [filter, setFilter] = useState("All");
   const navigate = useNavigate(); // Initialize the navigate function
 

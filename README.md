@@ -8,6 +8,15 @@
 5. Added useCheckLogin hook to HomeStudent to prevent other roles from accessing the page.
 6. Updated Provider.php to handle relationship with Users.
 7. Added ProviderController to handle provider data fetching(backend side).
+8. add filter for active/inactive(HomeDonor)
+9. added dropdown instead of another page(Applicant_status)
+10. addedbackbutton for(Applicant_Status)
+11. cleaned pagination for Homepage
+12. added pagination(HomeDonor)
+13. added pagination(Applicant_status)
+14. Re-added useAuth hooks for HomeDonor, Admin Page, Applied Scholarships page, View More Page.
+15. Added useCheckLogin in HomeStudent.
+16. Added a Return button for Unauthorized Page.
 
 <br/>
 

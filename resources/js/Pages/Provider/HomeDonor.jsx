@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 // Hooks Import
 import useDonorScholarships from '../../hooks/useDonorScholarships';
 import AddScholarshipModal from './AddScholarshipModal';
+import { useAuth } from '../../hooks/useAuth';
 
 const HomeDonor = () => {
+    useAuth("Provider");
     const { scholarships, error } = useDonorScholarships();
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
