@@ -8,6 +8,7 @@ use App\Http\Controllers\SignUpStudentController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\SignUpProviderController;
 
 // About Page
 Route::get('/about', function () {
@@ -89,9 +90,13 @@ Route::get('/signup_student', function () {
     return view('App');
 });
 Route::post('/register_student', [SignUpStudentController::class, 'registerStudent']);
+
+
 Route::get('/signup_provider', function () {
     return view('App');
 });
+Route::post('/register_provider', [SignUpProviderController::class, 'registerProvider']);
+
 Route::get('/forgot_password', function () {
     return view('App');
 });
