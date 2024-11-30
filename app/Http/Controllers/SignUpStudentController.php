@@ -12,18 +12,14 @@ class SignUpStudentController extends Controller
 {
     public function registerStudent(Request $request)
     {
-
-          
         $validator = Validator::make($request->all(), [
             'user_email' => 'required|email|unique:users',
             'user_password' => 'required|min:8',
-
             'student_fname' => 'required|string|max:255',
             'student_lname' => 'required|string|max:255',
             'student_address' => 'required|string|max:255',
             'student_contact' => 'required|string|max:11',
             'course_id' => 'required|exists:scholarship_courses,course_id|string',
-            'student_picPath' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -36,21 +32,12 @@ class SignUpStudentController extends Controller
         try {
             $hashedPassword = Hash::make($request->user_password);
 
-
-            // Create User
             $user = User::create([
                 'user_email' => $request->user_email,
                 'user_password' => $hashedPassword,
-                'user_role' => 'Student', // Assign the Student role
+                'user_role' => 'Student',
             ]);
 
-            // Handle the file upload if provided
-            $filePath = null;
-            if ($request->hasFile('student_picPath')) {
-                $filePath = $request->file('student_picPath')->store('students', 'public');
-            }
-
-            // Create Student
             Student::create([
                 'user_id' => $user->user_id,
                 'course_id' => $request->course_id,
@@ -58,7 +45,6 @@ class SignUpStudentController extends Controller
                 'student_lname' => $request->student_lname,
                 'student_address' => $request->student_address,
                 'student_contact' => $request->student_contact,
-                'student_picPath' => $filePath,
             ]);
 
             return response()->json([
@@ -71,4 +57,5 @@ class SignUpStudentController extends Controller
             ], 500);
         }
     }
+
 }
