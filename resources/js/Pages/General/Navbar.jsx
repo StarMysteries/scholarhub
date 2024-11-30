@@ -43,17 +43,15 @@ function Navbar({ onToggleSidebar }) {
     };
 
     const location = useLocation();
-    const isLoginPage = location.pathname === "/login";
-    const isAboutPage = location.pathname === "/about";
-    const isAdminPage = location.pathname === "/admin";
-    const isAppliedScholarshipPage = location.pathname === "/applied_scholarships";
+    const isHomePage = location.pathname === "/";
+
 
     return (
         <nav className="bg-green-900 text-white p-4 fixed top-0 left-0 w-full z-10 shadow-lg">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Hamburger Icon Section */}
                 <div className="flex items-center space-x-6 sm:space-x-4">
-                    {!isLoginPage && !isAboutPage && !isAdminPage && !isAppliedScholarshipPage && (
+                    {isHomePage &&(
                         <div className="cursor-pointer" onClick={onToggleSidebar} aria-label="Toggle Sidebar">
                             <FaBars className="text-white text-2xl" />
                         </div>
