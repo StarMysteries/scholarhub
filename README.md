@@ -4,6 +4,11 @@
 1. Fixed Sidebar.
 2. Updated HomeStudentLayout.
 3. Separated HomeStudent javacript from HomeStudent.
+4. Updated Courses Table Seeder.
+5. Fixed Signup Student (Removed Profile Picture, Added dynamic Courses).
+6. Updated Provider's Database.
+
+<br/>
 
 **Commit 9 Changes**
 1. Updated NavbarDonor username to function better dynamically(not using localStorage).

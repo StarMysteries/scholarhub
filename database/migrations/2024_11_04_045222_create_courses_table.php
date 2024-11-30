@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->string('course_id')->primary();  // Primary key for the courses table
             $table->string('course_name');
+            $table->foreignId('category_id')->constrained('courses_category', 'category_id')->onDelete('cascade');
             $table->string('course_description')->nullable();
             $table->timestamps();
         });
