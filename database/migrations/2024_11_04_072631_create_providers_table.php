@@ -16,8 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
             $table->string('provider_name');
             $table->string('provider_contact');
-            $table->enum('provider_status', ['Approved', 'Dissapproved']);
+            $table->enum('provider_status', ['Approved', 'Denied']);
             $table->string('provider_picPath')->nullable();
+            $table->string('provider_certification')->nullable();
             $table->timestamps();
         });
     }
