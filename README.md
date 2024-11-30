@@ -1,5 +1,10 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 10 Changes**
+1. Fixed Sidebar.
+2. Updated HomeStudentLayout.
+3. Separated HomeStudent javacript from HomeStudent.
+
 **Commit 9 Changes**
 1. Updated NavbarDonor username to function better dynamically(not using localStorage).
 2. Updated useNavbarFunctions hook to fetch providerData(frontend side).

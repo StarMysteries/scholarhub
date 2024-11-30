@@ -1,24 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import Sidebar from './Sidebar';
-import { useScholarshipManagement } from '../../hooks/useHomeStudent';
+
+import useFetchScholarships from '../../hooks/useFetchScholarships';
+import { useFilterScholarships as applyFilter } from '../../hooks/useFilterScholarships';
+import { useCheckLogin } from '../../hooks/useCheckLogin';
 
 function HomeStudent() {
-    const navigate = useNavigate();
-    const {
-        scholarships,
-        pageNumbers,
-        currentPage,
-        handleFilter,
-        handlePageChange,
-        handlePreviousGroup,
-        handleNextGroup,
-        currentGroup,
-        totalPages,
-    } = useScholarshipManagement();
+    useCheckLogin();
+    // Fetch scholarships
+    const { scholarships } = useFetchScholarships();
+    const [filteredScholarships, setFilteredScholarships] = useState([]);
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const scholarshipsPerPage = 6; // Number of scholarships to display per page
+    const [currentGroup, setCurrentGroup] = useState(1); // Current page group
 
+    // Default: Show all scholarships
+    useEffect(() => {
+        setFilteredScholarships(scholarships);
+    }, [scholarships]);
+
+    // Filter scholarships
+    const handleFilter = (selectedCourses) => {
+        const filtered = applyFilter(scholarships, selectedCourses);
+        setFilteredScholarships(filtered);
+        setCurrentPage(1);
+        setCurrentGroup(1); // Reset to the first group when applying a filter
+    };
+
+    // Pagination logic
+    const totalScholarships = filteredScholarships.length;
+    const totalPages = Math.ceil(totalScholarships / scholarshipsPerPage);
+
+    // Calculate the page numbers to display (e.g., 1-5, 6-10, etc.)
+    const pagesPerGroup = 5;
+    const startPage = (currentGroup - 1) * pagesPerGroup + 1;
+    const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
+
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+    }
+
+    // Get the scholarships for the current page
+    const indexOfLastScholarship = currentPage * scholarshipsPerPage;
+    const indexOfFirstScholarship = indexOfLastScholarship - scholarshipsPerPage;
+    const currentScholarships = filteredScholarships.slice(indexOfFirstScholarship, indexOfLastScholarship);
+
+    // Initialize useNavigate hook
+    const navigate = useNavigate();
+
+    // Navigate to MoreInfo when a scholarship card is clicked
     const handleCardClick = (scholarshipId) => {
         navigate(`/more_info`);
+    };
+
+    // Handle page navigation
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    // Handle previous/next group
+    const handlePreviousGroup = () => {
+        if (currentGroup > 1) setCurrentGroup(currentGroup - 1);
+    };
+
+    const handleNextGroup = () => {
+        if (currentGroup * pagesPerGroup < totalPages) setCurrentGroup(currentGroup + 1);
     };
 
     return (
@@ -29,7 +79,7 @@ function HomeStudent() {
             <div className='flex flex-col min-h-full'>
                 <div className='flex-grow'>
                     <div className="mt-5 px-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                        {scholarships.map(scholarship => (
+                        {currentScholarships.map(scholarship => (
                             <div
                                 key={scholarship.scholarship_id}
                                 className="bg-white shadow-xl hover:shadow-2xl rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:translate-y-1"
@@ -102,7 +152,7 @@ function HomeStudent() {
                     {/* Next button */}
                     <button
                         onClick={handleNextGroup}
-                        disabled={currentGroup * 5 >= totalPages}
+                        disabled={currentGroup * pagesPerGroup >= totalPages}
                         aria-label="Next group"
                         className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-all duration-200 focus:outline-none"
                     >

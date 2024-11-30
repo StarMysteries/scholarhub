@@ -1,4 +1,3 @@
-// Sidebar.jsx
 import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
@@ -6,11 +5,8 @@ import { FaSearch } from 'react-icons/fa';
 import useFetchCourses from '../../hooks/useFetchCourses';
 import useSearchFilter from '../../hooks/useSearchFilter';
 import { handleCheckboxChange, handleFilterSubmit } from '../../hooks/useSidebarHandler';
-import { useSidebar } from '../../hooks/useSidebarContext';
 
-function Sidebar({ filterScholarships }) {
-    const { isSidebarOpen } = useSidebar();
-
+function Sidebar({ isSidebarOpen, filterScholarships }) {
     // Fetch courses
     const { courses } = useFetchCourses();
 
@@ -22,7 +18,9 @@ function Sidebar({ filterScholarships }) {
 
     return (
         <div 
-            className={`w-72 h-[calc(100vh-4rem)] bg-green-600 dark:bg-green-800 text-white fixed top-16 left-0 overflow-y-auto transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+            className={`w-72 h-[calc(100vh-4rem)] bg-green-600 dark:bg-green-800 text-white fixed top-16 left-0 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+                isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
         >
             <div className="p-4">
                 <h1 className="text-xl font-bold px-2 mt-2">Filter Courses</h1>

@@ -1,4 +1,4 @@
-export const filterScholarships = (scholarships, selectedCourses) => {
+export const useFilterScholarships = (scholarships, selectedCourses) => {
     if (selectedCourses.length === 0) {
         return scholarships; // Return all scholarships if no course is selected
     }
