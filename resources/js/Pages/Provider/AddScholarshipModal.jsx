@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onChange }) => {
     if (!isOpen) return null;
@@ -21,12 +23,13 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                     </div>
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Description</label>
-                        <textarea
-                            name="description"
+                        <ReactQuill
+                            theme="snow"
                             value={scholarshipData.description}
-                            onChange={onChange}
-                            required
-                            className="w-full py-2 px-3 border border-gray-300 rounded-md"
+                            onChange={(value) =>
+                                onChange({ target: { name: "description", value } })
+                            }
+                            className="rounded-md border border-gray-300"
                         />
                     </div>
                     <div className="mb-4">

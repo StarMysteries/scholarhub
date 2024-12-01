@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { HiArrowLeft } from "react-icons/hi"; // Assuming you're using react-icons
-import { useNavigate, Link } from "react-router-dom"; // Import Link from react-router-dom
 import { useAuth } from "../../hooks/useAuth";
+import ApplicationDetailsModal from "./ApplicationDetailsModal"; // Import the modal component
 
 const scholarships = [
   {
@@ -9,124 +8,142 @@ const scholarships = [
     name: "Scholarship Name",
     company: "Scholarship Company",
     status: "Pending",
+    courses: [
+      { course_id: "CS101" },
+      { course_id: "CS102" },
+    ],
   },
   {
     id: 2,
     name: "Scholarship Name",
     company: "Scholarship Company",
     status: "Accepted",
+    courses: [
+      { course_id: "CS103" },
+      { course_id: "CS104" },
+    ],
   },
   {
     id: 3,
     name: "Scholarship Name",
     company: "Scholarship Company",
     status: "Declined",
+    courses: [
+      { course_id: "CS105" },
+      { course_id: "CS106" },
+    ],
   },
 ];
 
 const AppliedScholarshipPage = () => {
   useAuth("Student");
   const [filter, setFilter] = useState("All");
-  const navigate = useNavigate(); // Initialize the navigate function
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
-  // Define the handleBackClick function
-  const handleBackClick = () => {
-    navigate("/"); // Navigate to the root ("/") when back is clicked
-  };
-
-  // Filter scholarships based on the selected filter
   const filteredScholarships =
     filter === "All"
       ? scholarships
       : scholarships.filter((scholarship) => scholarship.status === filter);
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Accepted":
+        return "bg-green-500"; // Softer green
+      case "Declined":
+        return "bg-red-500"; // Softer red
+      case "Pending":
+        return "bg-yellow-500"; // Softer yellow
+      default:
+        return "bg-gray-400"; // Softer gray
+    }
+  };
+
+  const openModal = (scholarship) => {
+    setModalData({
+      scholarshipName: scholarship.name,
+      firstName: "John", 
+      lastName: "Doe",   
+      address: "123 Main St, City, Country", 
+      contact: "+123456789",  
+      email: "john.doe@example.com", 
+      course: "Computer Science", 
+      gradeFile: "placeholder-file.pdf", 
+    });
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setModalData(null);
+  };
+
   return (
-    <div className="min-h-screen p-6"> {/* Removed bg-gray-100 */}
-      {/* Back Button */}
-      <button
-        onClick={handleBackClick} // Trigger handleBackClick function when clicked
-        className="flex items-center space-x-2 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
-      >
-        <HiArrowLeft className="w-5 h-5" /> {/* Left arrow icon */}
-        <span className="text-sm">Back</span>
-      </button>
+    <div className="p-8">
+      <div className="container mx-auto mt-8 p-8 space-y-8">
 
-      {/* Filter Buttons */}
-      <div className="flex justify-center space-x-4 mb-6">
-        <button
-          onClick={() => setFilter("Accepted")}
-          className={`px-4 py-2 rounded-md font-bold ${
-            filter === "Accepted"
-              ? "bg-green-700 text-white"
-              : "bg-green-500 text-white hover:bg-green-600"
-          }`}
-        >
-          ACCEPTED
-        </button>
-        <button
-          onClick={() => setFilter("Declined")}
-          className={`px-4 py-2 rounded-md font-bold ${
-            filter === "Declined"
-              ? "bg-red-700 text-white"
-              : "bg-red-500 text-white hover:bg-red-600"
-          }`}
-        >
-          DECLINED
-        </button>
-        <button
-          onClick={() => setFilter("Pending")}
-          className={`px-4 py-2 rounded-md font-bold ${
-            filter === "Pending"
-              ? "bg-yellow-700 text-white"
-              : "bg-yellow-500 text-white hover:bg-yellow-600"
-          }`}
-        >
-          PENDING
-        </button>
-      </div>
-
-      {/* Scholarship Cards */}
-      <div className="space-y-4">
-        {filteredScholarships.map((scholarship) => (
-          <div
-            key={scholarship.id}
-            className="flex justify-between items-center bg-green-200 p-4 rounded-lg shadow-md border"
+        {/* Filter Dropdown */}
+        <div className="flex justify-end mb-6 mt-4">
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="py-3 px-8 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 w-48 sm:w-56 md:w-64 lg:w-72"
           >
-            <div className="flex items-center">
-              {/* Placeholder Icon */}
-              <div className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
-                <span>👤</span>
+            <option value="All">All</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Declined">Declined</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+
+        {/* Scholarship Cards */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+          {filteredScholarships.map((scholarship) => (
+            <div
+              key={scholarship.id}
+              className="relative bg-white shadow-lg hover:shadow-2xl rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:translate-y-2"
+              onClick={() => openModal(scholarship)} // Open modal on card click
+            >
+              {/* Top section (gradient background based on status) */}
+              <div className={`h-32 w-full ${getStatusColor(scholarship.status)} relative`}>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center shadow-xl">
+                    <span className="text-2xl font-medium text-gray-800">
+                      {scholarship.name.charAt(0)}
+                    </span>
+                  </div>
+                </div>
               </div>
-              {/* Scholarship Details */}
-              <div>
-                <h3 className="text-lg font-bold">{scholarship.name}</h3>
-                <p className="text-sm text-gray-600">{scholarship.company}</p>
-                {/* Use Link to navigate to /more_info */}
-                <Link to="/more_info" className="text-blue-500 hover:underline text-sm">
-                  View more
-                </Link>
+
+              {/* Bottom section (details) */}
+              <div className="p-4 pb-12">
+                <h3 className="text-xl font-medium text-gray-800">
+                  {scholarship.name}
+                </h3>
+                <div className="text-gray-600">
+                  <span className="font-medium">Courses offered:</span>
+                  <div className="inline-flex flex-wrap gap-2 mt-2 ml-2">
+                    {scholarship.courses.map((course) => (
+                      <span
+                        key={course.course_id}
+                        className="bg-blue-100 text-blue-700 py-1 px-3 rounded-full text-sm font-medium hover:bg-blue-200 cursor-pointer"
+                      >
+                        {course.course_id}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
+
             </div>
-            {/* Status Badge */}
-            <div>
-              {scholarship.status === "Pending" && (
-                <span className="bg-yellow-500 text-white px-4 py-1 rounded-md font-bold">
-                  PENDING
-                </span>
-              )}
-              {scholarship.status === "Accepted" && (
-                <span className="bg-green-500 text-white px-4 py-1 rounded-md font-bold">
-                  ACCEPTED
-                </span>
-              )}
-              {scholarship.status === "Declined" && (
-                <span className="bg-red-500 text-white px-4 py-1 rounded-md font-bold">
-                  DECLINED
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Modal */}
+        {showModal && (
+          <ApplicationDetailsModal modalData={modalData} closeModal={closeModal} />
+        )}
+
       </div>
     </div>
   );
