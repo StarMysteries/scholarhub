@@ -1,132 +1,169 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ApplicantStatus = () => {
-    useAuth('Provider');
-    const [applicants, setApplicants] = useState([
-        { id: 1, name: 'John Doe', course: 'BS-VAL', status: 'PENDING', remarks: '' },
-        { id: 2, name: 'Jane Doe', course: 'BS-IT', status: 'PENDING', remarks: '' },
-    ]);
-    const [showDeclineModal, setShowDeclineModal] = useState(false);
-    const [showAcceptModal, setShowAcceptModal] = useState(false);
-    const [currentApplicant, setCurrentApplicant] = useState(null);
-    const [declineRemarks, setDeclineRemarks] = useState('');
+    const { scholarshipId } = useParams();
+    const navigate = useNavigate();
+    const [scholarshipName, setScholarshipName] = useState('');
+    const [applicants, setApplicants] = useState([]);
+    const [filteredApplicants, setFilteredApplicants] = useState([]);
+    const [statusFilter, setStatusFilter] = useState('All');
+    const [error, setError] = useState(null);
 
-    // Accept Applicant
-    const acceptApplicant = (id) => {
-        setApplicants(applicants.map(applicant =>
-            applicant.id === id ? { ...applicant, status: 'ACCEPTED' } : applicant
-        ));
-        setShowAcceptModal(true); // Show accept confirmation modal
-    };
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const applicantsPerPage = 6; // Number of applicants per page
+    const [totalPages, setTotalPages] = useState(1); // Total number of pages
 
-    // Decline Applicant
-    const openDeclineModal = (applicant) => {
-        setCurrentApplicant(applicant);
-        setShowDeclineModal(true);
-    };
+    // Fetch scholarship and applicants data
+    useEffect(() => {
+        const fetchScholarshipData = async () => {
+            try {
+                const response = await fetch(`/applicant_status/${scholarshipId}`);
+                if (!response.ok) throw new Error("Failed to fetch applicants.");
+                const data = await response.json();
+                setScholarshipName(data.scholarshipName);
+                setApplicants(data.applicants);
+                setFilteredApplicants(data.applicants);
+                setTotalPages(Math.ceil(data.applicants.length / applicantsPerPage)); // Update total pages
+            } catch (err) {
+                setError(err.message);
+            }
+        };
 
-    // Handle Decline
-    const handleDecline = () => {
-        if (currentApplicant) {
-            setApplicants(applicants.map(applicant =>
-                applicant.id === currentApplicant.id
-                    ? { ...applicant, status: 'DECLINED', remarks: declineRemarks || 'No remarks provided' }
-                    : applicant
-            ));
-            setShowDeclineModal(false);
-            setDeclineRemarks('');
+        fetchScholarshipData();
+    }, [scholarshipId]);
+
+    // Filter applicants based on status filter
+    useEffect(() => {
+        if (statusFilter === 'All') {
+            setFilteredApplicants(applicants);
+        } else {
+            setFilteredApplicants(applicants.filter(applicant => applicant.application_status === statusFilter));
         }
+        setTotalPages(Math.ceil(filteredApplicants.length / applicantsPerPage)); // Recalculate total pages after filtering
+    }, [statusFilter, applicants]);
+
+    // Get current applicants for the current page
+    const indexOfLastApplicant = currentPage * applicantsPerPage;
+    const indexOfFirstApplicant = indexOfLastApplicant - applicantsPerPage;
+    const currentApplicants = filteredApplicants.slice(indexOfFirstApplicant, indexOfLastApplicant);
+
+    // Handle page change
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen py-8">
-            {/* Buttons for Accepted and Declined */}
-            <div className="container mx-auto mb-6 text-center">
-                <div className="flex justify-center space-x-4">
-                    <Link to="/accepted_status" className="w-full mx-2">
-                        <button className="bg-green-600 text-white py-2 rounded-lg w-full">ACCEPTED</button>
-                    </Link>
-                    <Link to="/declined_status" className="w-full mx-2">
-                        <button className="bg-red-600 text-white py-2 rounded-lg w-full">DECLINED</button>
-                    </Link>
+        <div className="bg-gray-100 min-h-full py-8 px-4 flex flex-col">
+            {/* Scholarship Name and Filter Dropdown */}
+            <div className="container mx-auto mb-8">
+                <div className="flex justify-between items-center">
+                    {/* Scholarship Name */}
+                    <h1 className="text-3xl font-bold mb-4">
+                        Applicants for {scholarshipName || `Scholarship #${scholarshipId}`}
+                    </h1>
+
+                    {/* Status Filter Dropdown */}
+                    <div className="w-1/4">
+                        <select
+                            className="bg-white text-gray-700 py-2 px-4 rounded-lg shadow-md w-full"
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                        >
+                            <option value="All">All Statuses</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
                 </div>
+
+                {/* Back Button */}
+                <div className="flex justify-left mt-6">
+                    <button
+                        onClick={() => navigate(-1)} // Navigate back one step
+                        className="bg-blue-600 text-white py-2 px-4 rounded-lg focus:outline-none hover:bg-blue-700"
+                    >
+                        Back
+                    </button>
+                </div>
+
+
             </div>
 
-            {/* Applicant Cards */}
-            <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {applicants.map(applicant => (
-                    <Link to="/view_more" key={applicant.id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between hover:shadow-xl transition duration-300">
-                        <div className="flex items-center space-x-4">
-                            <img
-                                alt="Profile Picture"
-                                className="rounded-full w-24 h-24"
-                            />
-                            <div>
-                                <h5 className="font-semibold text-lg text-gray-800">{`Applicant #${applicant.id}`}</h5>
-                                <p className="text-gray-600"><strong>Name:</strong> {applicant.name}</p>
-                                <p className="text-gray-600"><strong>Course:</strong> {applicant.course}</p>
-                                {applicant.remarks && <p className="text-gray-500"><strong>Remarks:</strong> {applicant.remarks}</p>}
-                                <p className="text-blue-600 hover:underline mt-2">View More</p>
+            {/* Display Applicants */}
+            <div className="container mx-auto mb-12">
+                {error ? (
+                    <p className="text-red-600 text-center">{error}</p>
+                ) : currentApplicants.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {currentApplicants.map((applicant) => (
+                            <div
+                                key={applicant.application_id}
+                                className="bg-white rounded-lg shadow-lg p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                            >
+                                <h3 className="font-semibold text-lg">{applicant.student_fname} {applicant.student_lname}</h3>
+                                <p><strong>Course:</strong> {applicant.course_id}</p>
+
+                                {/* Applicant Status */}
+                                <p>
+                                    <strong>Status:</strong>
+                                    <span
+                                        className={`font-bold ${applicant.application_status === 'Pending'
+                                            ? 'text-yellow-500'
+                                            : applicant.application_status === 'Accepted'
+                                                ? 'text-green-500'
+                                                : 'text-red-500'
+                                            }`}
+                                    >
+                                        {applicant.application_status}
+                                    </span>
+                                </p>
                             </div>
-                        </div>
-
-                        <div className="mt-4 flex space-x-4">
-                            <button className="bg-green-600 text-white py-2 px-4 rounded-lg w-full hover:bg-green-700 transition duration-300" onClick={() => acceptApplicant(applicant.id)}>
-                                ACCEPT
-                            </button>
-                            <button className="bg-red-600 text-white py-2 px-4 rounded-lg w-full hover:bg-red-700 transition duration-300" onClick={() => openDeclineModal(applicant)}>
-                                DECLINE
-                            </button>
-                        </div>
-                    </Link>
-                ))}
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-gray-600 text-center">No applicants for this scholarship.</p>
+                )}
             </div>
 
-            {/* Modal for Declining Applicants */}
-            {showDeclineModal && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white rounded-lg shadow-lg w-96">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h5 className="font-bold text-lg">Decline Applicant</h5>
-                            <button type="button" className="text-gray-500" onClick={() => setShowDeclineModal(false)}>&times;</button>
-                        </div>
-                        <div className="p-4">
-                            <p>Please provide a reason for declining {currentApplicant?.name}:</p>
-                            <textarea
-                                className="form-control mt-2 p-2 border rounded w-full"
-                                value={declineRemarks}
-                                onChange={(e) => setDeclineRemarks(e.target.value)}
-                                rows="3"
-                                placeholder="Optional remarks..."
-                            />
-                        </div>
-                        <div className="flex justify-end p-4 border-t">
-                            <button type="button" className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg mr-2" onClick={() => setShowDeclineModal(false)}>Cancel</button>
-                            <button type="button" className="bg-red-600 text-white py-2 px-4 rounded-lg" onClick={handleDecline}>Decline</button>
-                        </div>
-                    </div>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center py-4 space-x-4">
+                    {/* Previous button */}
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700"
+                    >
+                        Prev
+                    </button>
+
+                    {/* Page numbers */}
+                    {Array.from({ length: totalPages }, (_, index) => (
+                        <button
+                            key={index + 1}
+                            onClick={() => handlePageChange(index + 1)}
+                            className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} border border-blue-600 rounded-lg hover:bg-blue-100`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+
+                    {/* Next button */}
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700"
+                    >
+                        Next
+                    </button>
                 </div>
             )}
 
-            {/* Modal for Accepting Applicants */}
-            {showAcceptModal && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white rounded-lg shadow-lg w-96">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h5 className="font-bold text-lg">Accept Applicant</h5>
-                            <button type="button" className="text-gray-500" onClick={() => setShowAcceptModal(false)}>&times;</button>
-                        </div>
-                        <div className="p-4">
-                            <p>You have successfully accepted {currentApplicant?.name} for the {currentApplicant?.course} course.</p>
-                        </div>
-                        <div className="flex justify-end p-4 border-t">
-                            <button type="button" className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg" onClick={() => setShowAcceptModal(false)}>Close</button>
-                        </div>
-                    </div>
-                </div>
-            )}
+
         </div>
     );
 };

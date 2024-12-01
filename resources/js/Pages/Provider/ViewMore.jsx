@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const ViewMore = () => {
+  useAuth("Provider");
   const [applicants, setApplicants] = useState([
     { id: 1, name: 'John Doe', course: 'BS-VAL', status: 'PENDING', remarks: '' },
   ]);

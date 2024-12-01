@@ -19,13 +19,13 @@ function useLogin(){
             });
 
             if (response.status === 200) {
-                const {user_role, provider_name, student_fname, student_lname, admin_name} = response.data;
+                const {user_id, user_role, student_fname, student_lname, admin_name} = response.data;
 
                 // Store user data in local storage
+                localStorage.setItem('user_id', user_id);
                 localStorage.setItem('user_role', user_role);
-                if (user_role === 'Provider' && provider_name) {
-                    localStorage.setItem('provider_name', provider_name);
-                }else if(user_role === 'Student' && student_fname && student_lname){
+
+                if(user_role === 'Student' && student_fname && student_lname){
                     localStorage.setItem('student_fname', student_fname);
                     localStorage.setItem('student_lname', student_lname);
                 }else if(user_role === 'Admin' && admin_name){

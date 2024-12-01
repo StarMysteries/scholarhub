@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
+import { useParams } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '../css/app.css';
 
@@ -18,8 +19,9 @@ const Admin = lazy(() => import('./Pages/Admin/Admin'));
 const Form = lazy(() => import('./Pages/Provider/ScholarshipForm'));
 
 const HomeStudent = lazy(() => import('./Pages/Student/HomeStudent'));
-const About = lazy(() => import('./Pages/General/About'));
-const HomeDonor = lazy(() => import('./Pages/Provider/HomeDonor'));
+const MoreInfo = lazy(() => import('./Pages/Student/MoreInfo'));
+const ScholarshipForm = lazy(() => import('./Pages/Student/ScholarshipForm'));
+
 const Login = lazy(() => import('./Pages/General/Login'));
 const Unauthorized = lazy(() => import('./Pages/General/Unauthorized'));
 const ForgotPassword = lazy(() => import('./Pages/General/ForgotPassword'));
@@ -51,12 +53,14 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot_password" element={<ForgotPassword />} />
+            <Route path="/applied_scholarships" element={<AppliedScholarshipPage />} />
           </Route>
 
           {/* Routes using HomeDonorLayout */}
           <Route element={<HomeDonorLayout />}>
             <Route path="/donor" element={<HomeDonor />} />
-            <Route path="/applicant_status" element={<ApplicantStatus />} />
+            <Route path="/application_status/:scholarshipId" element={<ApplicantStatus />} />
+            {/* <Route path="/applicant_status/:scholarshipId" element={<ApplicantStatus scholarshipId={useParams().scholarshipId} />} /> */}
             <Route path="/view_more" element={<ViewMore />} />
             <Route path="/accepted_status" element={<AcceptedStatus />} />
             <Route path="/declined_status" element={<DeclinedStatus />} />

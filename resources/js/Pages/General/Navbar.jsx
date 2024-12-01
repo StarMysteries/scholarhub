@@ -1,28 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa'; // Import the hamburger icon
-
-// Import Hooks
 import useNavbarFunctions from "../../hooks/useNavbarFunctions";
-// Import Icons
 import Logo from '../../../img/logo.png';
+import StudentProfileModal from './StudentProfileModal'; // Import the modal component
 
 function Navbar({ onToggleSidebar }) {
     const { userRole, userName, handleLogout } = useNavbarFunctions();
 
-    // Hide sidebar button
+    // State for the StudentProfileModal and student profile data
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [studentProfileData, setStudentProfileData] = useState({
+        name: "John Doe", // default name
+        contact: "123-456-7890", // default contact
+        email: "johndoe@example.com", // default email
+        picture: "https://via.placeholder.com/150", // Default picture
+    });
+
+    // Reset modal state on page load
+    useEffect(() => {
+        setIsModalOpen(false); // Close modal on page reload or mount
+    }, []);
+
+    // Function to toggle modal visibility
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
+    // Handle picture change
+    const handlePictureChange = (newPictureUrl) => {
+        setStudentProfileData((prev) => ({
+            ...prev,
+            picture: newPictureUrl,
+        }));
+    };
+
+    // Handle profile saving
+    const handleSaveProfile = () => {
+        console.log("Profile saved:", studentProfileData);
+        setIsEditing(false); // Close the edit mode
+    };
+
     const location = useLocation();
-    const isLoginPage = location.pathname === "/login";
-    const isAboutPage = location.pathname === "/about";
-    const isAdminPage = location.pathname === "/admin";
+    const isHomePage = location.pathname === "/";
+
 
     return (
         <nav className="bg-green-900 text-white p-4 fixed top-0 left-0 w-full z-10 shadow-lg">
             <div className="container mx-auto flex justify-between items-center">
-                
                 {/* Hamburger Icon Section */}
-                <div className="flex items-center space-x-6 sm:space-x-4"> {/* Increased space on larger screens */}
-                    {!isLoginPage && !isAboutPage && !isAdminPage &&(
+                <div className="flex items-center space-x-6 sm:space-x-4">
+                    {isHomePage &&(
                         <div className="cursor-pointer" onClick={onToggleSidebar} aria-label="Toggle Sidebar">
                             <FaBars className="text-white text-2xl" />
                         </div>
@@ -30,23 +59,40 @@ function Navbar({ onToggleSidebar }) {
 
                     {/* Logo Section */}
                     <div className="text-2xl font-bold transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                        <Link to="/">
-                            <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
-                        </Link>
+                        {userRole === "Admin" ? (
+                            <Link to="/admin">
+                                <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
+                            </Link>
+                        ) : userRole !== "Admin" && (
+                            <Link to="/">
+                                <img src={Logo} alt="ScholarHub Logo" width={150} height={150} />
+                            </Link>
+                        )}
                     </div>
                 </div>
 
                 {/* Navigation Links and User Info */}
-                <div className="hidden md:flex items-center space-x-6 lg:space-x-8"> {/* More space on larger screens */}
-                    <Link to="/" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Home</Link>
-                    <Link to="/about" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">About</Link>
-                    
+                <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    {userRole !== "Admin" && (
+                        <>
+                            <Link to="/" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Home</Link>
+                            <Link to="/about" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">About</Link>
+
+                            {userRole === "Student" && (
+                                <Link to="/applied_scholarships" className="hover:bg-green-700 px-3 py-2 rounded font-semibold transform hover:scale-105 transition-transform duration-300 ease-in-out">Applied Scholarships</Link>
+                            )}
+                        </>
+                    )}
+
                     {/* Vertical Divider */}
-                    <div className="border-l border-green-700 h-6 mx-4"></div> {/* Adjusted spacing for consistency */}
+                    <div className="border-l border-green-700 h-6 mx-4"></div>
 
                     {/* User Info */}
                     {userName && (
-                        <span className="text-lg font-semibold text-white">
+                        <span
+                            className="text-lg font-semibold text-white cursor-pointer hover:underline"
+                            onClick={toggleModal} // Open the modal when clicking username
+                        >
                             Welcome, <span className="font-bold">{userName}</span>
                         </span>
                     )}
@@ -63,6 +109,19 @@ function Navbar({ onToggleSidebar }) {
                     )}
                 </div>
             </div>
+
+            {/* Student Profile Modal */}
+            {isModalOpen && (
+                <StudentProfileModal
+                    student={studentProfileData}
+                    setStudent={setStudentProfileData}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    handleSaveProfile={handleSaveProfile}
+                    handlePictureChange={handlePictureChange}
+                    onClose={() => setIsModalOpen(false)} // Close modal function
+                />
+            )}
         </nav>
     );
 }

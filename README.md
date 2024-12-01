@@ -1,5 +1,59 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 10 Changes**
+1. Fixed Sidebar.
+2. Updated HomeStudentLayout.
+3. Separated HomeStudent javacript from HomeStudent.
+4. Updated Courses Table Seeder.
+5. Fixed Signup Student (Removed Profile Picture, Added dynamic Courses).
+6. Updated Provider's Database.
+7. Updated dynamic sidebar button(Appear only in HomeStudent).
+
+<br/>
+
+**Commit 9 Changes**
+1. Updated NavbarDonor username to function better dynamically(not using localStorage).
+2. Updated useNavbarFunctions hook to fetch providerData(frontend side).
+3. Made ProviderProfileModal display dynamic data based from fetched providerData.
+4. Improved useCheckLogin hook.
+5. Added useCheckLogin hook to HomeStudent to prevent other roles from accessing the page.
+6. Updated Provider.php to handle relationship with Users.
+7. Added ProviderController to handle provider data fetching(backend side).
+8. add filter for active/inactive(HomeDonor)
+9. added dropdown instead of another page(Applicant_status)
+10. addedbackbutton for(Applicant_Status)
+11. cleaned pagination for Homepage
+12. added pagination(HomeDonor)
+13. added pagination(Applicant_status)
+14. Re-added useAuth hooks for HomeDonor, Admin Page, Applied Scholarships page, View More Page.
+15. Added useCheckLogin in HomeStudent.
+16. Added a Return button for Unauthorized Page.
+
+<br/>
+
+**Commit 8 Changes**
+1. Made applicant count in HomeDonor functional
+2. Added go back button in Unauthorized page
+3. Added Applied Scholarships navigation in Navbar
+4. Updated Seeders with more scholarships data to display
+5. Filter for scholarships broke
+6. Made HomeDonor scholarships dynamic + applicant count
+7. Made ApplicantStatus dynamic
+
+<br/>
+
+**Commit 7 Changes**
+1. Made ApplicantStatus functional
+2. Added ProviderProfileModal
+3. Added StudentProfileModal
+4. Added seeders
+5. Made Signup functional
+6. Added AppliedScholarshipPage
+7. Added back button functionality to ApplicantStatus page
+8. Kyn pulled Lucy Heartfilia
+
+<br/>
+
 **Commit 6 Changes**
 1. Modified multiple pages
 2. Edited scholarship application table rejection_details field.
@@ -105,6 +159,10 @@ php artisan migrate
 or
 ```
 php artisan migrate:fresh       //to recreate the tables
+```
+or
+```
+php artisan migrate:fresh --seed       //to recreate the tables + seed
 ```
 14. Execute the seeders using the following command:
 ```

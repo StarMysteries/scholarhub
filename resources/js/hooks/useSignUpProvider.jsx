@@ -2,8 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
-const useSignUpStudent = () => {
+const useSignUpProvider = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -13,17 +12,13 @@ const useSignUpStudent = () => {
             setIsLoading(true);
             setError(null);
 
-           
-
             const form = new FormData();
             for (const key in formData) {
                 form.append(key, formData[key]);
             }
 
-            
-
             const response = await axios.post(
-                "/register_student",
+                "/register_provider",
                 form,
                 {
                     headers: {
@@ -37,11 +32,11 @@ const useSignUpStudent = () => {
             return response.data;
         } catch (err) {
             setIsLoading(false);
-            setError(err.response?.data?.message || "An error occurred");
+            setError(err.response?.data?.message || "An error in provider occurred hooks");
         }
     };
 
     return { signUp, isLoading, error };
 };
 
-export default useSignUpStudent;
+export default useSignUpProvider;

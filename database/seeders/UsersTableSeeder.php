@@ -15,6 +15,7 @@ class UsersTableSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
+            // id 1
             [
                 'user_email' => 'admin@gmail.com',
                 'user_role' => 'Admin',
@@ -22,6 +23,7 @@ class UsersTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            // id 2
             [
                 'user_email' => 'student@gmail.com',
                 'user_role' => 'Student',
@@ -29,9 +31,26 @@ class UsersTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            // id 3
             [
                 'user_email' => 'provider@gmail.com',
                 'user_role' => 'Provider',
+                'user_password' => Hash::make('testing123@'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // id 4
+            [
+                'user_email' => 'student2@gmail.com',
+                'user_role' => 'Student',
+                'user_password' => Hash::make('testing123@'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // id 5
+            [
+                'user_email' => 'engineer@gmail.com',
+                'user_role' => 'Student',
                 'user_password' => Hash::make('testing123@'),
                 'created_at' => now(),
                 'updated_at' => now(),

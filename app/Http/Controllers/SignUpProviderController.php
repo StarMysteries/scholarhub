@@ -4,22 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Student;
+use App\Models\Provider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-class SignUpStudentController extends Controller
+class SignUpProviderController extends Controller
 {
-    public function registerStudent(Request $request)
+    public function registerProvider(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'user_email' => 'required|email|unique:users',
             'user_password' => 'required|min:8',
-            'student_fname' => 'required|string|max:255',
-            'student_lname' => 'required|string|max:255',
-            'student_address' => 'required|string|max:255',
-            'student_contact' => 'required|string|max:11',
-            'course_id' => 'required|exists:scholarship_courses,course_id|string',
+            'provider_name' => 'required|string|max:255',
+            'provider_contact' => 'required|string|max:11',
         ]);
 
         if ($validator->fails()) {
@@ -35,27 +32,28 @@ class SignUpStudentController extends Controller
             $user = User::create([
                 'user_email' => $request->user_email,
                 'user_password' => $hashedPassword,
-                'user_role' => 'Student',
+                'user_role' => 'Provider',
             ]);
 
-            Student::create([
+            // Create provider record without certification file
+            Provider::create([
                 'user_id' => $user->user_id,
-                'course_id' => $request->course_id,
-                'student_fname' => $request->student_fname,
-                'student_lname' => $request->student_lname,
-                'student_address' => $request->student_address,
-                'student_contact' => $request->student_contact,
+                'provider_name' => $request->provider_name,
+                'provider_contact' => $request->provider_contact,
+                'provider_status' => 'Pending', // Default status
             ]);
 
             return response()->json([
-                'message' => 'Student registered successfully',
+                'message' => 'Provider registered successfully',
             ], 201);
+
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'An error occurred',
+                'message' => 'An error occurred in provider Controller',
                 'error' => $e->getMessage(),
             ], 500);
         }
     }
-
 }
+
+
