@@ -1,27 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 
 const useSignUpStudent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
 
     const signUp = async (formData) => {
         try {
             setIsLoading(true);
             setError(null);
-
-           
-
+    
             const form = new FormData();
             for (const key in formData) {
                 form.append(key, formData[key]);
             }
-
             
-
             const response = await axios.post(
                 "/register_student",
                 form,
@@ -31,13 +25,14 @@ const useSignUpStudent = () => {
                     },
                 }
             );
-
+    
             setIsLoading(false);
-            navigate("/login");
             return response.data;
         } catch (err) {
             setIsLoading(false);
-            setError(err.response?.data?.message || "An error occurred");
+            const errorMessage = err.response?.data?.message || "An error occurred";
+            setError(errorMessage);
+            throw err;
         }
     };
 

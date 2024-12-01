@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import axios from 'axios'; // For API requests
+import axios from 'axios';
+
+// Hooks
 import useSignUpStudent from '../../hooks/useSignUpStudent';
 
 const SignUpStudent = () => {
@@ -15,18 +17,24 @@ const SignUpStudent = () => {
         course_id: '',
     });
 
-    const [courses, setCourses] = useState([]); // Store fetched courses
-    const { signUp, isLoading, error } = useSignUpStudent();
+    const [courses, setCourses] = useState([]);
+    const { signUp, isLoading } = useSignUpStudent();
     const [showPassword, setShowPassword] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [fetchErrorMessage, setFetchErrorMessage] = useState('');
+
+    const navigate = useNavigate();
 
     // Fetch courses on component mount
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('/courses'); // Update with your API endpoint
+                const response = await axios.get('/courses');
                 setCourses(response.data);
             } catch (err) {
-                console.error('Error fetching courses:', err);
+                setFetchErrorMessage('Error fetching courses. Please try again later.');
             }
         };
 
@@ -44,6 +52,9 @@ const SignUpStudent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        setSuccessMessage('');
+    
         const formattedData = {
             user_email: formData.email,
             user_password: formData.password,
@@ -53,10 +64,35 @@ const SignUpStudent = () => {
             student_contact: formData.contact,
             course_id: formData.course_id,
         };
+    
+        try {
+            const response = await signUp(formattedData);
+    
+            if (response) {
+                setSuccessMessage('Sign-up successful! Redirecting to login page...');
+                setFormData({
+                    fname: '',
+                    lname: '',
+                    address: '',
+                    contact: '',
+                    email: '',
+                    password: '',
+                    course_id: '',
+                });
 
-        const response = await signUp(formattedData);
-        if (response) {
-            console.log('Sign up successful', response);
+                setTimeout(() => {
+                    navigate('/login');
+                }, 3000);
+            }
+        } catch (error) {
+            // Process validation errors from the server
+            if (error.response && error.response.status === 422) {
+                const { errors } = error.response.data;
+                const formattedErrors = Object.values(errors).flat().join(' ');
+                setErrorMessage(formattedErrors);
+            } else {
+                setErrorMessage(error.message || 'Sign-up failed. Please try again.');
+            }
         }
     };
 
@@ -64,6 +100,28 @@ const SignUpStudent = () => {
         <div className="min-h-screen flex items-center justify-center">
             <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full mt-12">
                 <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Sign Up - Student</h2>
+
+                {/* Fetch Error Message */}
+                {fetchErrorMessage &&
+                    <div className="bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+                        {fetchErrorMessage}
+                    </div>
+                }
+
+                {/* Success Message */}
+                {successMessage &&
+                    <div className="bg-green-500 text-white p-4 rounded-lg text-center mb-4">
+                        {successMessage}
+                    </div>
+                }
+
+                {/* Error Message */}
+                {errorMessage &&
+                    <div className="bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+                        {errorMessage}
+                    </div>
+                }
+
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <div>
                         <input
@@ -105,6 +163,8 @@ const SignUpStudent = () => {
                         <input
                             type="text"
                             placeholder="Contact (11 digits)"
+                            name="contact"
+                            value={formData.contact}
                             onChange={handleChange}
                             maxLength="11"
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
@@ -128,8 +188,6 @@ const SignUpStudent = () => {
                         <select
                             name="course_id"
                             value={formData.course_id}
-
-
                             onChange={handleChange}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                             required
@@ -172,10 +230,6 @@ const SignUpStudent = () => {
                     </button>
                 </form>
 
-                {error && <p className="text-red-500 mt-2">{error}</p>}
-
-                
-
                 <div className="text-center mt-6">
                     <p className="text-sm text-gray-600">
                         Already have an account?
@@ -183,15 +237,12 @@ const SignUpStudent = () => {
                     </p>
                 </div>
 
-                 {/* Back Button */}
-                 <div className="text-center mt-4">
-                        <p className="text-sm text-gray-600">
-                            Pressed the wrong button?
-                            <Link to="/signup" className="ml-1 text-blue-600 hover:underline">Go back</Link>
-                        </p>
-                    </div>
-
-                    
+                <div className="text-center mt-4">
+                    <p className="text-sm text-gray-600">
+                        Pressed the wrong button?
+                        <Link to="/signup" className="ml-1 text-blue-600 hover:underline">Go back</Link>
+                    </p>
+                </div>
             </div>
         </div>
     );

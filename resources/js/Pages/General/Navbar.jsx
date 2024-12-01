@@ -44,7 +44,8 @@ function Navbar({ onToggleSidebar }) {
 
     const location = useLocation();
     const isHomePage = location.pathname === "/";
-
+    const isMoreInfo = location.pathname === "/more_info";
+    const isSSForm = location.pathname === "/scholarship_form";
 
     return (
         <nav className="bg-green-900 text-white p-4 fixed top-0 left-0 w-full z-10 shadow-lg">
@@ -52,6 +53,18 @@ function Navbar({ onToggleSidebar }) {
                 {/* Hamburger Icon Section */}
                 <div className="flex items-center space-x-6 sm:space-x-4">
                     {isHomePage &&(
+                        <div className="cursor-pointer" onClick={onToggleSidebar} aria-label="Toggle Sidebar">
+                            <FaBars className="text-white text-2xl" />
+                        </div>
+                    )}
+
+                    {isMoreInfo &&(
+                        <div className="cursor-pointer" onClick={onToggleSidebar} aria-label="Toggle Sidebar">
+                            <FaBars className="text-white text-2xl" />
+                        </div>
+                    )}
+
+                    {isSSForm &&(
                         <div className="cursor-pointer" onClick={onToggleSidebar} aria-label="Toggle Sidebar">
                             <FaBars className="text-white text-2xl" />
                         </div>

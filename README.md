@@ -1,5 +1,16 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 11 Changes**
+1. Fixed SignUp - Provider && Student.
+2. Fixed Navbar toggle Sidebar.
+3. Updated UserAuthController to reject Pending and Declined accounts.
+4. Updated useLogin to display rejection of Pending and Declined accounts.
+5. Updated Provider model.
+6. Renamed SignUpStudentController to StudentController.
+7. Merged SignUpProviderController to ProviderController.
+
+<br/>
+
 **Commit 10 Changes**
 1. Fixed Sidebar.
 2. Updated HomeStudentLayout.
