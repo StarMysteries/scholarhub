@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const MoreInfo = () => {
   return (
-    <div className="min-h-screen overflow-hidden p-8">
+    <div className="p-8">
       {/* Scholarship Details Section */}
       <div className="container mx-auto max-w-6xl bg-white rounded-lg shadow-lg p-8 space-y-8">
         {/* Header Section */}

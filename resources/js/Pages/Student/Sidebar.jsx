@@ -14,10 +14,17 @@ function Sidebar({ filterScholarships }) {
     const { courses } = useFetchCourses();
 
     // Search filter
-    const { searchQuery, setSearchQuery, filteredItems: filteredCourses } = useSearchFilter(courses, 'course_name');
+    const { searchQuery, setSearchQuery, resetSearchQuery, filteredItems: filteredCourses } = useSearchFilter(courses, 'course_name');
 
     // State for selected courses
     const [selectedCourses, setSelectedCourses] = useState([]);
+
+    // Reset filter functionality
+    const resetFilter = () => {
+        setSelectedCourses([]); // Uncheck all checkboxes
+        resetSearchQuery(); // Reset search query
+        filterScholarships([]); // Apply filter with empty selected courses (shows all scholarships)
+    };
 
     return (
         <div
@@ -54,44 +61,41 @@ function Sidebar({ filterScholarships }) {
                 <div className="px-4 mt-4">
                     <button
                         className="w-full bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 rounded shadow-lg transition duration-200 ease-in-out transform hover:scale-105"
+                        onClick={resetFilter}
                     >
                         Reset Filter
                     </button>
                 </div>
 
                 {/* Courses List */}
-
-              <ul className="mt-4">
-    {filteredCourses.map((course) => (
-        <li
-            key={course.course_id}
-            className="block px-4 py-2 hover:bg-green-700 transition duration-200"
-        >
-            <label className="flex items-start gap-2 text-sm">
-                {/* Checkbox */}
-                <input
-                    type="checkbox"
-                    className="w-5 h-5 flex-shrink-0 border-2 border-white rounded bg-white checked:bg-red-500 checked:border-red-500 focus:outline-none transition duration-200 ease-in-out"
-                    style={{ verticalAlign: "top" }} // Ensures consistent alignment
-                    onChange={() =>
-                        handleCheckboxChange(course.course_id, selectedCourses, setSelectedCourses)
-                    }
-                />
-                {/* Course Name */}
-                <span
-                    className="text-white leading-snug" // Adjusted line spacing
-                    style={{ display: "inline-block", verticalAlign: "top" }}
-                >
-                    {course.course_name}
-                </span>
-            </label>
-        </li>
-    ))}
-</ul>
-
-
-
-
+                <ul className="mt-4">
+                    {filteredCourses.map((course) => (
+                        <li
+                            key={course.course_id}
+                            className="block px-4 py-2 hover:bg-green-700 transition duration-200"
+                        >
+                            <label className="flex items-start gap-2 text-sm">
+                                {/* Checkbox */}
+                                <input
+                                    type="checkbox"
+                                    className="w-5 h-5 flex-shrink-0 border-2 border-white rounded bg-white checked:bg-red-500 checked:border-red-500 focus:outline-none transition duration-200 ease-in-out"
+                                    style={{ verticalAlign: "top" }} // Ensures consistent alignment
+                                    checked={selectedCourses.includes(course.course_id)} // Check if course is selected
+                                    onChange={() =>
+                                        handleCheckboxChange(course.course_id, selectedCourses, setSelectedCourses)
+                                    }
+                                />
+                                {/* Course Name */}
+                                <span
+                                    className="text-white leading-snug" // Adjusted line spacing
+                                    style={{ display: "inline-block", verticalAlign: "top" }}
+                                >
+                                    {course.course_name}
+                                </span>
+                            </label>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

@@ -22,7 +22,7 @@ const ScholarshipForm = () => {
   };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="p-8">
       {/* Scholarship Form Section */}
       <div className="container mx-auto max-w-6xl bg-white rounded-lg shadow-lg p-8 space-y-8">
         {/* Header Section */}

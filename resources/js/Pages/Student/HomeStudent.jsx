@@ -2,22 +2,18 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { useScholarshipManagement } from '../../hooks/useHomeStudent';
+import { useCheckLogin } from '../../hooks/useCheckLogin';
 
 function HomeStudent() {
+    useCheckLogin();
     const navigate = useNavigate();
-    const {
-        scholarships,
-        pageNumbers,
-        currentPage,
-        handleFilter,
-        handlePageChange,
-        handlePreviousGroup,
-        handleNextGroup,
-        currentGroup,
-        totalPages,
-    } = useScholarshipManagement();
+    const { scholarships, handleFilter } = useScholarshipManagement();
 
     const [searchQuery, setSearchQuery] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentGroup, setCurrentGroup] = useState(1);
+    const scholarshipsPerPage = 6; // Number of scholarships to display per page
+    const pagesPerGroup = 5;
 
     // Use useCallback to avoid unnecessary re-renders
     const handleCardClick = useCallback((scholarshipId) => {
@@ -29,9 +25,47 @@ function HomeStudent() {
     };
 
     // Filter scholarships based on the search query
-    const filteredScholarships = scholarships.filter(scholarship =>
-        scholarship.scholarship_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredScholarships = scholarships
+        .filter((scholarship) => {
+            const query = searchQuery.toLowerCase();
+            return (
+                scholarship.scholarship_name.toLowerCase().includes(query) ||
+                scholarship.courses.some((course) =>
+                    course.course_id.toLowerCase().includes(query)
+                )
+            );
+        });
+
+    // Pagination Logic
+    const totalScholarships = filteredScholarships.length;
+    const totalPages = Math.ceil(totalScholarships / scholarshipsPerPage);
+
+    // Calculate the page numbers to display (e.g., 1-5, 6-10, etc.)
+    const startPage = (currentGroup - 1) * pagesPerGroup + 1;
+    const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+    }
+
+    // Get the scholarships for the current page
+    const indexOfLastScholarship = currentPage * scholarshipsPerPage;
+    const indexOfFirstScholarship = indexOfLastScholarship - scholarshipsPerPage;
+    const currentScholarships = filteredScholarships.slice(indexOfFirstScholarship, indexOfLastScholarship);
+
+    // Handle page navigation
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    // Handle previous/next group
+    const handlePreviousGroup = () => {
+        if (currentGroup > 1) setCurrentGroup(currentGroup - 1);
+    };
+
+    const handleNextGroup = () => {
+        if (currentGroup * pagesPerGroup < totalPages) setCurrentGroup(currentGroup + 1);
+    };
 
     return (
         <>
@@ -48,11 +82,12 @@ function HomeStudent() {
                             <div className="relative w-full">
                                 <input
                                     type="text"
+                                    placeholder="Search..."
                                     value={searchQuery}
                                     onChange={handleSearchChange}
-                                    placeholder="Search scholarships..."
-                                    className="w-full px-6 py-3 text-sm text-gray-800 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out"
+                                    className="w-full py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
                                 />
+
                                 {searchQuery && (
                                     <button
                                         onClick={() => setSearchQuery('')}
@@ -67,7 +102,7 @@ function HomeStudent() {
 
                         {/* Scholarship Cards */}
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                            {filteredScholarships.map(scholarship => (
+                            {currentScholarships.map(scholarship => (
                                 <div
                                     key={scholarship.scholarship_id}
                                     className="bg-white shadow-lg hover:shadow-2xl rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:translate-y-2"
@@ -142,7 +177,7 @@ function HomeStudent() {
                     {/* Next button */}
                     <button
                         onClick={handleNextGroup}
-                        disabled={currentGroup * 5 >= totalPages}
+                        disabled={currentGroup * pagesPerGroup >= totalPages}
                         aria-label="Next group"
                         className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700 transition-all duration-200 focus:outline-none"
                     >
