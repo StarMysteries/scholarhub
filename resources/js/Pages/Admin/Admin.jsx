@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 function Admin(){
     useAuth("Admin");
     return (
-        <div className="bg-gray-700 min-h-screen py-8"> {/* Light grey background */}
+        <div className="py-8"> {/* Light grey background */}
             <div className="container mx-auto mb-6 text-center">
                 {/* Top Buttons */}
                 <div className="flex justify-center space-x-4">

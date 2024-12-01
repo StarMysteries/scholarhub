@@ -13,7 +13,12 @@ function Login() {
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
                 <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
-                {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                {/* Error Message */}
+                {error &&
+                    <div className="bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+                        {error}
+                    </div>
+                }
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>

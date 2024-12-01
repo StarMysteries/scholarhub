@@ -26,6 +26,19 @@ class UserAuthController extends Controller
         $user = User::where('user_email', $request->user_email)->first();
 
         if ($user && Hash::check($request->user_password, $user->user_password)) {
+            // Check if the user is a Provider and their status
+            if ($user->user_role === 'Provider') {
+                // Fetch the Provider's details
+                $provider = Provider::where('user_id', $user->user_id)->first();
+
+                // If the Provider's status is "Pending" or "Denied", return an error
+                if ($provider && in_array($provider->provider_status, ['Pending', 'Denied'])) {
+                    return response()->json([
+                        'message' => "Your account's status "."is ".'"'.$provider->provider_status.'"'.". Please contact support for assistance."
+                    ], 403); // Forbidden
+                }
+            }
+
             // Authenticate user
             Auth::login($user);
 
@@ -56,6 +69,7 @@ class UserAuthController extends Controller
         // Invalid credentials
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
 
     public function logout(Request $request)
     {

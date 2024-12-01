@@ -1,11 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const useSignUpProvider = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
 
     const signUp = async (formData) => {
         try {
@@ -28,11 +26,12 @@ const useSignUpProvider = () => {
             );
 
             setIsLoading(false);
-            navigate("/login");
             return response.data;
         } catch (err) {
             setIsLoading(false);
-            setError(err.response?.data?.message || "An error in provider occurred hooks");
+            const errorMessage = err.response?.data?.message || "An error occurred";
+            setError(errorMessage);
+            throw err;
         }
     };
 

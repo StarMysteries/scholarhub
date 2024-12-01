@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+// Hooks
 import useSignUpProvider from '../../hooks/useSignUpProvider';
 
 const SignUpProvider = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         contact: '',
@@ -13,7 +16,10 @@ const SignUpProvider = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [certification, setCertification] = useState(null);  // To hold the certification file
-    const { signUp, isLoading, error } = useSignUpProvider();
+    const { signUp, isLoading } = useSignUpProvider();
+
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,6 +39,8 @@ const SignUpProvider = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        setSuccessMessage('');
 
         const formattedData = {
             user_email: formData.email,
@@ -41,12 +49,31 @@ const SignUpProvider = () => {
             provider_contact: formData.contact,
         };
 
-        console.log('Submitting data:', formattedData);
-        console.log('Certification file:', certification);  // Just showing it in frontend for now
+        try {
+            const response = await signUp(formattedData);
+    
+            if (response) {
+                setSuccessMessage('Sign-up successful! Redirecting to login page...');
+                setFormData({
+                    email: '',
+                    password: '',
+                    name: '',
+                    contact: '',
+                });
 
-        const response = await signUp(formattedData);
-        if (response) {
-            console.log('Sign up successful', response);
+                setTimeout(() => {
+                    navigate('/login');
+                }, 3000);
+            }
+        } catch (error) {
+            // Process validation errors from the server
+            if (error.response && error.response.status === 422) {
+                const { errors } = error.response.data;
+                const formattedErrors = Object.values(errors).flat().join(' ');
+                setErrorMessage(formattedErrors);
+            } else {
+                setErrorMessage(error.message || 'Sign-up failed. Please try again.');
+            }
         }
     };
 
@@ -54,6 +81,21 @@ const SignUpProvider = () => {
         <div className="min-h-screen flex items-center justify-center">
             <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full">
                 <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Sign Up - Provider</h2>
+
+                {/* Success Message */}
+                {successMessage &&
+                    <div className="bg-green-500 text-white p-4 rounded-lg text-center mb-4">
+                        {successMessage}
+                    </div>
+                }
+
+                {/* Error Message */}
+                {errorMessage &&
+                    <div className="bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+                        {errorMessage}
+                    </div>
+                }
+
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <div>
                         <input
@@ -135,12 +177,17 @@ const SignUpProvider = () => {
                     </button>
                 </form>
 
-                {error && <div className="text-red-500 mt-2">{error}</div>}
-
                 <div className="text-center mt-6">
                     <p className="text-sm text-gray-600">
                         Already have an account?
                         <Link to="/login" className="ml-1 text-blue-600 hover:underline">Login</Link>
+                    </p>
+                </div>
+
+                <div className="text-center mt-4">
+                    <p className="text-sm text-gray-600">
+                        Pressed the wrong button?
+                        <Link to="/signup" className="ml-1 text-blue-600 hover:underline">Go back</Link>
                     </p>
                 </div>
             </div>

@@ -1,5 +1,27 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 12 Changes**
+1. Searchbar in HomeStudent fixed
+2. Made Reset Filter in sidebar functional.
+3. Cleaned AppliedScholarship page.
+4. Added ApplicationDetailsModal.
+5. Made ProviderProfileModal functional.
+6. Updated Providers and Students Table seeders.
+7. Updated ProviderController.
+
+<br/>
+
+**Commit 11 Changes**
+1. Fixed SignUp - Provider && Student.
+2. Fixed Navbar toggle Sidebar.
+3. Updated UserAuthController to reject Pending and Declined accounts.
+4. Updated useLogin to display rejection of Pending and Declined accounts.
+5. Updated Provider model.
+6. Renamed SignUpStudentController to StudentController.
+7. Merged SignUpProviderController to ProviderController.
+
+<br/>
+
 **Commit 10 Changes**
 1. Fixed Sidebar.
 2. Updated HomeStudentLayout.
