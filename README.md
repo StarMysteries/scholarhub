@@ -1,5 +1,16 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 12 Changes**
+1. Searchbar in HomeStudent fixed
+2. Made Reset Filter in sidebar functional.
+3. Cleaned AppliedScholarship page.
+4. Added ApplicationDetailsModal.
+5. Made ProviderProfileModal functional.
+6. Updated Providers and Students Table seeders.
+7. Updated ProviderController.
+
+<br/>
+
 **Commit 11 Changes**
 1. Fixed SignUp - Provider && Student.
 2. Fixed Navbar toggle Sidebar.

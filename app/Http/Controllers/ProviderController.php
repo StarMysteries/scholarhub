@@ -40,6 +40,7 @@ class ProviderController extends Controller
             'user_email.required' => 'The email address is required.',
             'user_email.email' => 'The email address must be valid.',
             'user_email.unique' => 'The email address is already in use.',
+
             'user_password.required' => 'The password is required.',
             'user_password.min' => 'The password must be at least 8 characters.',
 
@@ -94,6 +95,71 @@ class ProviderController extends Controller
             return response()->json([
                 'message' => 'Provider registered successfully',
             ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred. Please try again.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Update
+    public function updateProvider(Request $request, $user_id)
+    {
+        $messages = [
+            'user_email.required' => 'The email address is required.',
+            'user_email.email' => 'The email address must be valid.',
+            'user_email.unique' => 'The email address is already in use.',
+
+            'provider_name.required' => 'Name is required.',
+            'provider_name.string' => 'Name must be a valid string.',
+            'provider_name.max' => 'Name cannot exceed 255 characters.',
+            
+            'provider_contact.required' => 'The contact number is required.',
+            'provider_contact.string' => 'The contact number must be a valid string.',
+            'provider_contact.max' => 'The contact number cannot exceed 11 characters.',
+            'provider_contact.min' => 'The contact number must be 11 characters.',
+        ];
+
+        $validator = Validator::make($request->only([
+            'user_email',
+            'provider_name',
+            'provider_contact',
+        ]), [
+            'user_email' => 'required|email|unique:users,user_email,' . $user_id . ',user_id', // Allow existing email for the current user
+            'provider_name' => 'required|string|max:255',
+            'provider_contact' => 'required|string|min:11|max:11',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed. Please fix the errors below.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $provider = Provider::where('user_id', $user_id)->first();
+        $user = User::where('user_id', $user_id)->first();
+
+        if (!$provider || !$user) {
+            return response()->json(['message' => 'Provider or User not found'], 404);
+        }
+
+        try {
+            // Update the provider's details
+            $provider->update([
+                'provider_name' => $request->provider_name,
+                'provider_contact' => $request->provider_contact,
+            ]);
+
+            // Update the user's email
+            $user->update([
+                'user_email' => $request->user_email,
+            ]);
+
+            return response()->json([
+                'message' => 'Provider profile updated successfully',
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred. Please try again.',

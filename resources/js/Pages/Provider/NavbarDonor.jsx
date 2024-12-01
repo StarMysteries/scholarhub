@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import useNavbarFunctions from "../../hooks/useNavbarFunctions";
-import ProviderProfileModal from "./ProviderProfileModal";
+
+// Logo
 import Logo from "../../../img/logo.png";
+
+// Hooks
+import useNavbarFunctions from "../../hooks/useNavbarFunctions";
+
+// Modals
+import ProviderProfileModal from "./ProviderProfileModal";
 
 function NavbarDonor() {
     const { userName, providerData, handleLogout } = useNavbarFunctions();

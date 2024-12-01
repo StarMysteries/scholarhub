@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa'; // Import the hamburger icon
 import useNavbarFunctions from "../../hooks/useNavbarFunctions";
 import Logo from '../../../img/logo.png';
-import StudentProfileModal from './StudentProfileModal'; // Import the modal component
+import StudentProfileModal from '../Student/StudentProfileModal'; // Import the modal component
 
 function Navbar({ onToggleSidebar }) {
     const { userRole, userName, handleLogout } = useNavbarFunctions();
