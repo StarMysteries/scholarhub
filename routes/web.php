@@ -67,6 +67,7 @@ Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])-
 Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'getApplicantsByScholarship']);
 Route::get('/provider/{user_id}', [ProviderController::class, 'getProviderByUserId']);
 Route::put('/provider/update/{user_id}', [ProviderController::class, 'updateProvider']);
+Route::put('/scholarships/{id}/status', action: [ScholarshipController::class, 'updateStatus']);
 
 
 
