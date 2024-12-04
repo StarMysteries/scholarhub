@@ -4,11 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DonorScholarshipController;
 use App\Http\Controllers\ScholarshipController;
-use App\Http\Controllers\SignUpStudentController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProviderController;
-use App\Http\Controllers\SignUpProviderController;
 
 // About Page
 Route::get('/about', function () {
@@ -54,15 +53,6 @@ Route::get('/scholarships', [ScholarshipController::class, 'index']);
 Route::get('/donor', function () {
     return view('App');
 });
-Route::get('/applicant_status', function () {
-    return view('App');
-});
-Route::get('/declined_status', function () {
-    return view('App');
-});
-Route::get('/accepted_status', function () {
-    return view('App');
-});
 Route::get('/view_more', function () {
     return view('App');
 });
@@ -76,6 +66,8 @@ Route::get('/application_status/{scholarshipId}', function () {
 Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
 Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'getApplicantsByScholarship']);
 Route::get('/provider/{user_id}', [ProviderController::class, 'getProviderByUserId']);
+Route::put('/provider/update/{user_id}', [ProviderController::class, 'updateProvider']);
+Route::put('/scholarships/{id}/status', action: [ScholarshipController::class, 'updateStatus']);
 
 
 
@@ -92,13 +84,11 @@ Route::get('/signup', function () {
 Route::get('/signup_student', function () {
     return view('App');
 });
-Route::post('/register_student', [SignUpStudentController::class, 'registerStudent']);
-
-
+Route::post('/register_student', [StudentController::class, 'registerStudent']);
 Route::get('/signup_provider', function () {
     return view('App');
 });
-Route::post('/register_provider', [SignUpProviderController::class, 'registerProvider']);
+Route::post('/register_provider', [ProviderController::class, 'registerProvider']);
 
 Route::get('/forgot_password', function () {
     return view('App');

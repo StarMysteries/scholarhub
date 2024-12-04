@@ -4,13 +4,21 @@ import { Link } from 'react-router-dom';
 // Hooks Import
 import useDonorScholarships from '../../hooks/useDonorScholarships';
 import AddScholarshipModal from './AddScholarshipModal';
+import useScholarshipStatus from '../../hooks/useScholarshipStatus';
 import { useAuth } from '../../hooks/useAuth';
+import ConfirmationModal from './ConfirmationModal'; // Import ConfirmationModal here
 
 const HomeDonor = () => {
     useAuth("Provider");
-    const { scholarships, error } = useDonorScholarships();
+    const { scholarships, setScholarships, error } = useDonorScholarships();
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
+
+    const [confirmationModal, setConfirmationModal] = useState({
+        isOpen: false,
+        scholarshipId: null,
+        currentStatus: null,
+    });
 
     // Default state for AddScholarshipModal
     const [newScholarship, setNewScholarship] = useState({
@@ -98,8 +106,43 @@ const HomeDonor = () => {
         if (currentGroup * pagesPerGroup < totalPages) setCurrentGroup(currentGroup + 1);
     };
 
+    // Changing ScholarshipStatus and its modal
+    const { toggleScholarshipStatus } = useScholarshipStatus();
+
+    const handleStatusToggleClick = (id, currentStatus) => {
+        setConfirmationModal({
+            isOpen: true,
+            scholarshipId: id,
+            currentStatus,
+        });
+    };
+
+    const confirmStatusToggle = async () => {
+        try {
+            const { scholarshipId } = confirmationModal;
+            const updatedScholarship = await toggleScholarshipStatus(scholarshipId);
+
+            setScholarships((prevScholarships) =>
+                prevScholarships.map((scholarship) =>
+                    scholarship.scholarship_id === scholarshipId
+                        ? { ...scholarship, scholarship_status: updatedScholarship.scholarship.scholarship_status }
+                        : scholarship
+                )
+            );
+
+            setConfirmationModal({ isOpen: false, scholarshipId: null, currentStatus: null });
+        } catch (error) {
+            console.error('Failed to update status:', error);
+            setConfirmationModal({ isOpen: false, scholarshipId: null, currentStatus: null });
+        }
+    };
+
+    const closeModal = () => {
+        setConfirmationModal({ isOpen: false, scholarshipId: null, currentStatus: null });
+    };
+
     return (
-        <div className="bg-white min-h-full pt-1">
+        <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen pt-6">
             <div className="container mx-auto mt-8 px-4 pb-8">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-6">
@@ -146,38 +189,48 @@ const HomeDonor = () => {
                         </div>
                     ) : currentScholarships.length > 0 ? (
                         currentScholarships.map((scholarship) => (
-                            <Link
+                            <div
                                 key={scholarship.scholarship_id}
-                                to={`/application_status/${scholarship.scholarship_id}`}
-                                className="block bg-white p-6 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                                className="bg-white p-6 rounded-lg shadow-xl transform transition duration-300 hover:scale-105 hover:shadow-2xl"
                             >
+                                {/* Status Header */}
                                 <div
-                                    className={`${
-                                        scholarship.scholarship_status === 'Active'
-                                            ? 'bg-green-600'
-                                            : 'bg-red-600'
-                                    } text-white py-2 px-4 rounded-md flex items-center justify-between`}
+                                    className={`flex items-center space-x-3 p-2 rounded-t ${scholarship.scholarship_status === 'Active'
+                                        ? 'bg-green-700 text-white'
+                                        : 'bg-red-700 text-white'
+                                        }`}
                                 >
-                                    <span>{scholarship.scholarship_status}</span>
-                                    <span className="text-sm text-white-100">
-                                        {scholarship.applications_count} Applicants
-                                    </span>
+                                    {/* Change Status button */}
+                                    <div
+                                        className="w-4 h-4 bg-yellow-400 rounded-sm cursor-pointer"
+                                        onClick={() => handleStatusToggleClick(scholarship.scholarship_id, scholarship.scholarship_status)}
+                                    ></div>
+                                    <span className="text-l font-bold">{scholarship.scholarship_status}</span>
                                 </div>
+
+                                {/* Scholarship Title and Description */}
                                 <div className="mt-4">
-                                    <div className="text-lg font-semibold">{scholarship.scholarship_name}</div>
-                                    <p className="text-gray-600">{scholarship.description}</p>
+                                    <a
+                                        href={`/application_status/${scholarship.scholarship_id}`}
+                                        className="block no-underline text-black hover:text-blue-600"
+                                    >
+                                        <div className="text-xl font-semibold mb-2">{scholarship.scholarship_name}</div>
+                                        <p className="text-gray-700">{scholarship.description}</p>
+                                    </a>
                                 </div>
-                                <div className="mt-2 flex space-x-2">
+
+                                {/* Courses Tags */}
+                                <div className="mt-4 flex flex-wrap gap-2">
                                     {scholarship.courses.map((course) => (
                                         <span
                                             key={course.course_id}
-                                            className="text-sm bg-gray-200 text-gray-700 py-1 px-2 rounded-md"
+                                            className="text-sm bg-blue-600 text-white py-1 px-3 rounded-md shadow-md hover:bg-blue-700"
                                         >
                                             {course.course_id}
                                         </span>
                                     ))}
                                 </div>
-                            </Link>
+                            </div>
                         ))
                     ) : (
                         <div className="col-span-full text-gray-600 text-center">
@@ -229,6 +282,16 @@ const HomeDonor = () => {
                 onSubmit={handleSubmit}
                 scholarshipData={newScholarship}
                 onChange={handleInputChange}
+            />
+
+            {/* Confirmation Modal */}
+            <ConfirmationModal
+                isOpen={confirmationModal.isOpen}
+                onClose={closeModal}
+                onConfirm={confirmStatusToggle}
+                message={`Are you sure you want to ${
+                    confirmationModal.currentStatus === 'Active' ? 'deactivate' : 'activate'
+                } this scholarship?`}
             />
         </div>
     );

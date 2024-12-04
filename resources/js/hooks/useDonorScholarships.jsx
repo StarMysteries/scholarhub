@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-export default function useDonorScholarships(){
+export default function useDonorScholarships() {
     const [scholarships, setScholarships] = useState([]);
     const [error, setError] = useState(null);
 
-    // Fetch provider-specific scholarships
+    // Fetch scholarships
     useEffect(() => {
         const fetchDonorScholarships = async () => {
             try {
@@ -20,5 +19,5 @@ export default function useDonorScholarships(){
         fetchDonorScholarships();
     }, []);
 
-    return { scholarships, error };
+    return { scholarships, setScholarships, error }; // Expose setScholarships
 }
