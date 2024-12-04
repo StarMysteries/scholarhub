@@ -1,9 +1,36 @@
-import React from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import React, { useState, useEffect } from 'react';
+import useFetchCourses from '../../hooks/useFetchCourses';
+import Select from 'react-select';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import the Quill CSS for styling
+
 
 const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onChange }) => {
+    const { courses } = useFetchCourses(); // Fetch the courses from the backend
+    const [selectedCourses, setSelectedCourses] = useState([]);
+    const [description, setDescription] = useState(scholarshipData.description || '');
+
+
     if (!isOpen) return null;
+
+
+    // Convert courses into the format expected by React Select
+    const courseOptions = courses.map(course => ({
+        value: course.course_id,
+        label: course.course_name
+    }));
+
+
+    const handleCourseChange = (selectedOptions) => {
+        setSelectedCourses(selectedOptions || []);
+    };
+
+
+    const handleDescriptionChange = (value) => {
+        setDescription(value);
+        onChange({ target: { name: 'description', value } }); // Update form state
+    };
+
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
@@ -21,17 +48,33 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                             className="w-full py-2 px-3 border border-gray-300 rounded-md"
                         />
                     </div>
+
+
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Description</label>
                         <ReactQuill
-                            theme="snow"
-                            value={scholarshipData.description}
-                            onChange={(value) =>
-                                onChange({ target: { name: "description", value } })
-                            }
-                            className="rounded-md border border-gray-300"
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            placeholder="Enter a description..."
+                            className="w-full border border-gray-300 rounded-md"
                         />
                     </div>
+
+
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">Select Courses</label>
+                        <Select
+                            isMulti
+                            options={courseOptions} // Provide options for React Select
+                            value={selectedCourses}
+                            onChange={handleCourseChange}
+                            placeholder="Select courses..."
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                        />
+                    </div>
+
+
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Status</label>
                         <select
@@ -44,6 +87,8 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
+
+
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Deadline/Open Until</label>
                         <input
@@ -55,28 +100,8 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                             className="w-full py-2 px-3 border border-gray-300 rounded-md"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2">Requirements</label>
-                        <textarea
-                            name="requirements"
-                            value={scholarshipData.requirements}
-                            onChange={onChange}
-                            required
-                            className="w-full py-2 px-3 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2">Courses</label>
-                        <input
-                            type="text"
-                            name="courses"
-                            value={scholarshipData.courses}
-                            onChange={onChange}
-                            placeholder="Separate by commas (e.g., Computer Science, Data Science)"
-                            required
-                            className="w-full py-2 px-3 border border-gray-300 rounded-md"
-                        />
-                    </div>
+
+
                     <div className="flex justify-end space-x-4">
                         <button
                             type="button"
@@ -89,7 +114,7 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                             type="submit"
                             className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
                         >
-                            Save
+                            Submit
                         </button>
                     </div>
                 </form>
@@ -97,5 +122,6 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
         </div>
     );
 };
+
 
 export default AddScholarshipModal;
