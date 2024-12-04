@@ -1,5 +1,12 @@
 <font color="#0e88f1"><h1 align="center">Commit Changes</h1></font>
 
+**Commit 12.5 Changes**
+1. Added dynamic Courses Dropdown(need to "npm install react-select)
+2. Added change status for scholarship(providers)
+
+<br/>
+
+
 **Commit 12 Changes**
 1. Searchbar in HomeStudent fixed
 2. Made Reset Filter in sidebar functional.
