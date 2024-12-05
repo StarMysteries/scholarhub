@@ -37,9 +37,7 @@ const ApplicationDetailsModal = ({ modalData, closeModal }) => {
           <p><strong>Last Name:</strong> {modalData.lastName}</p>
           <p><strong>Address:</strong> {modalData.address}</p>
           <p><strong>Contact:</strong> {modalData.contact}</p>
-          <p><strong>Email:</strong> {modalData.email}</p>
           <p><strong>Course:</strong> {modalData.course}</p>
-          <p><strong>Grade File:</strong> {modalData.gradeFile}</p>
           <div className="w-full h-48 bg-gray-300 flex items-center justify-center text-gray-600">
             <span>Placeholder for Grade File</span>
           </div>
