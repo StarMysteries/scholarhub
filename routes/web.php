@@ -65,6 +65,8 @@ Route::get('/application_status/{scholarshipId}', function () {
 });
 // Provider/Donor API
 Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
+
+
 Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'getApplicantsByScholarship']);
 Route::get('/provider/{user_id}', [ProviderController::class, 'getProviderByUserId']);
 Route::put('/provider/update/{user_id}', [ProviderController::class, 'updateProvider']);
