@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\AddScholarshipController;
 
 // About Page
 Route::get('/about', function () {
@@ -68,6 +69,8 @@ Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'ge
 Route::get('/provider/{user_id}', [ProviderController::class, 'getProviderByUserId']);
 Route::put('/provider/update/{user_id}', [ProviderController::class, 'updateProvider']);
 Route::put('/scholarships/{id}/status', action: [ScholarshipController::class, 'updateStatus']);
+
+Route::post('/create_scholarships', [AddScholarshipController::class, 'store'])->middleware('auth');
 
 
 
