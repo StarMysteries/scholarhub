@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 
 // Hooks Import
 import useDonorScholarships from '../../hooks/useDonorScholarships';
-import AddScholarshipModal from './AddScholarshipModal';
 import useScholarshipStatus from '../../hooks/useScholarshipStatus';
+import useSubmitScholarship from '../../hooks/useSubmitScholarships';
+
 import { useAuth } from '../../hooks/useAuth';
+import AddScholarshipModal from './AddScholarshipModal';
 import ConfirmationModal from './ConfirmationModal'; // Import ConfirmationModal here
 
 const HomeDonor = () => {
@@ -44,24 +46,34 @@ const HomeDonor = () => {
         const { name, value } = e.target;
         setNewScholarship((prev) => ({ ...prev, [name]: value }));
     };
+    const { submitScholarship, isSubmitting, submitError } = useSubmitScholarship();
 
-    // Handle form submission for AddScholarshipModal
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setShowModal(false);
-        setNewScholarship({
-            name: '',
-            description: '',
-            status: 'Active',
-            deadline: '',
-            requirements: '',
-            courses: '',
-        });
+    const handleSubmit = async (scholarshipData) => {
+        try {
+            // Call the submitScholarship function from the hook
+            const newScholarshipResponse = await submitScholarship(scholarshipData);
+            setScholarships((prevScholarships) => [...prevScholarships, newScholarshipResponse]);
+            setShowModal(false); // Close the modal after submission
+            setNewScholarship({
+                name: '',
+                description: '',
+                status: 'Active',
+                deadline: '',
+                requirements: '',
+                courses: '',
+            }); // Reset form state
+        } catch (error) {
+            console.error("HOME Error submitting scholarship:", error);
+        }
     };
+
+
+
 
     // Filter scholarships based on search query and active status
     const filteredScholarships = scholarships
         .filter((scholarship) => {
+            if (!scholarship.scholarship_name) return false; // Skip invalid objects
             const query = searchQuery.toLowerCase();
             return (
                 scholarship.scholarship_name.toLowerCase().includes(query) ||
@@ -74,6 +86,7 @@ const HomeDonor = () => {
             if (activeFilter === 'All') return true;
             return scholarship.scholarship_status === activeFilter;
         });
+
 
     // Pagination Logic
     const totalScholarships = filteredScholarships.length;
@@ -142,8 +155,8 @@ const HomeDonor = () => {
     };
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen pt-6">
-            <div className="container mx-auto mt-8 px-4 pb-8">
+        <div className="bg-gray-100 min-h-full py-8 px-4">
+            <div className="container mx-auto mb-8">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-semibold">Scholarships Offered</h1>
@@ -289,9 +302,8 @@ const HomeDonor = () => {
                 isOpen={confirmationModal.isOpen}
                 onClose={closeModal}
                 onConfirm={confirmStatusToggle}
-                message={`Are you sure you want to ${
-                    confirmationModal.currentStatus === 'Active' ? 'deactivate' : 'activate'
-                } this scholarship?`}
+                message={`Are you sure you want to ${confirmationModal.currentStatus === 'Active' ? 'deactivate' : 'activate'
+                    } this scholarship?`}
             />
         </div>
     );
