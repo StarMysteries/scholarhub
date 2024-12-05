@@ -3,6 +3,7 @@
 **Commit 12.5 Changes**
 1. Added dynamic Courses Dropdown(need to "npm install react-select)
 2. Added change status for scholarship(providers)
+3. Made create scholarships functional(providers)
 
 <br/>
 
