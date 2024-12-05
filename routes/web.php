@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DonorScholarshipController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\AddScholarshipController;
+
 
 // About Page
 Route::get('/about', function () {
@@ -73,6 +75,8 @@ Route::put('/provider/update/{user_id}', [ProviderController::class, 'updateProv
 Route::put('/scholarships/{id}/status', action: [ScholarshipController::class, 'updateStatus']);
 
 Route::post('/create_scholarships', [AddScholarshipController::class, 'store'])->middleware('auth');
+Route::get('/student_applications', [ApplicationsController::class, 'getStudentApplications'])->middleware('auth');
+
 
 
 
