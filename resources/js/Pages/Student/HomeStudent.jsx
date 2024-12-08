@@ -16,8 +16,8 @@ function HomeStudent() {
     const pagesPerGroup = 5;
 
     // Use useCallback to avoid unnecessary re-renders
-    const handleCardClick = useCallback((scholarshipId) => {
-        navigate(`/more_info`);
+     const handleCardClick = useCallback((scholarshipId) => {
+        navigate(`/more_info?id=${scholarshipId}`);
     }, [navigate]);
 
     const handleSearchChange = (e) => {
