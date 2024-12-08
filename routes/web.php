@@ -43,6 +43,9 @@ Route::get('/more_info', function () {
     return view('App');
 });
 
+Route::get('/scholarship', action: [ScholarshipController::class, 'getScholarshipDetails']);
+
+
 Route::get('/applied_scholarships', function () {
     return view('App');
 });
