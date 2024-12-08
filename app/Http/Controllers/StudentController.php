@@ -10,6 +10,27 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+    // Fetch student by user ID
+    public function getStudentByUserId($user_id)
+    {
+        $student = Student::where('students.user_id', $user_id)
+            ->join('users', 'students.user_id', '=', 'users.user_id')
+            ->select(
+                'students.student_fname',
+                'students.student_lname',
+                'students.student_contact',
+                'students.student_picPath',
+                'users.user_email'
+            )
+            ->first();
+
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        return response()->json($student);
+    }
+
     public function registerStudent(Request $request)
     {
         // Custom error messages for validation
@@ -81,6 +102,77 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An unexpected error occurred. Please try again later.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // Update
+    public function updateStudent(Request $request, $user_id)
+    {
+        $messages = [
+            'user_email.required' => 'The email address is required.',
+            'user_email.email' => 'The email address must be valid.',
+            'user_email.unique' => 'The email address is already in use.',
+
+            'student_fname.required' => 'First name is required.',
+            'student_lname.required' => 'Last name is required.',
+            'student_fname.string' => 'First name must be a valid string.',
+            'student_lname.string' => 'Last name must be a valid string.',
+            'student_fname.max' => 'Name cannot exceed 255 characters.',
+            'student_lname.max' => 'Name cannot exceed 255 characters.',
+
+            'student_contact.required' => 'The contact number is required.',
+            'student_contact.string' => 'The contact number must be a valid string.',
+            'student_contact.max' => 'The contact number cannot exceed 11 characters.',
+            'student_contact.min' => 'The contact number must be 11 characters.',
+        ];
+
+        $validator = Validator::make($request->only([
+            'user_email',
+            'student_fname',
+            'student_lname',
+            'student_contact',
+        ]), [
+            'user_email' => 'required|email|unique:users,user_email,' . $user_id . ',user_id', // Allow existing email for the current user
+            'student_fname' => 'required|string|max:255',
+            'student_lname' => 'required|string|max:255',
+            'student_contact' => 'required|string|min:11|max:11',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed. Please consider the errors below.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $student = Student::where('user_id', $user_id)->first();
+        $user = User::where('user_id', $user_id)->first();
+
+        if (!$student || !$user) {
+            return response()->json(['message' => 'Student or User not found'], 404);
+        }
+
+        try {
+            // Update the provider's details
+            $student->update([
+                'student_fname' => $request->student_fname,
+                'student_lname' => $request->student_lname,
+                'student_contact' => $request->student_contact,
+            ]);
+
+            // Update the user's email
+            $user->update([
+                'user_email' => $request->user_email,
+            ]);
+
+            return response()->json([
+                'message' => 'Student profile updated successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred. Please try again.',
                 'error' => $e->getMessage(),
             ], 500);
         }

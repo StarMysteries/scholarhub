@@ -6,26 +6,35 @@ import Logo from '../../../img/logo.png';
 import StudentProfileModal from '../Student/StudentProfileModal'; // Import the modal component
 
 function Navbar({ onToggleSidebar }) {
-    const { userRole, userName, handleLogout } = useNavbarFunctions();
+    const { userRole, userName, studentData, handleLogout } = useNavbarFunctions();
 
     // State for the StudentProfileModal and student profile data
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [studentProfileData, setStudentProfileData] = useState({
-        name: "John Doe", // default name
-        contact: "123-456-7890", // default contact
-        email: "johndoe@example.com", // default email
-        picture: "https://via.placeholder.com/150", // Default picture
+        picture: "https://via.placeholder.com/150",
+        fname: "Loading...",
+        lname: "Loading...",
+        contact: "Loading...",
+        email: "Loading...",
     });
 
     // Reset modal state on page load
     useEffect(() => {
-        setIsModalOpen(false); // Close modal on page reload or mount
-    }, []);
+        if (studentData) {
+            setStudentProfileData({
+                picture: studentData.student_picPath || "https://via.placeholder.com/150",
+                fname: studentData.student_fname || "Loading...",
+                lname: studentData.student_lname || "Loading...",
+                contact: studentData.student_contact || "Loading...",
+                email: studentData.user_email || "Loading...",
+            });
+        }
+        setIsModalOpen(false);
+    }, [studentData]);
 
-    // Function to toggle modal visibility
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
+    const handleSaveProfile = () => {
+        setIsEditing(false);
     };
 
     // Handle picture change
@@ -36,10 +45,9 @@ function Navbar({ onToggleSidebar }) {
         }));
     };
 
-    // Handle profile saving
-    const handleSaveProfile = () => {
-        console.log("Profile saved:", studentProfileData);
-        setIsEditing(false); // Close the edit mode
+    // Function to toggle modal visibility
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
     };
 
     const location = useLocation();
@@ -124,7 +132,7 @@ function Navbar({ onToggleSidebar }) {
             </div>
 
             {/* Student Profile Modal */}
-            {isModalOpen && (
+            {isModalOpen && studentData && (
                 <StudentProfileModal
                     student={studentProfileData}
                     setStudent={setStudentProfileData}
@@ -132,7 +140,7 @@ function Navbar({ onToggleSidebar }) {
                     setIsEditing={setIsEditing}
                     handleSaveProfile={handleSaveProfile}
                     handlePictureChange={handlePictureChange}
-                    onClose={() => setIsModalOpen(false)} // Close modal function
+                    onClose={() => setIsModalOpen(false)}
                 />
             )}
         </nav>

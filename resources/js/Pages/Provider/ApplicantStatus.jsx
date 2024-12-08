@@ -109,7 +109,7 @@ const ApplicantStatus = () => {
 
                                 {/* Applicant Status */}
                                 <p>
-                                    <strong>Status:</strong>
+                                    <strong>Status: </strong>
                                     <span
                                         className={`font-bold ${applicant.application_status === 'Pending'
                                             ? 'text-yellow-500'

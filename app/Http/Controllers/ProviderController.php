@@ -133,7 +133,7 @@ class ProviderController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Validation failed. Please fix the errors below.',
+                'message' => 'Validation failed. Please consider the errors below.',
                 'errors' => $validator->errors(),
             ], 422);
         }

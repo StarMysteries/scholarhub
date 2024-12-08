@@ -8,7 +8,7 @@ import useSubmitScholarship from '../../hooks/useSubmitScholarships';
 
 import { useAuth } from '../../hooks/useAuth';
 import AddScholarshipModal from './AddScholarshipModal';
-import ConfirmationModal from './ConfirmationModal'; // Import ConfirmationModal here
+import ConfirmationModal from './ConfimationModal';
 
 const HomeDonor = () => {
     useAuth("Provider");
@@ -189,7 +189,7 @@ const HomeDonor = () => {
                         placeholder="Search Scholarships..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full py-2 px-4 border border-gray-300 rounded-md bg-gray-100 text-gray-800"
+                        className="w-full py-2 px-4 border border-black rounded-md bg-white text-gray-800"
                     />
                 </div>
 
@@ -223,13 +223,13 @@ const HomeDonor = () => {
 
                                 {/* Scholarship Title and Description */}
                                 <div className="mt-4">
-                                    <a
-                                        href={`/application_status/${scholarship.scholarship_id}`}
+                                    <Link
+                                        to={`/application_status/${scholarship.scholarship_id}`}
                                         className="block no-underline text-black hover:text-blue-600"
                                     >
                                         <div className="text-xl font-semibold mb-2">{scholarship.scholarship_name}</div>
                                         <p className="text-gray-700">{scholarship.description}</p>
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 {/* Courses Tags */}

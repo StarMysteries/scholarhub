@@ -27,6 +27,9 @@ Route::get('/admin', function () {
 });
 
 
+
+
+
 // Student's Homepage
 Route::get('/', function () {
     return view('App');
@@ -47,6 +50,8 @@ Route::get('/applied_scholarships', function () {
 // Course and Scholarships API
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/scholarships', [ScholarshipController::class, 'index']);
+Route::get('/student/{user_id}', [StudentController::class, 'getStudentByUserId']);
+Route::put('/student/update/{user_id}', [StudentController::class, 'updateStudent']);
 
 
 

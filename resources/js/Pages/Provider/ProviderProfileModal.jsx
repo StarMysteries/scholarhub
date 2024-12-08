@@ -128,7 +128,7 @@ function ProviderProfileModal({ isEditing, setIsEditing, onClose }) {
                                 <div>
                                     <label className="block text-gray-600 font-medium">Name</label>
                                     {!isEditing ? (
-                                        <p className="text-gray-800 font-semibold">
+                                        <p className="text-green-600 font-semibold">
                                             {editedData?.provider_name || providerData.provider_name}
                                         </p>
                                     ) : (
@@ -142,15 +142,15 @@ function ProviderProfileModal({ isEditing, setIsEditing, onClose }) {
                                                     provider_name: e.target.value,
                                                 }))
                                             }
-                                            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="w-full p-2 text-black border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         />
                                     )}
                                 </div>
                                 <div>
                                     <label className="block text-gray-600 font-medium">Contact</label>
                                     {!isEditing ? (
-                                        <p className="text-gray-800 font-semibold">
-                                            {editedData?.provider_contact || providerData.user_email}
+                                        <p className="text-green-600 font-semibold">
+                                            {editedData?.provider_contact || providerData.provider_contact}
                                         </p>
                                     ) : (
                                         <input
@@ -164,14 +164,14 @@ function ProviderProfileModal({ isEditing, setIsEditing, onClose }) {
                                                     provider_contact: e.target.value,
                                                 }))
                                             }
-                                            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="w-full p-2 text-black border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         />
                                     )}
                                 </div>
                                 <div>
                                     <label className="block text-gray-600 font-medium">Email</label>
                                     {!isEditing ? (
-                                        <p className="text-gray-800 font-semibold">
+                                        <p className="text-green-600 font-semibold">
                                             {editedData?.user_email || providerData.user_email}
                                         </p>
                                     ) : (
@@ -185,7 +185,7 @@ function ProviderProfileModal({ isEditing, setIsEditing, onClose }) {
                                                     user_email: e.target.value,
                                                 }))
                                             }
-                                            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                            className="w-full p-2 text-black border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                                         />
                                     )}
                                 </div>

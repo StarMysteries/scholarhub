@@ -7,6 +7,7 @@ function useNavbarFunctions() {
     const [userRole, setUserRole] = useState(localStorage.getItem('user_role'));
     const [userName, setUserName] = useState("");
     const [providerData, setProviderData] = useState(null);
+    const [studentData, setStudentData] = useState(null);
 
     useEffect(() => {
         const role = localStorage.getItem('user_role');
@@ -16,14 +17,22 @@ function useNavbarFunctions() {
         if (role === 'Provider') {
             fetchProviderData(userID); // Fetch provider data
         } else if (role === 'Student') {
-            const firstName = localStorage.getItem('student_fname');
-            const lastName = localStorage.getItem('student_lname');
-            setUserName(`${firstName} ${lastName}`);
+            fetchStudentData(userID); // Fetch student data
         } else if (role === 'Admin') {
             const adminName = localStorage.getItem('admin_name');
             setUserName(adminName);
         }
     }, []);
+
+    const fetchStudentData = async (userID) => {
+        try {
+            const response = await axios.get(`/student/${userID}`);
+            setStudentData(response.data); // Store student data
+            setUserName(`${response.data.student_fname} ${response.data.student_lname}`); // Update name for Navbar
+        } catch (error) {
+            console.error('Error fetching provider data:', error);
+        }
+    };
 
     const fetchProviderData = async (userID) => {
         try {
@@ -45,7 +54,7 @@ function useNavbarFunctions() {
         }
     };
 
-    return { userRole, userName, providerData, handleLogout };
+    return { userRole, userName, providerData, studentData, handleLogout };
 }
 
 export default useNavbarFunctions;
