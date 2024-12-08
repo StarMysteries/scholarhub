@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
+import EditScholarshipModal from './EditScholarshipModal'; // Adjust the path based on your folder structure
+
+
 const ApplicantStatus = () => {
     const { scholarshipId } = useParams();
     const navigate = useNavigate();
@@ -55,6 +59,13 @@ const ApplicantStatus = () => {
         setCurrentPage(pageNumber);
     };
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingScholarshipId, setEditingScholarshipId] = useState(null);
+    const openEditModal = (id) => {
+        setEditingScholarshipId(id);
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="bg-gray-100 min-h-full py-8 px-4 flex flex-col">
             {/* Scholarship Name and Filter Dropdown */}
@@ -80,15 +91,26 @@ const ApplicantStatus = () => {
                     </div>
                 </div>
 
-                {/* Back Button */}
-                <div className="flex justify-left mt-6">
+                {/* Back and Edit Scholarship Buttons */}
+                <div className="flex justify-between items-center mt-6">
+                    {/* Back Button on the Left */}
                     <button
                         onClick={() => navigate(-1)} // Navigate back one step
                         className="bg-blue-600 text-white py-2 px-4 rounded-lg focus:outline-none hover:bg-blue-700"
                     >
                         Back
                     </button>
+
+                    {/* Edit Scholarship Button on the Right */}
+                    <button
+                        onClick={() => openEditModal(scholarshipId)}
+                        className="bg-transparent text-blue-600 py-2 px-4 rounded-lg border border-blue-600 focus:outline-none hover:bg-blue-100"
+                    >
+                        Edit Scholarship
+                    </button>
+
                 </div>
+
 
 
             </div>
@@ -109,7 +131,7 @@ const ApplicantStatus = () => {
 
                                 {/* Applicant Status */}
                                 <p>
-                                    <strong>Status: </strong>
+                                    <strong>Status:</strong>
                                     <span
                                         className={`font-bold ${applicant.application_status === 'Pending'
                                             ? 'text-yellow-500'
@@ -163,9 +185,26 @@ const ApplicantStatus = () => {
                 </div>
             )}
 
+            {isModalOpen && (
+                <EditScholarshipModal
+                    isOpen={isModalOpen}
+                    onClose={() => {
+                        setEditingScholarshipId(null);
+                        setIsModalOpen(false);
+                    }}
+                    onConfirm={() => setIsModalOpen(true)}
+                    message={`Are you sure you want to edit this scholarship?`}
+                    scholarshipData={
+                        applicants.find(applicant => applicant.scholarship_id === editingScholarshipId) || {}
+                    }
+                />
+            )}
+
 
         </div>
     );
 };
 
 export default ApplicantStatus;
+
+
