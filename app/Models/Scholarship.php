@@ -26,4 +26,10 @@ class Scholarship extends Model
     {
         return $this->belongsToMany(Course::class, 'scholarship_courses', 'scholarship_id', 'course_id');
     }
+    
+        public function provider()
+    {
+        return $this->belongsTo(Provider::class, 'provider_id', 'provider_id');
+    }
+
 }
