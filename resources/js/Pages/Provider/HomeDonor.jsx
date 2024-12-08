@@ -15,6 +15,7 @@ const HomeDonor = () => {
     const { scholarships, setScholarships, error } = useDonorScholarships();
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     const [confirmationModal, setConfirmationModal] = useState({
         isOpen: false,
@@ -50,10 +51,10 @@ const HomeDonor = () => {
 
     const handleSubmit = async (scholarshipData) => {
         try {
-            // Call the submitScholarship function from the hook
+            setSuccessMessage("Scholarship added successfully! Refreshing Page...");
             const newScholarshipResponse = await submitScholarship(scholarshipData);
             setScholarships((prevScholarships) => [...prevScholarships, newScholarshipResponse]);
-            setShowModal(false); // Close the modal after submission
+            setShowModal(false);
             setNewScholarship({
                 name: '',
                 description: '',
@@ -61,7 +62,10 @@ const HomeDonor = () => {
                 deadline: '',
                 requirements: '',
                 courses: '',
-            }); // Reset form state
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); 
         } catch (error) {
             console.error("HOME Error submitting scholarship:", error);
         }
@@ -73,7 +77,7 @@ const HomeDonor = () => {
     // Filter scholarships based on search query and active status
     const filteredScholarships = scholarships
         .filter((scholarship) => {
-            if (!scholarship.scholarship_name) return false; // Skip invalid objects
+            if (!scholarship.scholarship_name) return false;
             const query = searchQuery.toLowerCase();
             return (
                 scholarship.scholarship_name.toLowerCase().includes(query) ||
@@ -173,7 +177,7 @@ const HomeDonor = () => {
                         <select
                             value={activeFilter}
                             onChange={(e) => setActiveFilter(e.target.value)}
-                            className="bg-gray-100 text-gray-800 py-2 px-4 rounded-md border border-gray-300"
+                            className="bg-white text-gray-800 py-2 px-4 rounded-md shadow-md border border-gray-300"
                         >
                             <option value="All">All</option>
                             <option value="Active">Active</option>
@@ -182,6 +186,13 @@ const HomeDonor = () => {
                     </div>
                 </div>
 
+                {/* Success Message */}
+                {successMessage && (
+                    <div className="bg-green-500 text-white p-4 rounded-lg text-center mb-4">
+                        {successMessage}
+                    </div>
+                )}
+
                 {/* Search Bar */}
                 <div className="mb-6">
                     <input
@@ -189,7 +200,7 @@ const HomeDonor = () => {
                         placeholder="Search Scholarships..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full py-2 px-4 border border-black rounded-md bg-white text-gray-800"
+                        className="w-full py-2 px-4 border rounded-md shadow-md bg-white text-gray-800"
                     />
                 </div>
 

@@ -1,99 +1,119 @@
-import React, { useState } from 'react';
-import useFetchCourses from '../../hooks/useFetchCourses';
-import Select from 'react-select';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import useFetchCourses from "../../hooks/useFetchCourses";
+import Select from "react-select";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const EditScholarshipModal = ({
-    isOpen,
-    onClose,
-    scholarshipData,
-    onChange,
-    onSubmit,
-    message,
-}) => {
-    const [isEditing, setIsEditing] = useState(false); // Toggle between confirmation and form
-    const { courses } = useFetchCourses(); // Fetch courses data
+const EditScholarshipModal = ({ isOpen, onClose, scholarshipId, onSubmit }) => {
+    const [scholarshipData, setScholarshipData] = useState({
+        name: "",
+        description: "",
+        status: "Active",
+        deadline: "",
+        courses: [], // This will store the IDs of selected courses
+    });
     const [selectedCourses, setSelectedCourses] = useState([]);
-    const [description, setDescription] = useState(scholarshipData.description || '');
+    const { courses } = useFetchCourses();
 
-    if (!isOpen) return null;
+    // Fetch scholarship data when modal opens
+    useEffect(() => {
+        if (isOpen && scholarshipId) {
+            axios
+                .get(`/scholarship/${scholarshipId}`)
+                .then((response) => {
+                    const scholarship = response.data;
 
-    // Convert courses into the format expected by React Select
+                    // Update state with fetched data
+                    setScholarshipData({
+                        name: scholarship.scholarship_name || "",
+                        description: scholarship.scholarship_desc || "",
+                        status: scholarship.scholarship_status || "Active",
+                        deadline: scholarship.scholarship_deadline || "",
+                        courses: scholarship.courses.map((course) => course.course_id),
+                    });
+
+                    // Format courses for React-Select
+                    setSelectedCourses(
+                        scholarship.courses.map((course) => ({
+                            value: course.course_id,
+                            label: course.course_name,
+                        }))
+                    );
+                })
+                .catch((error) => {
+                    console.error("Error fetching scholarship data:", error);
+                });
+        }
+    }, [isOpen, scholarshipId]);
+
+    // Convert courses into the format expected by React-Select
     const courseOptions = courses.map((course) => ({
         value: course.course_id,
         label: course.course_name,
     }));
 
-    const handleCourseChange = (selectedOptions) => {
-        setSelectedCourses(selectedOptions || []);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setScholarshipData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
     };
 
     const handleDescriptionChange = (value) => {
-        setDescription(value);
-        onChange({ target: { name: 'description', value } });
+        setScholarshipData((prevData) => ({
+            ...prevData,
+            description: value,
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleCourseChange = (selectedOptions) => {
+        setSelectedCourses(selectedOptions || []);
+        setScholarshipData((prevData) => ({
+            ...prevData,
+            courses: (selectedOptions || []).map((option) => option.value),
+        }));
+    };
+
+    const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        // Gather form data
+        // Prepare the scholarship data for submission
         const scholarshipPayload = {
             name: scholarshipData.name,
-            description,
+            description: scholarshipData.description,
             status: scholarshipData.status,
             deadline: scholarshipData.deadline,
-            courses: selectedCourses.map((course) => course.value),
+            courses: scholarshipData.courses, // List of course IDs
         };
 
-        onSubmit(scholarshipPayload);
-        onClose(); // Close the modal after submission
+        // Submit the scholarship update
+        axios
+            .put(`/scholarship/update/${scholarshipId}`, scholarshipPayload)
+            .then((response) => {
+                onSubmit(response.data); // Handle the response if needed
+                onClose(); // Close the modal
+            })
+            .catch((error) => {
+                console.error("Error submitting scholarship data:", error);
+            });
     };
 
-    // If not editing, show the confirmation modal
-    if (!isEditing) {
-        return (
-            <div className="fixed inset-0 bg-gray-800 bg-opacity-60 flex items-center justify-center z-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full transform transition-all duration-300 scale-95 sm:scale-100">
-                    {/* Modal Title */}
-                    <h2 className="text-xl font-semibold text-gray-800 text-center mb-4">Confirm Action</h2>
+    if (!isOpen) return null;
 
-                    {/* Modal Message */}
-                    <p className="text-gray-700 text-base text-center mb-4">{message}</p>
-
-                    {/* Button Container */}
-                    <div className="flex justify-between space-x-2">
-                        <button
-                            onClick={() => setIsEditing(true)} // Switch to edit mode
-                            className="w-full sm:w-1/2 py-2 text-white font-semibold bg-green-600 rounded-lg hover:bg-green-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        >
-                            Confirm
-                        </button>
-                        <button
-                            onClick={onClose}
-                            className="w-full sm:w-1/2 py-2 text-white font-semibold bg-red-600 rounded-lg hover:bg-red-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    // If editing, show the AddScholarshipModal content
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold mb-4">Edit Scholarship</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleFormSubmit}>
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Scholarship Name</label>
                         <input
                             type="text"
                             name="name"
                             value={scholarshipData.name}
-                            onChange={onChange}
+                            onChange={handleInputChange}
                             required
                             className="w-full py-2 px-3 border border-gray-300 rounded-md"
                         />
@@ -102,7 +122,7 @@ const EditScholarshipModal = ({
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Description</label>
                         <ReactQuill
-                            value={description}
+                            value={scholarshipData.description}
                             onChange={handleDescriptionChange}
                             placeholder="Enter a description..."
                             className="w-full border border-gray-300 rounded-md"
@@ -127,7 +147,7 @@ const EditScholarshipModal = ({
                         <select
                             name="status"
                             value={scholarshipData.status}
-                            onChange={onChange}
+                            onChange={handleInputChange}
                             className="w-full py-2 px-3 border border-gray-300 rounded-md"
                         >
                             <option value="Active">Active</option>
@@ -138,10 +158,10 @@ const EditScholarshipModal = ({
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Deadline/Open Until</label>
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="deadline"
                             value={scholarshipData.deadline}
-                            onChange={onChange}
+                            onChange={handleInputChange}
                             required
                             className="w-full py-2 px-3 border border-gray-300 rounded-md"
                         />

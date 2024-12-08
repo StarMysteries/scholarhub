@@ -43,7 +43,18 @@ class ScholarshipsTableSeeder extends Seeder
             $scholarships[] = [
                 'provider_id' => 1,
                 'scholarship_name' => 'Scholarship ' . Str::random(6) . " #$i",
-                'scholarship_desc' => '',
+                'scholarship_desc' => '
+                <div>
+                    <h2>Eligibility Criteria</h2>
+                    <p><strong>To qualify for this scholarship, applicants must meet the following criteria:</strong></p>
+                    <ul>
+                        <li>Be a full-time student enrolled in one of the following programs: <strong>BS-VAL, BS-CS, or BS-IT</strong>.</li>
+                        <li>Maintain a minimum GPA of <strong>3.0 or higher</strong>.</li>
+                        <li>Submit a completed application form along with all required documents by the application deadline.</li>
+                    </ul>
+                    <p><strong>Please ensure that all necessary documents are submitted to complete your application. Incomplete submissions will not be considered.</strong></p>
+                </div>
+                ',
                 'scholarship_status' => 'Active',
                 'scholarship_deadline' => $deadline,
                 'created_at' => now(),

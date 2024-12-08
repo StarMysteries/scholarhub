@@ -98,7 +98,7 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2">Deadline/Open Until</label>
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="deadline"
                             value={scholarshipData.deadline}
                             onChange={onChange}

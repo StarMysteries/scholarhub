@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-
-
-import EditScholarshipModal from './EditScholarshipModal'; // Adjust the path based on your folder structure
-
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import EditScholarshipModal from "./EditScholarshipModal"; // Adjust the path if needed
 
 const ApplicantStatus = () => {
     const { scholarshipId } = useParams();
     const navigate = useNavigate();
-    const [scholarshipName, setScholarshipName] = useState('');
+    const [scholarshipName, setScholarshipName] = useState("");
     const [applicants, setApplicants] = useState([]);
+    const [statusFilter, setStatusFilter] = useState("All");
     const [filteredApplicants, setFilteredApplicants] = useState([]);
-    const [statusFilter, setStatusFilter] = useState('All');
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
-    const applicantsPerPage = 6; // Number of applicants per page
-    const [totalPages, setTotalPages] = useState(1); // Total number of pages
+    const applicantsPerPage = 6;
 
     // Fetch scholarship and applicants data
     useEffect(() => {
@@ -27,10 +24,8 @@ const ApplicantStatus = () => {
                 const response = await fetch(`/applicant_status/${scholarshipId}`);
                 if (!response.ok) throw new Error("Failed to fetch applicants.");
                 const data = await response.json();
-                setScholarshipName(data.scholarshipName);
+                setScholarshipName(data.scholarshipName || `Scholarship #${scholarshipId}`);
                 setApplicants(data.applicants);
-                setFilteredApplicants(data.applicants);
-                setTotalPages(Math.ceil(data.applicants.length / applicantsPerPage)); // Update total pages
             } catch (err) {
                 setError(err.message);
             }
@@ -41,29 +36,39 @@ const ApplicantStatus = () => {
 
     // Filter applicants based on status filter
     useEffect(() => {
-        if (statusFilter === 'All') {
-            setFilteredApplicants(applicants);
-        } else {
-            setFilteredApplicants(applicants.filter(applicant => applicant.application_status === statusFilter));
-        }
-        setTotalPages(Math.ceil(filteredApplicants.length / applicantsPerPage)); // Recalculate total pages after filtering
+        setFilteredApplicants(
+            statusFilter === "All"
+                ? applicants
+                : applicants.filter(applicant => applicant.application_status === statusFilter)
+        );
     }, [statusFilter, applicants]);
 
-    // Get current applicants for the current page
-    const indexOfLastApplicant = currentPage * applicantsPerPage;
-    const indexOfFirstApplicant = indexOfLastApplicant - applicantsPerPage;
-    const currentApplicants = filteredApplicants.slice(indexOfFirstApplicant, indexOfLastApplicant);
+    // Handle pagination
+    const totalPages = Math.ceil(filteredApplicants.length / applicantsPerPage);
+    const currentApplicants = filteredApplicants.slice(
+        (currentPage - 1) * applicantsPerPage,
+        currentPage * applicantsPerPage
+    );
 
-    // Handle page change
-    const handlePageChange = (pageNumber) => {
+    const handlePageChange = pageNumber => {
         setCurrentPage(pageNumber);
     };
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingScholarshipId, setEditingScholarshipId] = useState(null);
-    const openEditModal = (id) => {
-        setEditingScholarshipId(id);
+    const openEditModal = () => {
         setIsModalOpen(true);
+    };
+
+    const closeEditModal = () => {
+        setIsModalOpen(false);
+    };
+
+    // Handle scholarship submission
+    const handleSubmit = () => {
+        setSuccessMessage("Scholarship updated successfully! Refreshing Page...");
+        closeEditModal();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000); // Refresh after 2 seconds
     };
 
     return (
@@ -71,74 +76,76 @@ const ApplicantStatus = () => {
             {/* Scholarship Name and Filter Dropdown */}
             <div className="container mx-auto mb-8">
                 <div className="flex justify-between items-center">
-                    {/* Scholarship Name */}
                     <h1 className="text-3xl font-bold mb-4">
-                        Applicants for {scholarshipName || `Scholarship #${scholarshipId}`}
+                        Applicants for {scholarshipName}
                     </h1>
-
-                    {/* Status Filter Dropdown */}
-                    <div className="w-1/4">
-                        <select
-                            className="bg-white text-gray-700 py-2 px-4 rounded-lg shadow-md w-full"
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                            <option value="All">All Statuses</option>
-                            <option value="Accepted">Accepted</option>
-                            <option value="Declined">Declined</option>
-                            <option value="Pending">Pending</option>
-                        </select>
-                    </div>
+                    <select
+                        className="bg-white text-gray-700 py-2 px-4 rounded-lg shadow-md w-1/4"
+                        value={statusFilter}
+                        onChange={e => setStatusFilter(e.target.value)}
+                    >
+                        <option value="All">All Statuses</option>
+                        <option value="Accepted">Accepted</option>
+                        <option value="Declined">Declined</option>
+                        <option value="Pending">Pending</option>
+                    </select>
                 </div>
+
+                {/* Success Message */}
+                {successMessage && (
+                    <div className="bg-green-500 text-white p-4 rounded-lg text-center mb-4">
+                        {successMessage}
+                    </div>
+                )}
+
+                {/* Error Message */}
+                {error && (
+                    <div className="bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+                        {error}
+                    </div>
+                )}
 
                 {/* Back and Edit Scholarship Buttons */}
                 <div className="flex justify-between items-center mt-6">
-                    {/* Back Button on the Left */}
                     <button
-                        onClick={() => navigate(-1)} // Navigate back one step
-                        className="bg-blue-600 text-white py-2 px-4 rounded-lg focus:outline-none hover:bg-blue-700"
+                        onClick={() => navigate(-1)}
+                        className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
                     >
                         Back
                     </button>
-
-                    {/* Edit Scholarship Button on the Right */}
                     <button
-                        onClick={() => openEditModal(scholarshipId)}
-                        className="bg-transparent text-blue-600 py-2 px-4 rounded-lg border border-blue-600 focus:outline-none hover:bg-blue-100"
+                        onClick={openEditModal}
+                        className="bg-green-700 text-white py-2 px-4 rounded-lg hover:bg-green-600"
                     >
                         Edit Scholarship
                     </button>
-
                 </div>
-
-
-
             </div>
 
-            {/* Display Applicants */}
+            {/* Applicants */}
             <div className="container mx-auto mb-12">
-                {error ? (
-                    <p className="text-red-600 text-center">{error}</p>
-                ) : currentApplicants.length > 0 ? (
+                {currentApplicants.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {currentApplicants.map((applicant) => (
+                        {currentApplicants.map(applicant => (
                             <div
                                 key={applicant.application_id}
-                                className="bg-white rounded-lg shadow-lg p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                                className="bg-white rounded-lg shadow-lg p-6 transition transform duration-300 hover:scale-105 hover:shadow-2xl"
                             >
-                                <h3 className="font-semibold text-lg">{applicant.student_fname} {applicant.student_lname}</h3>
-                                <p><strong>Course:</strong> {applicant.course_id}</p>
-
-                                {/* Applicant Status */}
+                                <h3 className="font-semibold text-lg">
+                                    {applicant.student_fname} {applicant.student_lname}
+                                </h3>
                                 <p>
-                                    <strong>Status:</strong>
+                                    <strong>Course:</strong> {applicant.course_id}
+                                </p>
+                                <p>
+                                    <strong>Status:</strong>{" "}
                                     <span
-                                        className={`font-bold ${applicant.application_status === 'Pending'
-                                            ? 'text-yellow-500'
-                                            : applicant.application_status === 'Accepted'
-                                                ? 'text-green-500'
-                                                : 'text-red-500'
-                                            }`}
+                                        className={`font-bold ${applicant.application_status === "Pending"
+                                            ? "text-yellow-500"
+                                            : applicant.application_status === "Accepted"
+                                                ? "text-green-500"
+                                                : "text-red-500"
+                                        }`}
                                     >
                                         {applicant.application_status}
                                     </span>
@@ -147,64 +154,55 @@ const ApplicantStatus = () => {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-gray-600 text-center">No applicants for this scholarship.</p>
+                    <p className="text-gray-600 text-center">
+                        No applicants for this scholarship.
+                    </p>
                 )}
             </div>
 
-            {/* Pagination Controls */}
+            {/* Pagination */}
             {totalPages > 1 && (
                 <div className="flex justify-center py-4 space-x-4">
-                    {/* Previous button */}
                     <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700"
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                     >
                         Prev
                     </button>
-
-                    {/* Page numbers */}
                     {Array.from({ length: totalPages }, (_, index) => (
                         <button
                             key={index + 1}
                             onClick={() => handlePageChange(index + 1)}
-                            className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'} border border-blue-600 rounded-lg hover:bg-blue-100`}
+                            className={`px-4 py-2 ${currentPage === index + 1
+                                ? "bg-blue-600 text-white"
+                                : "bg-white text-blue-600"
+                                } border border-blue-600 rounded-lg hover:bg-blue-100`}
                         >
                             {index + 1}
                         </button>
                     ))}
-
-                    {/* Next button */}
                     <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 hover:bg-blue-700"
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                     >
                         Next
                     </button>
                 </div>
             )}
 
+            {/* Edit Scholarship Modal */}
             {isModalOpen && (
                 <EditScholarshipModal
                     isOpen={isModalOpen}
-                    onClose={() => {
-                        setEditingScholarshipId(null);
-                        setIsModalOpen(false);
-                    }}
-                    onConfirm={() => setIsModalOpen(true)}
-                    message={`Are you sure you want to edit this scholarship?`}
-                    scholarshipData={
-                        applicants.find(applicant => applicant.scholarship_id === editingScholarshipId) || {}
-                    }
+                    onClose={closeEditModal}
+                    scholarshipId={scholarshipId}
+                    onSubmit={handleSubmit}
                 />
             )}
-
-
         </div>
     );
 };
 
 export default ApplicantStatus;
-
-

@@ -10,7 +10,7 @@ use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\AddScholarshipController;
-
+use App\Models\Scholarship;
 
 // About Page
 Route::get('/about', function () {
@@ -73,6 +73,8 @@ Route::get('/application_status/{scholarshipId}', function () {
 // Provider/Donor API
 Route::get('/donor_scholarships', [DonorScholarshipController::class, 'index'])->middleware('auth');
 
+Route::get('/scholarship/{scholarshipId}', [ScholarshipController::class, 'getScholarshipbyId']);
+Route::put('/scholarship/update/{scholarshipId}', [ScholarshipController::class, 'updateScholarship']);
 
 Route::get('/applicant_status/{scholarshipId}', [ApplicantController::class, 'getApplicantsByScholarship']);
 Route::get('/provider/{user_id}', [ProviderController::class, 'getProviderByUserId']);

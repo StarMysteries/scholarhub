@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('scholarship_id');  //auto-incrementing primary key
             $table->foreignId('provider_id')->constrained('providers', 'provider_id')->onDelete('cascade');
             $table->string('scholarship_name');  
-            $table->string('scholarship_desc');  
+            $table->longText('scholarship_desc');  
             $table->enum('scholarship_status', ['Active', 'Inactive']);
             $table->dateTime('scholarship_deadline');
             $table->timestamps();  
