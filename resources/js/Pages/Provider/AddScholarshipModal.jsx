@@ -60,7 +60,7 @@ const AddScholarshipModal = ({ isOpen, onClose, onSubmit, scholarshipData, onCha
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2">Description</label>
+                        <label className="block text-sm font-medium mb-2">Requirements</label>
                         <ReactQuill
                             value={description}
                             onChange={handleDescriptionChange}
