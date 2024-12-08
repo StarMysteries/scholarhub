@@ -97,4 +97,19 @@ class ScholarshipController extends Controller
 
         return response()->json($scholarship, 200);
     }
+
+    public function getScholarshipDetails(Request $request)
+    {
+        $scholarshipId = $request->query('id'); // Get 'id' from query parameters
+      
+        $scholarship = Scholarship::with(['provider', 'courses'])->find($scholarshipId);
+
+        if (!$scholarship) {
+            return response()->json(['error' => 'Scholarship in controller not found'], 404);
+        }
+
+        return response()->json($scholarship);
+    }
+
+    
 }
