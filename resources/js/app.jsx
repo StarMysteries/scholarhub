@@ -13,6 +13,7 @@ import AdminLayout from './Layouts/AdminLayout';
 
 // Admin Pages
 const Admin = lazy(() => import('./Pages/Admin/Admin'));
+const CompanyProposals = lazy(() => import('./Pages/Admin/CompanyProposals'));
 
 // Provider Pages
 const HomeDonor = lazy(() => import('./Pages/Provider/HomeDonor'));
@@ -69,6 +70,7 @@ function App() {
           {/* Routes using AdminLayout */}
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<Admin />} />
+            <Route path="/company_proposals" element={<CompanyProposals />} />
           </Route>
 
           {/* Unauthorized route */}

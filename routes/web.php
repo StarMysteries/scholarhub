@@ -18,15 +18,14 @@ Route::get('/about', function () {
 });
 
 
-
-
-
 //Admin
 Route::get('/admin', function () {
     return view('App');
 });
 
-
+Route::get('/company_proposals', function () {
+    return view('App');
+});
 
 
 
