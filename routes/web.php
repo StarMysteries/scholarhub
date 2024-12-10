@@ -10,7 +10,7 @@ use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\AddScholarshipController;
-use App\Models\Scholarship;
+
 
 // About Page
 Route::get('/about', function () {
@@ -64,9 +64,7 @@ Route::put('/student/update/{user_id}', [StudentController::class, 'updateStuden
 Route::get('/donor', function () {
     return view('App');
 });
-Route::get('/view_more', function () {
-    return view('App');
-});
+
 Route::get('/form', function () {
     return view('App');
 });
@@ -87,6 +85,13 @@ Route::put('/scholarships/{id}/status', action: [ScholarshipController::class, '
 Route::post('/create_scholarships', [AddScholarshipController::class, 'store'])->middleware('auth');
 Route::get('/student_applications', [ApplicationsController::class, 'getStudentApplications'])->middleware('auth');
 
+Route::get('/view_more', function () {
+    return view('App');
+});
+Route::put('/applications/{application_id}', action: [ApplicantController::class, 'updateStatus']);
+Route::get('/applicant/{application_id}', [ApplicantController::class, 'getApplicantDetails']);
+
+Route::post('/submit-application', [ApplicationsController::class, 'submitApplication'])->middleware('auth');
 
 
 
