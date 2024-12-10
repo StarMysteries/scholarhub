@@ -129,7 +129,8 @@ const ApplicantStatus = () => {
                         {currentApplicants.map(applicant => (
                             <div
                                 key={applicant.application_id}
-                                className="bg-white rounded-lg shadow-lg p-6 transition transform duration-300 hover:scale-105 hover:shadow-2xl"
+                                className="bg-white rounded-lg shadow-lg p-6 transition transform duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+                                onClick={() => navigate(`/view_more?applicant_id=${applicant.application_id}`)} // Pass applicant_id as query param
                             >
                                 <h3 className="font-semibold text-lg">
                                     {applicant.student_fname} {applicant.student_lname}
@@ -145,7 +146,7 @@ const ApplicantStatus = () => {
                                             : applicant.application_status === "Accepted"
                                                 ? "text-green-500"
                                                 : "text-red-500"
-                                        }`}
+                                            }`}
                                     >
                                         {applicant.application_status}
                                     </span>
@@ -153,6 +154,7 @@ const ApplicantStatus = () => {
                             </div>
                         ))}
                     </div>
+
                 ) : (
                     <p className="text-gray-600 text-center">
                         No applicants for this scholarship.
