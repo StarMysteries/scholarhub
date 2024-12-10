@@ -20,7 +20,9 @@ class ApplicationsController extends Controller
             ->join('students', 'applications.student_id', '=', 'students.student_id')
             ->select(
                 'applications.application_id',
+                'applications.rejection_details',
                 'scholarships.scholarship_name',
+                'scholarships.scholarship_desc',
                 'scholarships.scholarship_status',
                 'scholarships.scholarship_deadline',
                 'applications.application_status',
