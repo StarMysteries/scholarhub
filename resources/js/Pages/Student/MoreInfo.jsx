@@ -51,11 +51,11 @@ const MoreInfo = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-6">
             {/* Provider Image */}
-            <img
-              src={scholarship.provider?.provider_picPath || ""}
-              alt="Scholarship"
-              className="rounded-full w-32 h-32 object-cover shadow-md"
-            />
+           <div className="bg-pink rounded-full w-32 h-32 flex items-center justify-center shadow-xl">
+              <span className="text-5xl font-semibold text-gray-800">
+                {scholarship.scholarship_name.charAt(0)}
+              </span>
+            </div>
             <div>
               {/* Scholarship Name and Provider Information */}
               <h4 className="text-2xl font-semibold text-gray-800">
