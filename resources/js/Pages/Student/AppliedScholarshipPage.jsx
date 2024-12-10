@@ -39,6 +39,8 @@ const AppliedScholarshipPage = () => {
       email: application.email,
       status: application.application_status,
       deadline: application.scholarship_deadline,
+      Requirements: application.scholarship_desc,
+      rejection_details: application.rejection_details,
     });
     setShowModal(true);
   };
