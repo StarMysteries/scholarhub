@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // import Quill styles
-
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 const MoreInfo = () => {
   const location = useLocation();
@@ -51,7 +50,7 @@ const MoreInfo = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-6">
             {/* Provider Image */}
-           <div className="bg-pink rounded-full w-32 h-32 flex items-center justify-center shadow-xl">
+            <div className="bg-gray rounded-full w-32 h-32 flex items-center justify-center shadow-xl">
               <span className="text-5xl font-semibold text-gray-800">
                 {scholarship.scholarship_name.charAt(0)}
               </span>
@@ -82,7 +81,6 @@ const MoreInfo = () => {
 
         {/* Scholarship Information Section */}
         <div className="space-y-6">
-
           {/* Supported Courses Section */}
           <div>
             <h5 className="text-xl text-blue-700 font-semibold">Supported Courses</h5>
@@ -95,15 +93,17 @@ const MoreInfo = () => {
             </ul>
           </div>
 
-
-          {/* Basic Scholarship Details */}
+          {/* Scholarship Information Section */}
           <div>
             <h5 className="text-xl text-blue-700 font-semibold">Scholarship Information</h5>
             <div>
               <span className="font-semibold">Application Deadline: </span>
               {new Date(scholarship.scholarship_deadline).toLocaleString()}
             </div>
-            <br></br>
+          </div>
+
+          {/* Requirements Section */}
+          <div className="mt-6">
             <h5 className="text-xl text-blue-700 font-semibold">Requirements</h5>
             {/* Check if scholarship description exists */}
             {scholarship.scholarship_desc && scholarship.scholarship_desc.trim() !== "" ? (
@@ -112,16 +112,12 @@ const MoreInfo = () => {
                 readOnly={true}
                 theme="snow"
                 modules={{ toolbar: false }}  // Disable toolbar
+                className="mt-4 border rounded-lg"
               />
             ) : (
               <div className="text-gray-500">No requirements</div>  // Show 'No requirements' if description is empty
-            )}
-            <div>
-
-            </div>
+            )}        
           </div>
-
-
         </div>
 
         {/* Footer Section */}
