@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // useNavigate for navigation
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import Quill styles
+import axios from "axios";
 
 const ScholarshipForm = () => {
+  const userId = localStorage.getItem('user_id');
+
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const scholarshipId = params.get("id");
@@ -15,6 +18,8 @@ const ScholarshipForm = () => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
+
+
     const fetchScholarship = async () => {
       try {
         const response = await fetch(`/scholarship?id=${scholarshipId}`);
@@ -42,10 +47,64 @@ const ScholarshipForm = () => {
     navigate(-1); // -1 takes the user back to the previous page in the history
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
+  
+    // Ensure the user is authenticated
+    if (!userId) {
+      alert("You must be signed in to submit an application.");
+      navigate("/login");
+      return;
+    }
+  
+    // Validate file upload
+    if (files.length === 0) {
+      alert("You must upload at least one file.");
+      return;
+    }
+  
+    // Validate scholarship ID
+    if (!scholarshipId) {
+      setError("Missing scholarship information.");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("scholarship_id", scholarshipId);
+  
+    console.log("Submitting form data:");
+    formData.forEach((value, key) => {
+      console.log(key, value); // Log each key-value pair
+    });
+  
+    try {
+      const response = await axios.post("/submit-application", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Correct header for form submission
+        },
+      });
+  
+      console.log("Response:", response);
+  
+     
+      if (response.data.message) {
+        alert(response.data.message); // Display success message
+        navigate("/"); // Navigate to another page (e.g., applications overview)
+      } else {
+        setError(response.data.error || "Failed to submit application.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error.response || error.message);
+      setError(
+        error.response?.data?.error ||
+          "An error occurred. Please try again later."
+      );
+    }
   };
+  
+
+
+
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
