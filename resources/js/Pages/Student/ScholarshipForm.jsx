@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // useNavigate for navigation
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // import Quill styles
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import axios from "axios";
 import LoadingSpinner from "../General/LoadingSpinner";
 
@@ -116,8 +116,8 @@ const ScholarshipForm = () => {
       <div className="bg-white shadow-lg rounded-lg p-8 space-y-8">
 
         {/* Scholarship Info */}
-        <div className="flex justify-between items-center border-b pb-4">
-          <div>
+        <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4">
+          <div className="mb-4 md:mb-0">
             <h1 className="text-3xl font-semibold text-gray-800">{scholarship.scholarship_name}</h1>
             <span className="text-sm text-gray-500">{scholarship.provider?.provider_name}</span>
           </div>
@@ -139,12 +139,10 @@ const ScholarshipForm = () => {
           )}
         </div>
 
-
-
         {/* Scholarship Description */}
         <div>
+          <h5 className="text-xl text-blue-700 font-semibold">Requirements</h5>
           <div className="text-xl text-black rounded-lg p-3">
-            <h5 className="text-xl text-blue-700 font-semibold">Requirements</h5>
             {/* Check if scholarship description exists */}
             {scholarship.scholarship_desc && scholarship.scholarship_desc.trim() !== "" ? (
               <ReactQuill
@@ -152,15 +150,13 @@ const ScholarshipForm = () => {
                 readOnly={true}
                 theme="snow"
                 modules={{ toolbar: false }}  // Disable toolbar
+                className="mt-4"
               />
             ) : (
               <div className="text-gray-500">No requirements</div>  // Show 'No requirements' if description is empty
             )}
           </div>
         </div>
-
-
-
 
         {/* File Upload Section */}
         <div className="border rounded-lg p-6 bg-gray-50 shadow-sm flex flex-col items-center mb-6">
@@ -189,7 +185,7 @@ const ScholarshipForm = () => {
         </div>
 
         {/* Submit and Back Button Section */}
-        <div className="flex justify-between items-center mt-6">
+        <div className="flex flex-col md:flex-row justify-between items-center mt-6 space-y-4 md:space-y-0">
           <button
             onClick={handleBackClick}
             className="bg-gray-300 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-gray-500 transition-all duration-300"
