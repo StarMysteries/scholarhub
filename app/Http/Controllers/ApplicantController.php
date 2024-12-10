@@ -52,7 +52,7 @@ class ApplicantController extends Controller
             'applicant_id' => $application->application_id,
             'student_name' => $application->student->student_fname . ' ' . $application->student->student_lname,
             'course' => $application->student->course_id,
-            'status' => $application->application_status,
+            'application_status' => $application->application_status,
             'user_email' => $application->student->user->user_email,
             'phone' => $application->student->student_contact,
             'address' => $application->student->student_address,

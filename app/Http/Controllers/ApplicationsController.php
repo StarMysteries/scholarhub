@@ -39,34 +39,48 @@ class ApplicationsController extends Controller
 
 
     public function submitApplication(Request $request)
-{
-    $userId = Auth::id();
+    {
+        $userId = Auth::id();
 
-    $student = DB::table('students')->where('user_id', $userId)->first();
+        // Find the student linked to the authenticated user
+        $student = DB::table('students')->where('user_id', $userId)->first();
 
-    if (!$student) {
-        return response()->json(['error' => 'Student not found for the given user ID.'], 404);
+        if (!$student) {
+            return response()->json(['error' => 'Student not found for the given user ID.'], 404);
+        }
+
+        // Validate the request data (scholarship_id)
+        $validator = Validator::make($request->all(), [
+            'scholarship_id' => 'required|exists:scholarships,scholarship_id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $scholarshipId = $request->scholarship_id;
+
+        // Check if the student has a pending or accepted application for the same scholarship
+        $existingApplication = DB::table('applications')
+            ->where('student_id', $student->student_id)
+            ->where('scholarship_id', $scholarshipId)
+            ->whereIn('application_status', ['Pending', 'Accepted'])
+            ->first();
+
+        if ($existingApplication) {
+            return response()->json(['error' => 'You already have an active application for this scholarship.'], 403);
+        }
+
+        // Create a new application with 'Pending' status
+        $application = Application::create([
+            'student_id' => $student->student_id,
+            'scholarship_id' => $scholarshipId,
+            'application_status' => 'Pending',
+            'application_date' => now(),
+        ]);
+
+        return response()->json(['message' => 'Application submitted successfully', 'application' => $application], 201);
     }
-
-    // Validate the request data (scholarship_id)
-    $validator = Validator::make($request->all(), [
-        'scholarship_id' => 'required|exists:scholarships,scholarship_id',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['error' => $validator->errors()], 400);
-    }
-
-    // Create the application with a 'Pending' status using the found student_id
-    $application = Application::create([
-        'student_id' => $student->student_id,  // Use the resolved student_id
-        'scholarship_id' => $request->scholarship_id,
-        'application_status' => 'Pending',
-        'application_date' => now(),  // Current timestamp
-    ]);
-
-    return response()->json(['message' => 'Application submitted successfully', 'application' => $application], 201);
-}
 
 
 

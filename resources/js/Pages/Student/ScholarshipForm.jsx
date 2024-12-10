@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // useNavigate for navigation
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import Quill styles
 import axios from "axios";
+import LoadingSpinner from "../General/LoadingSpinner";
 
 const ScholarshipForm = () => {
   const userId = localStorage.getItem('user_id');
@@ -11,15 +12,13 @@ const ScholarshipForm = () => {
   const params = new URLSearchParams(location.search);
   const scholarshipId = params.get("id");
 
-  const navigate = useNavigate(); // Use navigate hook for navigation
+  const navigate = useNavigate();
 
   const [scholarship, setScholarship] = useState(null);
   const [error, setError] = useState(null);
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-
-
     const fetchScholarship = async () => {
       try {
         const response = await fetch(`/scholarship?id=${scholarshipId}`);
@@ -38,80 +37,78 @@ const ScholarshipForm = () => {
     }
   }, [scholarshipId]);
 
+  // Handle file uploading
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
   };
 
+  // Handle navigate back
   const handleBackClick = () => {
     navigate(-1); // -1 takes the user back to the previous page in the history
   };
 
+  // Handle submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Ensure the user is authenticated
     if (!userId) {
-      alert("You must be signed in to submit an application.");
-      navigate("/login");
-      return;
+        alert("You must be signed in to submit an application.");
+        navigate("/login");
+        return;
     }
-  
+
     // Validate file upload
     if (files.length === 0) {
-      alert("You must upload at least one file.");
-      return;
+        alert("You must upload at least one file.");
+        return;
     }
-  
+
     // Validate scholarship ID
     if (!scholarshipId) {
-      setError("Missing scholarship information.");
-      return;
+        alert("Missing scholarship information.");
+        return;
     }
-  
+
     const formData = new FormData();
     formData.append("scholarship_id", scholarshipId);
-  
-    console.log("Submitting form data:");
-    formData.forEach((value, key) => {
-      console.log(key, value); // Log each key-value pair
-    });
-  
+
     try {
-      const response = await axios.post("/submit-application", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Correct header for form submission
-        },
-      });
-  
-      console.log("Response:", response);
-  
-     
-      if (response.data.message) {
-        alert(response.data.message); // Display success message
-        navigate("/"); // Navigate to another page (e.g., applications overview)
-      } else {
-        setError(response.data.error || "Failed to submit application.");
-      }
+        const response = await axios.post("/submit-application", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        if (response.data.message) {
+            alert(response.data.message); // Show success message
+            navigate("/"); // Redirect on success
+        } else {
+            alert(response.data.error || "Failed to submit application."); // Show error message
+        }
     } catch (error) {
-      console.error("Submission error:", error.response || error.message);
-      setError(
-        error.response?.data?.error ||
-          "An error occurred. Please try again later."
-      );
+        const errorMsg =
+            error.response?.data?.error || "An error occurred. Please try again later.";
+        console.error("Submission error:", errorMsg);
+        alert(errorMsg); // Show error message
     }
   };
-  
 
-
-
-
+  // Display Error
   if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
+    return <>
+      {/* Error Message */}
+      {error &&
+          <div className="mt-6 bg-red-500 text-white p-4 rounded-lg text-center mb-4">
+              {error}
+          </div>
+      }
+    </>;
   }
 
   if (!scholarship) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return <Suspense fallback={<LoadingSpinner />}></Suspense>;
   }
 
   return (
