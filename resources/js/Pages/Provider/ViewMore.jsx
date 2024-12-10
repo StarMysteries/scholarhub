@@ -100,17 +100,7 @@ const ViewMore = () => {
           {successMessage}
         </div>
       )}
-
-      {/* Back Button */}
-      <div className="mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-        >
-          Back
-        </button>
-      </div>
-
+  
       {/* Applicant Details Card */}
       <div className="container mx-auto bg-white rounded-lg shadow-lg p-6 space-y-6">
         {/* Header Section */}
@@ -133,43 +123,45 @@ const ViewMore = () => {
             </button>
           </div>
         </div>
-
+  
         {/* Student Information */}
-        <div className="space-y-4">
-          <h5 className="text-lg text-blue-700 font-semibold">Student Information</h5>
-          <p>
-            <strong>Name:</strong> {applicant.student_name}
-          </p>
-          <p>
-            <strong>Course:</strong> {applicant.course}
-          </p>
-          <p>
-            <strong>Contact:</strong> {applicant.phone} / {applicant.user_email}
-          </p>
-          <p>
-            <strong>Address:</strong> {applicant.address}
-          </p>
-          <p>
-            <strong>Status:</strong>{" "}
-            <span
-              className={`font-semibold px-2 py-1 rounded ${
-                applicant.application_status === "Accepted"
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p>
+              <strong>Name:</strong> {applicant.student_name}
+            </p>
+            <p>
+              <strong>Course:</strong> {applicant.course}
+            </p>
+            <p>
+              <strong>Contact:</strong> {applicant.phone} / {applicant.user_email}
+            </p>
+          </div>
+          <div>
+            <p>
+              <strong>Address:</strong> {applicant.address}
+            </p>
+            <p>
+              <strong>Status:</strong>{" "}
+              <span
+                className={`font-semibold px-2 py-1 rounded ${applicant.application_status === "Accepted"
                   ? "bg-green-100 text-green-800"
                   : applicant.application_status === "Pending"
                   ? "bg-yellow-100 text-yellow-800"
                   : "bg-red-100 text-red-800"
-              }`}
-            >
-              {applicant.application_status}
-            </span>
-          </p>
+                  }`}
+              >
+                {applicant.application_status}
+              </span>
+            </p>
+          </div>
         </div>
-
+  
         {/* Scholarship Information */}
         <div className="space-y-4">
           <h5 className="text-lg text-blue-700 font-semibold">Scholarship Information</h5>
           <p>
-            <strong>Scholarship Name:</strong> {applicant.scholarship_name}
+            <strong>Name:</strong> {applicant.scholarship_name}
           </p>
           <h5 className="text-lg text-blue-700 font-semibold">Requirements</h5>
           {applicant.scholarship_desc && applicant.scholarship_desc.trim() !== "" ? (
@@ -188,7 +180,7 @@ const ViewMore = () => {
           </p>
         </div>
       </div>
-
+  
       {/* Modal for Declining Applicants */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -231,8 +223,21 @@ const ViewMore = () => {
           </div>
         </div>
       )}
+  
+      {/* Back Button outside of Modal */}
+      {!showModal && (
+        <div className="text-center mt-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="py-3 px-8 rounded-lg border border-gray-400 text-gray-700 hover:bg-gray-200 transition-all duration-300"
+          >
+            Back to Applicants
+          </button>
+        </div>
+      )}
     </div>
   );
+  
 };
 
 export default ViewMore;
