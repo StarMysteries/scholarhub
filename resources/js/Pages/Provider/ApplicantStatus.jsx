@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import EditScholarshipModal from "./EditScholarshipModal"; // Adjust the path if needed
+import { useAuth } from "../../hooks/useAuth";
 
 const ApplicantStatus = () => {
+    useAuth("Provider");
+
     const { scholarshipId } = useParams();
     const navigate = useNavigate();
     const [scholarshipName, setScholarshipName] = useState("");

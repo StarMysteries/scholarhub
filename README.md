@@ -209,7 +209,7 @@ php artisan serve
 17. Create a new terminal in VS Code
 18. Run the Node.js server for React using the following command:
 
-*Note: Run ``npm run buid`` if necessary.*
+*Note: Run ``npm run build`` if necessary.*
 ```
 npm run dev
 ```

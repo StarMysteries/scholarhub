@@ -13,7 +13,7 @@ function About() {
                     <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">About Us</h2>
                     <h3 className="text-xl md:text-2xl font-semibold text-green-700 mb-6">Welcome to ScholarHub!</h3>
                     <p className="mb-5 text-gray-800 leading-relaxed text-lg">
-                        We created this website to make it easier for students to find scholarships that match their goals. We know that searching for scholarships can be overwhelming, so our mission is to provide a straightforward and accessible platform for students to discover scholarships based on their field of study, educational level, and career aspirations.
+                        We created this website to make it easier for students to find scholarships that match their goals. We know that searching for scholarships can be overwhelming, so our mission is to provide a straightforward and accessible platform for students to discover scholarships based on their field of study and career aspirations.
                     </p>
                     <p className="mb-5 text-gray-800 leading-relaxed text-lg">
                         Our site is designed to help you save time by connecting you directly to scholarship opportunities that fit your needs. We're passionate about supporting students on their educational journeys and believe that everyone should have the chance to reach their potential, regardless of financial background.

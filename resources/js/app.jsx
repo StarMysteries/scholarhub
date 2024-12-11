@@ -69,8 +69,7 @@ function App() {
 
           {/* Routes using AdminLayout */}
           <Route element={<AdminLayout />}>
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/company_proposals" element={<CompanyProposals />} />
+            <Route path="/admin" element={<CompanyProposals />} />
           </Route>
 
           {/* Unauthorized route */}

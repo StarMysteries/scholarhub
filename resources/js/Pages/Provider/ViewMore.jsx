@@ -4,8 +4,11 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import LoadingSpinner from "../General/LoadingSpinner";
+import { useAuth } from "../../hooks/useAuth";
 
 const ViewMore = () => {
+  useAuth("Provider");
+
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
