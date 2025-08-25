@@ -177,7 +177,7 @@ const HomeDonor = () => {
                         <select
                             value={activeFilter}
                             onChange={(e) => setActiveFilter(e.target.value)}
-                            className="bg-white text-gray-800 py-2 px-4 rounded-md shadow-md border border-gray-300"
+                            className="bg-white text-gray-800 py-2 px-4 rounded-md shadow-md"
                         >
                             <option value="All">All</option>
                             <option value="Active">Active</option>
