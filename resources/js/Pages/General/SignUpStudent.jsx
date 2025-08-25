@@ -98,7 +98,7 @@ const SignUpStudent = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full mt-12">
+            <div className="bg-white border-t-4 border-green-600 p-8 rounded-xl shadow-xl max-w-md w-full mt-12">
                 <h2 className="text-3xl font-semibold text-center mb-6 text-gray-800">Sign Up - Student</h2>
 
                 {/* Fetch Error Message */}

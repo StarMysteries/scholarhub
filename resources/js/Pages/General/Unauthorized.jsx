@@ -14,20 +14,22 @@ function Unauthorized() {
             navigate('/');
         }else if(userRole === "Provider"){
             navigate('/donor');
+        }else{
+            navigate('/');
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white/5 p-12 rounded-lg shadow-2xl text-center">
+            <div className="border-t-4 border-green-600 p-12 rounded-lg shadow-2xl text-center">
                 {/* Icon */}
                 <div className="flex items-center justify-center mb-6 text-red-600">
                     <FaLock size={48} />
                 </div>
 
                 {/* Title and Message */}
-                <h1 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4">Access Denied</h1>
-                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                <h1 className="text-3xl font-semibold text-gray-800 mb-4">Access Denied</h1>
+                <p className="text-gray-600 mb-6">
                     You do not have permission to view this page.
                 </p>
 

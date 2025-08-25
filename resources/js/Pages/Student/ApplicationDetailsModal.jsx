@@ -99,7 +99,7 @@ const ApplicationDetailsModal = ({ modalData, closeModal }) => {
 
         {/* Placeholder for Requirements File */}
         <div className="w-full h-48 bg-gray-100 border border-dashed border-gray-300 flex items-center justify-center text-gray-600 mt-6 rounded-lg">
-          <span>Placeholder for Requirements File</span>
+          <span>Requirement Files</span>
         </div>
 
         {/* Footer */}

@@ -44,7 +44,7 @@ const MoreInfo = () => {
   return (
     <div className="p-8">
       {/* Scholarship Details Container */}
-      <div className="container mx-auto max-w-6xl bg-white rounded-lg shadow-lg p-8 space-y-8">
+      <div className="container mx-auto max-w-6xl bg-white border-t-4 border-green-600 rounded-lg shadow-lg p-8 space-y-8">
 
         {/* Header Section */}
         <div className="flex justify-between items-center">

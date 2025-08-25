@@ -25,7 +25,7 @@ function ForgotPassword() {
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+            <div className="bg-white border-t-4 border-green-600 p-8 rounded-lg shadow-lg max-w-sm w-full">
                 <h2 className="text-2xl font-semibold text-center mb-6">Reset Your Password</h2>
 
                 {error && <p className="text-red-500 text-center mb-4">{error}</p>}

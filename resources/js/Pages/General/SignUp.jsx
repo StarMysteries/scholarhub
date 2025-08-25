@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const SignUp = () => {
     return (
         <div className="min-h-screen flex items-center justify-center py-8">
-            <div className="bg-white p-10 rounded-3xl shadow-lg max-w-md w-full mx-auto ring-1 ring-gray-200">
+            <div className="bg-white border-t-4 border-green-600 p-10 rounded-3xl shadow-lg max-w-md w-full mx-auto ring-1 ring-gray-200">
                 <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
                     Sign Up
                 </h2>

@@ -168,8 +168,15 @@ const ScholarshipForm = () => {
             id="file-upload"
             multiple
             onChange={handleFileChange}
-            className="w-full max-w-md text-sm file:bg-green-800 file:border-0 file:text-white file:font-semibold file:px-4 file:py-2 file:rounded-lg cursor-pointer"
+            className="hidden"
           />
+
+          <label
+            htmlFor="file-upload"
+            className="cursor-pointer bg-green-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-700"
+          >
+            Choose Files
+          </label>
           {files.length > 0 ? (
             <div className="mt-4 text-gray-700 text-center">
               <div className="text-sm font-medium">Selected Files:</div>

@@ -10,7 +10,7 @@ function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full border-t-4 border-green-600">
                 <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
                 {/* Error Message */}
