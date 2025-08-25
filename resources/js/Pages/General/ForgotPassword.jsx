@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
     // Handle form submission
@@ -17,9 +15,6 @@ function ForgotPassword() {
             return;
         }
 
-        // Proceed with form submission (for demo purposes, we just log the inputs)
-        console.log("Email:", email);
-        console.log("New Password:", newPassword);
         setError('');
     };
 
@@ -43,34 +38,10 @@ function ForgotPassword() {
                         />
                     </div>
 
-                    {/* New Password Input */}
-                    <div>
-                        <input
-                            type="password"
-                            placeholder="Enter new password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                            required
-                        />
-                    </div>
-
-                    {/* Confirm Password Input */}
-                    <div>
-                        <input
-                            type="password"
-                            placeholder="Confirm new password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                            required
-                        />
-                    </div>
-
                     {/* Submit Button */}
                     <div>
                         <button type="submit" className="w-full bg-green-900 text-white py-2 rounded-lg hover:bg-teal-700">
-                            Reset Password
+                            Send
                         </button>
                     </div>
                 </form>
